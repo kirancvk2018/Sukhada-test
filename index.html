@@ -1,0 +1,2934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sukhada Infosystems | L1 Runbook Academy — Login &amp; Practice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F6FBF8; --panel:#FFFFFF; --panel-alt:#F5FAF7; --panel-raise:#EFF7F2;
+    --border:#E1EAE4; --border-soft:#EAF1EC; --text:#0F2A22; --text-dim:#5B6B72; --text-faint:#93A29B;
+    --accent:#10B981; --accent2:#059669; --accent-dim:#ECFDF5;
+    --sky:#0EA5E9; --sky-dim:#E0F2FE;
+    --cyan:#0891B2; --cyan-dim:#ECFEFF;
+    --violet:#7C3AED; --violet-dim:#F3EEFF;
+    --teal:#0D9488; --teal-dim:#F0FDFA;
+    --green:#10B981; --green-dim:#ECFDF5; --red:#DC2626; --red-dim:#FEF2F2;
+    --amber:#D97706; --amber-dim:#FFFBEB;
+    --pink:#DB2777; --pink-dim:#FDF2F8;
+    --mono:'Poppins', ui-monospace, sans-serif; --sans:'Inter', system-ui, sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{margin:0; color:var(--text); font-family:var(--sans); -webkit-font-smoothing:antialiased;
+    background:
+      radial-gradient(1100px 620px at 8% -8%, rgba(16,185,129,.14), transparent 60%),
+      radial-gradient(900px 560px at 96% 4%, rgba(13,148,136,.12), transparent 55%),
+      radial-gradient(1000px 700px at 50% 108%, rgba(16,185,129,.08), transparent 55%),
+      var(--bg);
+    background-attachment:fixed;}
+  ::selection{background:#A7F3D0; color:#064E3B;}
+  ::-webkit-scrollbar{width:9px;}
+  ::-webkit-scrollbar-track{background:var(--panel-alt);}
+  ::-webkit-scrollbar-thumb{background:linear-gradient(var(--accent),var(--teal)); border-radius:5px;}
+  a{color:var(--accent2);}
+
+  .topbar{display:flex; align-items:center; justify-content:space-between; gap:20px; padding:14px 28px;
+    background:#FFFFFF; backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--border); flex-wrap:wrap; position:sticky; top:0; z-index:20;}
+  .brand{display:flex; align-items:center; gap:12px;}
+  .brand .logo-mark{width:34px; height:34px; border-radius:9px; flex-shrink:0; display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(135deg,var(--accent),var(--teal)); box-shadow:0 6px 14px -6px rgba(16,185,129,.55);
+    font-family:var(--mono); font-weight:800; font-size:13px; color:#fff; letter-spacing:-.02em;}
+  .brand .dot{display:none;}
+  .brand .brand-text{display:flex; flex-direction:column; line-height:1.15;}
+  .brand h1{font-family:var(--mono); font-size:15px; font-weight:700; letter-spacing:.01em; margin:0; color:var(--text);}
+  .brand span.sub{font-family:var(--sans); font-size:10.5px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--accent2);}
+  .who{display:flex; align-items:center; gap:12px; font-family:var(--sans); font-size:12.5px; font-weight:500; color:var(--text-dim);}
+  .who b{color:var(--text);}
+  .role-pill{font-family:var(--mono); font-size:9.5px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; padding:3px 9px; border-radius:20px; border:1px solid var(--border);}
+  .role-pill.employee{color:var(--pink); border-color:var(--pink-dim); background:var(--pink-dim);}
+  .role-pill.participant{color:var(--teal); border-color:var(--teal-dim); background:var(--teal-dim);}
+
+  .shell{max-width:1180px; margin:0 auto; padding:30px 28px 90px;}
+
+  .conn-result{margin-top:14px; padding:14px 16px; border-radius:9px; border:1px solid var(--border); background:var(--panel-alt); font-size:12.5px;}
+  .conn-result.ok{border-color:var(--accent); background:var(--accent-dim);}
+  .conn-result.bad{border-color:var(--red); background:var(--red-dim);}
+  .conn-result .cr-head{font-weight:700; margin-bottom:10px; line-height:1.5;}
+  .conn-result.ok .cr-head{color:#065F46;}
+  .conn-result.bad .cr-head{color:#991B1B;}
+  .cr-line{display:flex; gap:9px; align-items:flex-start; padding:5px 0; line-height:1.5;}
+  .cr-line .cr-ico{font-weight:800; flex-shrink:0;}
+  .cr-line.ok .cr-ico{color:var(--accent2);}
+  .cr-line.bad .cr-ico{color:var(--red);}
+  .cr-fix{color:var(--text-dim); font-size:12px; margin-top:3px;}
+
+  /* ---- hackathon ---- */
+  .hack-head h2{margin:4px 0 10px; font-family:var(--mono); font-size:23px; font-weight:800; color:var(--text);}
+  .hack-meta{display:flex; flex-wrap:wrap; gap:9px;}
+  .hack-meta span{font-size:12px; color:var(--text-dim); background:var(--panel-alt); border:1px solid var(--border-soft); border-radius:20px; padding:5px 12px;}
+  .hack-meta b{color:var(--text); font-weight:700;}
+  .hack-warn{margin:14px 0 0; padding:11px 14px; border-radius:8px; font-size:12.5px; line-height:1.55;
+    border:1px solid var(--amber); background:var(--amber-dim); color:#7C4A03;}
+  .hack-title{margin:2px 0 8px; font-family:var(--mono); font-size:17px; font-weight:700; color:var(--text);}
+  .hack-problem{margin:0 0 12px; font-size:13.5px; line-height:1.65; color:var(--text-dim);}
+  .hack-done{text-align:center; padding:44px 26px;}
+  .hack-done .hd-tick{width:52px; height:52px; margin:0 auto 16px; border-radius:50%; background:var(--accent-dim);
+    color:var(--accent2); font-size:26px; font-weight:800; display:flex; align-items:center; justify-content:center;}
+  .hack-done h3{margin:0 0 9px; font-family:var(--mono); font-size:19px; font-weight:800; color:var(--text);}
+  .hack-done p{margin:0 auto; max-width:460px; font-size:13px; line-height:1.6; color:var(--text-dim);}
+  .hack-done .hd-sub{margin-top:14px; font-size:11.5px; color:var(--text-faint);}
+
+  .hack-badge{display:inline-block; font-family:var(--mono); font-size:9px; font-weight:700; letter-spacing:.05em;
+    text-transform:uppercase; padding:3px 8px; border-radius:20px; white-space:nowrap;}
+  .hb-none{background:var(--panel-raise); color:var(--text-faint);}
+  .hb-sched{background:var(--sky-dim); color:var(--sky);}
+  .hb-active{background:var(--amber-dim); color:var(--amber);}
+  .hb-done{background:var(--accent-dim); color:var(--accent2);}
+  .hb-exp{background:var(--red-dim); color:var(--red);}
+  .hack-cell{white-space:nowrap;}
+  .hack-cfg-btn{margin-left:7px;}
+  .btn.ghost{background:transparent; border:1px solid var(--border); color:var(--text-dim);}
+  .btn.ghost:hover{border-color:var(--accent); color:var(--accent2);}
+
+  .detail-head{font-family:var(--mono); font-size:10px; font-weight:700; letter-spacing:.07em; text-transform:uppercase;
+    color:var(--text-faint); margin:14px 0 7px;}
+  .detail-head:first-child{margin-top:0;}
+  .hack-detail{border:1px solid var(--border-soft); border-radius:9px; padding:13px 15px; background:var(--panel);}
+  .hd-head{display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; font-size:13px;}
+  .hd-score{font-family:var(--mono); font-size:13px; font-weight:800;}
+  .hd-score.pass{color:var(--accent2);} .hd-score.mid{color:var(--amber);} .hd-score.fail{color:var(--red);}
+  .hd-meta{font-size:11.5px; color:var(--text-faint); margin-top:3px;}
+  .hack-table{width:100%; border-collapse:collapse; margin-top:11px; font-size:12px;}
+  .hack-table th{text-align:left; font-family:var(--mono); font-size:9.5px; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--text-faint); font-weight:700; padding:6px 8px; border-bottom:1px solid var(--border-soft);}
+  .hack-table td{padding:6px 8px; border-bottom:1px solid var(--border-soft); color:var(--text-dim);}
+  .hack-table td:first-child{color:var(--text); font-weight:600;}
+  .hd-sec{text-transform:capitalize;}
+  .hack-table .r-ok{color:var(--accent2); font-weight:700;}
+  .hack-table .r-mid{color:var(--amber); font-weight:700;}
+  .hack-table .r-bad{color:var(--red); font-weight:700;}
+  .imp{font-family:var(--mono); font-size:8.5px; font-weight:700; letter-spacing:.05em; padding:2px 6px; border-radius:3px;}
+  .imp-critical{background:var(--red-dim); color:var(--red);}
+  .imp-high{background:var(--amber-dim); color:var(--amber);}
+  .imp-medium{background:var(--sky-dim); color:var(--sky);}
+  .imp-low{background:var(--panel-raise); color:var(--text-dim);}
+  .imp---{background:transparent; color:var(--text-faint);}
+  .hd-foot{margin-top:10px; font-size:11px; line-height:1.5; color:var(--text-faint);}
+
+  .modal-back{position:fixed; inset:0; background:rgba(15,42,34,.45); z-index:120; display:none;
+    align-items:flex-start; justify-content:center; padding:44px 18px; overflow-y:auto;}
+  .modal-back.show{display:flex;}
+  .modal{background:var(--panel); border:1px solid var(--border); border-radius:13px; padding:24px 26px;
+    width:100%; max-width:500px; box-shadow:0 18px 50px rgba(15,42,34,.22);}
+  .modal-head{display:flex; justify-content:space-between; align-items:flex-start; gap:14px; margin-bottom:18px;}
+  .modal-head h3{margin:3px 0 0; font-family:var(--mono); font-size:17px; font-weight:800; color:var(--text);}
+  .chk-row{display:flex; align-items:center; gap:9px; font-size:13px; color:var(--text); cursor:pointer; margin-bottom:16px;}
+  .chk-row input{width:15px; height:15px; cursor:pointer;}
+  .cfg-grid{display:grid; grid-template-columns:1fr 1fr; gap:13px;}
+  .modal .field{margin-bottom:14px;}
+  .modal .field label{display:block; font-family:var(--mono); font-size:10px; font-weight:700; letter-spacing:.06em;
+    text-transform:uppercase; color:var(--text-faint); margin-bottom:5px;}
+  .modal .field input, .modal .field select{width:100%; background:var(--panel-alt); border:1px solid var(--border);
+    border-radius:7px; padding:9px 11px; font-family:var(--sans); font-size:13px; color:var(--text);}
+  .modal .field input:focus, .modal .field select:focus{outline:2px solid var(--accent); outline-offset:1px; border-color:var(--accent);}
+  .cfg-note{font-size:11.5px; line-height:1.55; color:var(--text-faint); margin:0 0 14px;}
+  .modal-actions{display:flex; justify-content:space-between; gap:11px; margin-top:4px;}
+  @media (max-width:520px){ .cfg-grid{grid-template-columns:1fr;} }
+
+  .pri-legend{margin-top:24px; padding:18px 20px; border-radius:11px; border:1px solid var(--border-soft); background:var(--panel-alt);}
+  .pri-legend .pl-title{font-family:var(--mono); font-size:12.5px; font-weight:700; color:var(--text); margin-bottom:6px;}
+  .pri-legend .pl-sub{font-size:12.5px; line-height:1.55; color:var(--text-dim); margin:0 0 13px;}
+  .pri-legend .pl-foot{font-size:11.5px; line-height:1.5; color:var(--text-faint); margin:13px 0 0;}
+  .pl-grid{display:flex; flex-direction:column; gap:8px;}
+  .pl-row{display:flex; align-items:flex-start; gap:11px; flex-wrap:wrap;}
+  .pl-sev{font-family:var(--mono); font-size:10px; font-weight:800; letter-spacing:.05em; padding:3px 8px; border-radius:5px; flex-shrink:0; min-width:32px; text-align:center;}
+  .pl-sev.p1{background:var(--red-dim); color:var(--red);}
+  .pl-sev.p2{background:var(--amber-dim); color:var(--amber);}
+  .pl-sev.p3{background:var(--sky-dim); color:var(--sky);}
+  .pl-sev.p4{background:var(--panel-raise); color:var(--text-dim);}
+  .pl-map{font-size:12px; font-weight:600; color:var(--text); flex-shrink:0; min-width:172px;}
+  .pl-desc{font-size:12px; line-height:1.5; color:var(--text-dim); flex:1; min-width:220px;}
+
+  .mode-banner{max-width:1180px; margin:18px auto -6px; padding:13px 16px; border-radius:10px;
+    display:flex; align-items:flex-start; gap:11px; font-size:12.8px; line-height:1.5;
+    border:1px solid var(--amber); background:var(--amber-dim); color:#7C4A03;}
+  .mode-banner.ok{border-color:var(--accent); background:var(--accent-dim); color:#065F46;}
+  .mode-banner .mb-ico{font-size:15px; line-height:1.2;}
+  .mode-banner b{font-weight:700;}
+  .mode-banner code{background:rgba(0,0,0,.06); padding:1px 5px; border-radius:4px; font-family:var(--mono); font-size:11.5px;}
+  .mode-pill{font-family:var(--mono); font-size:9.5px; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
+    padding:3px 9px; border-radius:20px; border:1px solid var(--amber); color:var(--amber); background:var(--amber-dim);}
+  .mode-pill.ok{border-color:var(--accent); color:var(--accent2); background:var(--accent-dim);}
+
+  .tag.status{background:var(--violet-dim); color:var(--violet); border-color:var(--violet-dim);}
+  .tag.ticket{background:var(--sky-dim); color:var(--sky); border-color:var(--sky-dim);}
+
+  .btn{font-family:var(--mono); font-size:12px; font-weight:700; padding:10px 18px; border-radius:8px; cursor:pointer; border:1px solid var(--border); background:var(--panel-raise); color:var(--text-dim); transition:border-color .15s, color .15s, background .15s, transform .12s;}
+  .btn:hover{color:var(--text); border-color:var(--text-faint); transform:translateY(-1px);}
+  .btn.primary{background:linear-gradient(120deg, var(--accent), var(--accent2)); color:#fff; border-color:transparent; box-shadow:0 8px 20px -8px rgba(5,150,105,.5);}
+  .btn.primary:hover{filter:brightness(1.08);}
+  .btn:disabled{opacity:.4; cursor:default; transform:none;}
+  .btn.ghost{background:transparent; border-color:var(--amber); color:var(--amber);}
+  .btn.danger{background:transparent; border-color:var(--red); color:var(--red);}
+  .btn.small{padding:6px 12px; font-size:11px;}
+
+  /* ---- LOGIN ---- */
+  .login-wrap{max-width:460px; margin:48px auto 0;}
+  .login-card{background:linear-gradient(160deg, var(--panel), var(--panel-alt)); border:1px solid var(--border); border-radius:14px; padding:8px; box-shadow:0 30px 80px -40px rgba(16,150,105,.18);}
+  .tabs{display:flex; gap:6px; padding:6px;}
+  .tab-btn{flex:1; font-family:var(--mono); font-size:11.5px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; padding:11px 10px; border-radius:9px; border:1px solid transparent; background:transparent; color:var(--text-dim); cursor:pointer; transition:.15s;}
+  .tab-btn.active{background:var(--panel-raise); border-color:var(--border); color:var(--text);}
+  .tab-panel{display:none; padding:22px 26px 26px;}
+  .tab-panel.active{display:block;}
+  .tab-panel .eyebrow{font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--cyan); margin-bottom:6px;}
+  .tab-panel h2{font-family:var(--mono); font-size:18px; margin:0 0 8px;}
+  .tab-panel p.hint{color:var(--text-dim); font-size:12.5px; line-height:1.55; margin:0 0 18px;}
+  .field{margin-bottom:14px;}
+  .field label{display:block; font-family:var(--mono); font-size:10.5px; letter-spacing:.05em; text-transform:uppercase; color:var(--text-faint); margin-bottom:6px;}
+  .field input{width:100%; background:var(--panel-raise); border:1px solid var(--border); border-radius:8px; padding:11px 13px; color:var(--text); font-family:var(--sans); font-size:14px;}
+  .field input:focus{outline:2px solid var(--accent); outline-offset:1px; border-color:var(--accent);}
+  .field .sub{font-size:11px; color:var(--text-faint); margin-top:5px;}
+  .login-error{display:none; font-size:12.5px; color:var(--red); background:var(--red-dim); border:1px solid var(--red); border-radius:7px; padding:9px 12px; margin-bottom:14px;}
+  .login-error.show{display:block;}
+  .login-submit{width:100%;}
+
+  /* ---- CARDS / SECTIONS ---- */
+  .section-title{font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--cyan); margin:0 0 14px;}
+  .card-panel{background:linear-gradient(160deg, var(--panel), var(--panel-alt)); border:1px solid var(--border); border-radius:12px; padding:22px; box-shadow:0 20px 60px -30px rgba(16,150,105,.12); margin-bottom:22px;}
+
+  .stat-row{display:flex; gap:12px; flex-wrap:wrap; margin-bottom:6px;}
+  .stat-chip{background:var(--panel-raise); border:1px solid var(--border); border-radius:20px; padding:8px 16px; font-family:var(--mono); font-size:11.5px; color:var(--text-dim);}
+  .stat-chip b{color:var(--text); font-size:14px;}
+
+  .add-row{display:flex; gap:10px; align-items:flex-end; flex-wrap:wrap;}
+  .add-row .field{flex:1; min-width:220px; margin-bottom:0;}
+
+  .cred-card{margin-top:16px; border:1px solid var(--green); background:linear-gradient(135deg, var(--green-dim), var(--panel)); border-radius:10px; padding:16px 18px; display:none;}
+  .cred-card.show{display:block;}
+  .cred-card .ct{font-family:var(--mono); font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--green); margin-bottom:8px;}
+  .cred-line{display:flex; align-items:center; gap:14px; font-family:var(--mono); font-size:15px; flex-wrap:wrap;}
+  .cred-line span{color:var(--text-dim); font-size:11px; text-transform:uppercase; letter-spacing:.05em; margin-right:4px;}
+  .cred-line b{color:var(--text); font-size:17px; letter-spacing:.03em;}
+
+  table.roster{width:100%; border-collapse:collapse; font-size:13px;}
+  table.roster th{text-align:left; font-family:var(--mono); font-size:10px; letter-spacing:.06em; text-transform:uppercase; color:var(--text-faint); padding:8px 10px; border-bottom:1px solid var(--border);}
+  table.roster td{padding:11px 10px; border-bottom:1px solid var(--border-soft); vertical-align:middle;}
+  table.roster tr.roster-row{cursor:pointer;}
+  table.roster tr.roster-row:hover{background:var(--panel-raise);}
+  table.roster td.name-cell{font-weight:600;}
+  table.roster td.pin-cell{font-family:var(--mono); color:var(--cyan);}
+  .acc-good{color:var(--green); font-weight:700;}
+  .acc-mid{color:var(--amber); font-weight:700;}
+  .acc-low{color:var(--text-dim);}
+  .empty-note{color:var(--text-faint); font-size:12.5px; font-family:var(--mono); padding:18px 4px;}
+  .detail-row td{background:var(--panel-alt); padding:0;}
+  .detail-inner{padding:12px 18px 16px 34px;}
+  .attempt-line{display:flex; justify-content:space-between; gap:10px; font-size:12px; padding:6px 0; border-bottom:1px dashed var(--border-soft); color:var(--text-dim);}
+  .attempt-line:last-child{border-bottom:none;}
+  .attempt-line b{color:var(--text);}
+  .attempt-line .pass{color:var(--green);}
+  .attempt-line .fail{color:var(--red);}
+  .row-actions{display:flex; gap:8px; justify-content:flex-end;}
+
+  /* ---- PARTICIPANT / GAME (adapted from process-flow-assembly) ---- */
+  .select-wrap{display:flex; align-items:center; gap:10px;}
+  .select-wrap label{font-family:var(--mono); font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--text-dim);}
+  select#scenarioSelect{background:var(--panel-raise); color:var(--text); border:1px solid var(--accent-dim); border-radius:6px; padding:9px 34px 9px 12px; font-family:var(--sans); font-size:13px; cursor:pointer; appearance:none;
+    box-shadow:0 0 0 1px rgba(16,185,129,.15) inset;
+    background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="6" viewBox="0 0 10 6"><path d="M0 0L5 6L10 0Z" fill="%2310B981"/></svg>'); background-repeat:no-repeat; background-position:right 12px center; min-width:260px;}
+  select#scenarioSelect:focus{outline:2px solid var(--accent); outline-offset:1px;}
+
+  .intro-card{max-width:720px; margin:20px auto 40px; text-align:center;}
+  .intro-card .eyebrow{font-family:var(--mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--cyan); margin-bottom:12px;}
+  .intro-card h2{font-family:var(--mono); font-size:21px; font-weight:600; margin:0 0 14px;}
+  .intro-card p{color:var(--text-dim); font-size:14px; line-height:1.65; margin:0 0 10px;}
+  .intro-steps{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:24px; text-align:left;}
+  .intro-steps div{border:1px solid var(--border); border-top:3px solid var(--step-c,var(--accent)); border-radius:9px; padding:14px 16px; background:var(--panel);}
+  .intro-steps div:nth-child(1){--step-c:var(--sky);}
+  .intro-steps div:nth-child(2){--step-c:var(--pink);}
+  .intro-steps div:nth-child(3){--step-c:var(--teal);}
+  .intro-steps span.n{font-family:var(--mono); font-size:11px; color:var(--step-c,var(--accent)); letter-spacing:.08em; font-weight:700;}
+  .intro-steps p.t{margin:6px 0 0; font-size:12.5px; color:var(--text-dim); line-height:1.5;}
+
+  .meta-bar{display:flex; align-items:flex-start; justify-content:space-between; gap:20px;
+    background:linear-gradient(135deg, var(--panel), var(--panel-alt)); border:1px solid var(--border); border-left:4px solid var(--sky); border-radius:9px; padding:16px 20px; margin-bottom:22px; flex-wrap:wrap;}
+  .meta-left h2{font-family:var(--mono); font-size:18px; font-weight:600; margin:0 0 6px;}
+  .meta-left p{margin:0; color:var(--text-dim); font-size:13px; line-height:1.55; max-width:640px;}
+  .meta-tags{display:flex; gap:8px; flex-shrink:0;}
+  .tag{font-family:var(--mono); font-size:10.5px; font-weight:700; padding:5px 10px; border-radius:20px; border:1px solid var(--border); color:var(--text-dim); white-space:nowrap;}
+  .tag.sev{color:#1a1300; background:var(--amber); border-color:var(--amber);}
+  .tag.sev.sev-p1{background:var(--red); border-color:var(--red); color:#2a0d10;}
+  .tag.sev.sev-p2{background:#FB923C; border-color:#FB923C; color:#2a1500;}
+  .tag.sla{color:var(--text-dim); background:var(--panel-raise);}
+  .tag.trig{color:#0c1b33; background:var(--sky); border-color:var(--sky);}
+
+  .board{display:grid; grid-template-columns:1fr 320px; gap:24px; align-items:start;}
+  @media (max-width:960px){ .board{grid-template-columns:1fr;} }
+
+  .flow-panel{background:linear-gradient(160deg, var(--panel), var(--panel-alt)); border:1px solid var(--border); border-radius:12px; padding:24px; box-shadow:0 20px 60px -30px rgba(16,150,105,.14);}
+  .panel-title{font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--cyan); margin-bottom:16px;}
+
+  .fixed-node{background:var(--panel-raise); border:1px solid var(--border); border-left:4px solid var(--text-faint); border-radius:7px; padding:11px 15px; max-width:640px; margin:0 auto;}
+  .fixed-node .fn-label{font-family:var(--mono); font-size:9px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--text-faint); margin-bottom:3px;}
+  .fixed-node .fn-body{font-size:13px; color:var(--text); line-height:1.4;}
+  .fixed-node.trigger{border-left-color:var(--sky); background:linear-gradient(180deg, var(--sky-dim), var(--panel-raise));}
+  .fixed-node.trigger .fn-label{color:var(--sky);}
+  .fixed-node.decision{border-left-color:var(--violet); background:linear-gradient(180deg, var(--violet-dim), var(--panel));}
+  .fixed-node.decision .fn-label{color:var(--violet);}
+  .fixed-node.close{border-left-color:var(--teal); background:linear-gradient(180deg, var(--teal-dim), var(--panel-raise));}
+  .fixed-node.close .fn-label{color:var(--teal);}
+
+  .flow-arrow{display:flex; justify-content:center; margin:6px 0;}
+  .flow-arrow svg{display:block;}
+
+  .slot{max-width:640px; margin:0 auto; min-height:64px; border:2px dashed var(--border); border-radius:8px; padding:11px 15px; display:flex; align-items:center; justify-content:center; text-align:center; transition:border-color .15s, background .15s;}
+  .slot .slot-placeholder{font-family:var(--mono); font-size:10.5px; letter-spacing:.04em; color:var(--text-faint);}
+  .slot[data-kind="pre"]{border-color:var(--sky-dim);}
+  .slot[data-kind="pre"] .slot-placeholder{color:var(--sky);}
+  .slot[data-kind="resolve"]{border-color:var(--green-dim);}
+  .slot[data-kind="resolve"] .slot-placeholder{color:var(--green);}
+  .slot[data-kind="escalate"]{border-color:var(--red-dim);}
+  .slot[data-kind="escalate"] .slot-placeholder{color:var(--red);}
+  .slot.hover{border-color:var(--accent); background:var(--accent-dim);}
+  .slot.filled{border-style:solid; border-color:var(--border-soft); padding:0; background:transparent;}
+  .slot.correct{border-color:var(--green) !important; background:var(--green-dim); box-shadow:0 0 0 3px rgba(52,211,153,.15);}
+  .slot.incorrect{border-color:var(--red) !important; background:var(--red-dim); box-shadow:0 0 0 3px rgba(251,113,133,.15);}
+  .slot.selected-target{border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-dim);}
+
+  .branches{display:grid; grid-template-columns:1fr 1fr; gap:26px; margin-top:4px;}
+  @media (max-width:640px){ .branches{grid-template-columns:1fr;} }
+  .branch-head{text-align:center; font-family:var(--mono); font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; padding-bottom:10px;}
+  .branch-head.resolve{color:var(--green);}
+  .branch-head.escalate{color:var(--red);}
+  .branch-col{display:flex; flex-direction:column; gap:12px;}
+  .branch-col .slot{max-width:none;}
+
+  .card{background:var(--panel-raise); border:1px solid var(--border); border-left:4px solid var(--text-faint); border-radius:7px; padding:10px 13px; text-align:left; width:100%; cursor:grab; user-select:none; transition:transform .12s, box-shadow .12s;}
+  .card:hover{transform:translateY(-1px); box-shadow:0 6px 16px -8px rgba(15,42,34,.18);}
+  .card:active{cursor:grabbing;}
+  .card .c-title{font-size:12.5px; font-weight:600; color:var(--text); line-height:1.35;}
+  .card .c-desc{font-size:11.5px; color:var(--text-dim); line-height:1.4; margin-top:3px;}
+  .card.kind-pre{border-left-color:var(--sky);}
+  .card.kind-resolve{border-left-color:var(--green);}
+  .card.kind-escalate{border-left-color:var(--red);}
+  .card.dragging{opacity:.35;}
+  .card.selected{border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-dim);}
+  .card.readonly{cursor:default;}
+  .card.locked{cursor:default;}
+
+  .slot .card{margin:0; border-radius:6px;}
+
+  .tray-wrap{position:sticky; top:76px; background:linear-gradient(160deg, var(--panel), var(--panel-alt)); border:1px solid var(--border); border-radius:12px; padding:18px; box-shadow:0 20px 60px -30px rgba(45,212,191,.30);}
+  .tray-instructions{font-size:12px; color:var(--text-dim); line-height:1.5; margin:0 0 14px; padding-bottom:12px; border-bottom:1px solid var(--border-soft);}
+  .tray{display:flex; flex-direction:column; gap:10px; min-height:60px;}
+  .tray.hover{outline:2px dashed var(--accent); outline-offset:4px; border-radius:8px;}
+  .tray-empty{font-family:var(--mono); font-size:10.5px; color:var(--text-faint); text-align:center; padding:14px 0;}
+
+  .actions{display:flex; gap:10px; margin-top:20px; flex-wrap:wrap;}
+  #resetBtn{border-color:var(--teal); color:var(--teal);}
+
+  .feedback{margin-top:20px; border-radius:9px; padding:16px 20px; border:1px solid var(--border); display:none; position:relative; overflow:visible;}
+  .feedback.show{display:block;}
+  .feedback.pass{border-color:var(--green); background:linear-gradient(135deg, var(--green-dim), var(--panel));}
+  .feedback.fail{border-color:var(--red); background:linear-gradient(135deg, var(--red-dim), var(--panel));}
+  .feedback .fb-top{display:flex; align-items:center; gap:10px; margin-bottom:6px;}
+  .feedback .fb-icon{width:22px;height:22px;border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; flex-shrink:0;}
+  .feedback.pass .fb-icon{background:var(--green); color:#08150c;}
+  .feedback.fail .fb-icon{background:var(--red); color:#2a0d0f;}
+  .feedback .fb-title{font-family:var(--mono); font-size:13.5px; font-weight:700;}
+  .feedback.pass .fb-title{color:var(--green);}
+  .feedback.fail .fb-title{color:var(--red);}
+  .feedback .fb-sub{font-size:12.5px; color:var(--text-dim); margin:0;}
+
+  .trophy-wrap{display:none; align-items:center; gap:16px; margin-bottom:14px; padding-bottom:14px; border-bottom:1px solid rgba(52,211,153,.3); position:relative; overflow:visible;}
+  .feedback.pass .trophy-wrap{display:flex;}
+  .trophy-cup{flex-shrink:0; filter:drop-shadow(0 0 10px rgba(251,191,36,.6));animation:trophyPop .55s cubic-bezier(.34,1.56,.64,1) both;}
+  .trophy-copy .trophy-title{font-family:var(--mono); font-size:14px; font-weight:700; color:var(--amber); letter-spacing:.02em;}
+  .trophy-copy .trophy-sub{font-size:12px; color:var(--text-dim); margin-top:2px;}
+  @keyframes trophyPop{
+    0%{ transform:scale(.4) rotate(-8deg); opacity:0; }
+    60%{ transform:scale(1.12) rotate(3deg); opacity:1; }
+    100%{ transform:scale(1) rotate(0deg); opacity:1; }
+  }
+  .confetti-piece{position:absolute; top:-6px; width:7px; height:7px; opacity:0; border-radius:1px;
+    animation-name:confettiFall; animation-timing-function:cubic-bezier(.4,.1,.6,.9); animation-fill-mode:forwards;}
+  @keyframes confettiFall{
+    0%{ transform:translate(0,0) rotate(0deg); opacity:1; }
+    100%{ transform:translate(var(--drift,20px), 140px) rotate(var(--spin,360deg)); opacity:0; }
+  }
+  .stat-trophy{color:var(--amber);}
+
+  .answer-key{margin-top:22px; border-top:1px dashed var(--border); padding-top:20px; display:none;}
+  .answer-key.show{display:block;}
+  .answer-key .ak-title{font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--amber); margin-bottom:14px;}
+  .answer-key .card{background:var(--panel); border-left:4px solid var(--green);}
+  .answer-key .branch-col .card{border-left:4px solid var(--green);}
+  .answer-key .branch-col.escalate-col .card{border-left-color:var(--red);}
+
+  .history-list{display:flex; flex-direction:column; gap:8px; margin-top:6px;}
+  .history-item{display:flex; align-items:center; justify-content:space-between; gap:10px; font-size:12.5px; padding:10px 14px; border:1px solid var(--border); border-radius:8px; background:var(--panel-raise); flex-wrap:wrap;}
+  .history-item .hi-left{display:flex; flex-direction:column; gap:2px;}
+  .history-item .hi-title{color:var(--text); font-weight:600;}
+  .history-item .hi-time{color:var(--text-faint); font-family:var(--mono); font-size:10.5px;}
+  .history-item .hi-score{font-family:var(--mono); font-size:12px; font-weight:700;}
+  .history-item .hi-score.pass{color:var(--green);}
+  .history-item .hi-score.fail{color:var(--red);}
+
+  .toast{position:fixed; bottom:22px; left:50%; transform:translateX(-50%) translateY(20px); background:var(--panel-raise); border:1px solid var(--accent); color:var(--text); font-family:var(--mono); font-size:12px; padding:10px 18px; border-radius:8px; opacity:0; pointer-events:none; transition:.25s; z-index:100;}
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+
+  .load-note{font-family:var(--mono); font-size:11.5px; color:var(--text-faint); text-align:center; padding:30px 0;}
+
+  @media (max-width:640px){
+    .topbar{padding:12px 16px;}
+    .shell{padding:18px 14px 60px;}
+    .select-wrap{width:100%;}
+    select#scenarioSelect{min-width:0; width:100%;}
+    .intro-steps{grid-template-columns:1fr;}
+    .board{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">
+      <span class="logo-mark">L1</span>
+      <div class="brand-text">
+        <h1>Runbook Academy</h1>
+        <span class="sub">Sukhada Infosystems</span>
+      </div>
+    </div>
+    <div class="who" id="whoBox"></div>
+  </div>
+
+  <div class="mode-banner" id="modeBanner" style="display:none;"></div>
+
+  <div class="shell" id="shell">
+
+    <!-- ============ LOGIN ============ -->
+    <div id="loginScreen">
+      <div class="login-wrap">
+        <div class="login-card">
+          <div class="tabs">
+            <button class="tab-btn active" id="tabParticipantBtn">Participant</button>
+            <button class="tab-btn" id="tabEmployeeBtn">Employee</button>
+          </div>
+
+          <div class="tab-panel active" id="participantPanel">
+            <div class="eyebrow">Take a practice run</div>
+            <h2>Participant Login</h2>
+            <p class="hint">Enter the name and PIN your instructor gave you.</p>
+            <div class="login-error" id="participantError"></div>
+            <div class="field">
+              <label for="pName">Name</label>
+              <input id="pName" type="text" autocomplete="off" placeholder="Your name or employee ID">
+            </div>
+            <div class="field">
+              <label for="pPin">PIN</label>
+              <input id="pPin" type="text" inputmode="numeric" autocomplete="off" placeholder="4-digit PIN">
+            </div>
+            <button class="btn primary login-submit" id="participantLoginBtn">Log In &amp; Start Practicing</button>
+          </div>
+
+          <div class="tab-panel" id="employeePanel">
+            <div class="eyebrow">Instructor / admin access</div>
+            <h2>Employee Login</h2>
+            <p class="hint">Enter your name and the team access code to open the dashboard and create participant logins.</p>
+            <div class="login-error" id="employeeError"></div>
+            <div class="field">
+              <label for="eName">Your Name</label>
+              <input id="eName" type="text" autocomplete="off" placeholder="e.g. Alex Rivera">
+            </div>
+            <div class="field">
+              <label for="eCode">Access Code</label>
+              <input id="eCode" type="password" autocomplete="off" placeholder="Access code">
+              <div class="sub">Default code: <b>SUKHADA-L1-2026</b> — change EMPLOYEE_CODE in the script to set your own.</div>
+            </div>
+            <button class="btn primary login-submit" id="employeeLoginBtn">Log In to Dashboard</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ EMPLOYEE DASHBOARD ============ -->
+    <div id="employeeScreen" style="display:none;">
+      <div class="card-panel">
+        <div class="section-title">Create Participant Login</div>
+        <a href="reference-runbooks.html" target="_blank" rel="noopener" class="btn small" style="float:right; text-decoration:none;">📖 Reference Runbooks</a>
+        <div class="add-row">
+          <div class="field">
+            <label for="newPName">Participant Name</label>
+            <input id="newPName" type="text" autocomplete="off" placeholder="e.g. Priya Shah">
+          </div>
+          <div class="field">
+            <label for="newPId">Employee ID <span style="font-weight:400; color:var(--text-faint);">(optional, keeps same-name trainees apart)</span></label>
+            <input id="newPId" type="text" autocomplete="off" placeholder="e.g. SI-2214">
+          </div>
+          <button class="btn primary" id="createPBtn">Generate Login</button>
+        </div>
+        <div class="cred-card" id="credCard">
+          <div class="ct">Share these with the participant</div>
+          <div class="cred-line">
+            <span>Name</span><b id="credName"></b>
+            <span style="margin-left:18px;">PIN</span><b id="credPin"></b>
+            <button class="btn small" id="copyCredBtn" style="margin-left:auto;">Copy</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-panel" style="margin-bottom:22px;">
+        <div class="section-title">Connection</div>
+        <p style="font-size:12.5px; color:var(--text-dim); line-height:1.55; margin:0 0 12px;">
+          Check this before every session. It confirms participants will be able to log in from their own devices.
+        </p>
+        <button class="btn" id="testConnBtn">Test connection</button>
+        <div class="conn-result" id="connResult" style="display:none;"></div>
+      </div>
+
+      <div class="card-panel">
+        <div class="section-title">Participant Roster &amp; Scores</div>
+        <div class="stat-row" id="employeeStatRow"></div>
+        <div id="rosterWrap" style="margin-top:14px;"><div class="load-note">Loading roster…</div></div>
+      </div>
+    </div>
+
+    <!-- ============ HACKATHON SCREEN (participant) ============ -->
+    <div id="hackathonScreen" style="display:none;">
+      <div class="card-panel hack-head">
+        <div class="eyebrow">Hackathon</div>
+        <h2>Enterprise Runbook Challenge</h2>
+        <div class="hack-meta">
+          <span>Participant <b id="hackWho"></b></span>
+          <span>Hackathon period <b id="hackWindow"></b></span>
+        </div>
+        <p class="hack-warn">This is an assessment. You get <b>one submission</b>, and the correct flow is not shown
+          afterwards. Take your time and place every step before you submit.</p>
+      </div>
+
+      <div id="hackBoard" style="display:none;">
+        <div class="card-panel" style="margin-bottom:22px;">
+          <div class="section-title">Problem statement</div>
+          <h3 id="hackTitle" class="hack-title"></h3>
+          <p id="hackProblem" class="hack-problem"></p>
+          <div class="tag trig" id="hackTrigger"></div>
+        </div>
+
+        <div class="card-panel">
+          <div class="section-title">Build the correct resolution flow</div>
+          <div class="board">
+            <div class="flow-col">
+              <div class="col-label">Process skeleton</div>
+              <div id="hackFlow"></div>
+            </div>
+            <div class="tray-col">
+              <div class="col-label">Parts tray</div>
+              <div class="tray" id="hackTray"></div>
+            </div>
+          </div>
+          <div class="actions">
+            <button class="btn primary" id="hackSubmitBtn">Submit Hackathon Solution</button>
+          </div>
+          <div class="feedback" id="hackResult"></div>
+        </div>
+      </div>
+
+      <div class="card-panel hack-done" id="hackDone" style="display:none;">
+        <div class="hd-tick">✓</div>
+        <h3 id="hackDoneTitle">Submission recorded</h3>
+        <p id="hackDoneMsg"></p>
+        <div class="hd-sub" id="hackDoneMeta"></div>
+      </div>
+    </div>
+
+    <!-- ============ PARTICIPANT SCREEN ============ -->
+    <div id="participantScreen" style="display:none;">
+      <div class="card-panel" style="margin-bottom:22px;">
+        <div class="section-title">Your Progress</div>
+        <div class="stat-row" id="participantStatRow"></div>
+        <div id="historyWrap"></div>
+        <a href="reference-runbooks.html" target="_blank" rel="noopener" class="btn" style="display:inline-block; text-decoration:none; margin-top:16px;">📖 View Reference Runbooks</a>
+      </div>
+
+      <div class="select-wrap" style="margin-bottom:18px;">
+        <label for="scenarioSelect">Problem&nbsp;state</label>
+        <select id="scenarioSelect"><option value="">— Select a scenario —</option></select>
+      </div>
+
+      <div class="intro-card" id="intro">
+        <div class="eyebrow">Runbook Assembly Exercise</div>
+        <h2>Build the correct flow, step by step</h2>
+        <p>Pick a problem state from the dropdown above. A blank process skeleton will appear with the trigger, decision, and closure fixed in place — your job is to place the missing steps correctly.</p>
+        <div class="intro-steps">
+          <div><span class="n">01</span><p class="t">Drag each card from the tray into the slot where it belongs — or tap a card, then tap a slot.</p></div>
+          <div><span class="n">02</span><p class="t">The tray includes distractor steps pulled from other scenarios. Not every card belongs.</p></div>
+          <div><span class="n">03</span><p class="t">Order matters in the pre-checks and the resolve path. In the escalate / vendor / approval branch the order is <b>not</b> graded — only that the right steps are there.</p></div>
+          <div><span class="n">04</span><p class="t">Submit when ready. Each slot is marked correct or incorrect, and your score is saved to your dashboard automatically.</p></div>
+        </div>
+
+        <div class="pri-legend">
+          <div class="pl-title">How ticket priority maps to severity</div>
+          <p class="pl-sub">Every scenario here is a real row from the Technical Support ticket tracker. The tracker records
+            <b>High / Medium / Low</b>; L1 works in <b>P1&ndash;P4</b>. This is the rule used throughout:</p>
+          <div class="pl-grid">
+            <div class="pl-row"><span class="pl-sev p1">P1</span><span class="pl-map">Tracker <b>High</b></span><span class="pl-desc">Outage, severe degradation, or data-protection risk. Immediate triage, continuous ownership.</span></div>
+            <div class="pl-row"><span class="pl-sev p2">P2</span><span class="pl-map">Tracker <b>Medium</b> &mdash; unplanned</span><span class="pl-desc">Something is already degraded: a blocked user, a capacity risk, a reduced resilience margin.</span></div>
+            <div class="pl-row"><span class="pl-sev p3">P3</span><span class="pl-map">Tracker <b>Medium</b> &mdash; planned</span><span class="pl-desc">Approved change inside a maintenance window, with a rollback option.</span></div>
+            <div class="pl-row"><span class="pl-sev p4">P4</span><span class="pl-map">Tracker <b>Low</b></span><span class="pl-desc">Routine request, lifecycle work, or an alert that already recovered on its own.</span></div>
+          </div>
+          <p class="pl-foot">SLA figures shown on each scenario are the tracker&rsquo;s estimated resolution hours. They are planning
+            estimates, not contractual commitments &mdash; your organisation&rsquo;s approved impact-and-urgency matrix always takes precedence.</p>
+        </div>
+      </div>
+
+      <div id="game" style="display:none;">
+        <div class="meta-bar">
+          <div class="meta-left">
+            <h2 id="probTitle"></h2>
+            <p id="probScope"></p>
+          </div>
+          <div class="meta-tags">
+            <span class="tag sev" id="probSev"></span>
+            <span class="tag sla" id="probSla"></span>
+            <span class="tag trig" id="probTrig"></span>
+            <span class="tag ticket" id="probTicket"></span>
+            <span class="tag status" id="probStatus"></span>
+          </div>
+        </div>
+
+        <div class="board">
+          <div class="flow-panel">
+            <div class="panel-title">Process Flow — Drop Zone</div>
+            <div id="flowSkeleton"></div>
+
+            <div class="feedback" id="feedback">
+              <div class="trophy-wrap" id="trophyWrap">
+                <svg class="trophy-cup" width="40" height="40" viewBox="0 0 48 48" fill="none">
+                  <path d="M14 8H34V20C34 26.6274 29.5228 32 24 32C18.4772 32 14 26.6274 14 20V8Z" fill="#E8B23D"/>
+                  <path d="M14 10H8C8 16 10 20 14 21" stroke="#E8B23D" stroke-width="2.4" stroke-linecap="round"/>
+                  <path d="M34 10H40C40 16 38 20 34 21" stroke="#E8B23D" stroke-width="2.4" stroke-linecap="round"/>
+                  <rect x="21" y="32" width="6" height="7" fill="#E8B23D"/>
+                  <rect x="15" y="39" width="18" height="4" rx="1.5" fill="#E8B23D"/>
+                  <path d="M20 14L23 17L28 12" stroke="#0A0D10" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div class="trophy-copy">
+                  <div class="trophy-title">Runbook Mastered</div>
+                  <div class="trophy-sub" id="trophySub">Perfect assembly — saved to your record.</div>
+                </div>
+              </div>
+              <div class="fb-top"><span class="fb-icon" id="fbIcon">✓</span><span class="fb-title" id="fbTitle"></span></div>
+              <p class="fb-sub" id="fbSub"></p>
+            </div>
+
+            <div class="answer-key" id="answerKey">
+              <div class="ak-title">Correct Flow — Reference</div>
+              <div id="answerKeyBody"></div>
+            </div>
+
+            <div class="actions">
+              <button class="btn primary" id="submitBtn">Submit Solution</button>
+              <button class="btn" id="resetBtn">Reset Board</button>
+              <button class="btn ghost" id="nextBtn" style="display:none;">Try Another Scenario →</button>
+            </div>
+          </div>
+
+          <div class="tray-wrap">
+            <p class="tray-instructions">Drag a card into its slot in the flow — or tap a card, then tap the slot.</p>
+            <div class="panel-title" style="margin-bottom:8px;">Parts Tray</div>
+            <div class="tray" id="tray"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ============ HACKATHON CONFIG MODAL (employee only) ============ -->
+  <div class="modal-back" id="hackCfgModal">
+    <div class="modal">
+      <div class="modal-head">
+        <div>
+          <div class="eyebrow">Hackathon</div>
+          <h3 id="hackCfgWho"></h3>
+        </div>
+        <button class="btn small" id="hackCfgClose">Close</button>
+      </div>
+
+      <label class="chk-row">
+        <input type="checkbox" id="hackCfgEnabled">
+        <span>Enable Hackathon for this participant</span>
+      </label>
+
+      <div class="cfg-grid">
+        <div class="field">
+          <label for="hackCfgFrom">From date</label>
+          <input type="date" id="hackCfgFrom">
+        </div>
+        <div class="field">
+          <label for="hackCfgTo">To date</label>
+          <input type="date" id="hackCfgTo">
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="hackCfgScenario">Hackathon scenario</label>
+        <select id="hackCfgScenario"></select>
+      </div>
+
+      <p class="cfg-note">The window runs from 00:00 on the From date to 23:59 on the To date, in your local time.
+        While it is open this participant gets the Hackathon instead of normal practice. Once the To date passes,
+        or once they submit, normal practice returns.</p>
+
+      <div class="err" id="hackCfgErr"></div>
+
+      <div class="modal-actions">
+        <button class="btn small danger" id="hackCfgRemove">Remove assignment</button>
+        <button class="btn primary" id="hackCfgSave">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+/* ████████████████████████████████████████████████████████████████
+   ██  SETTINGS — EDIT THESE FOUR LINES, THEN SAVE. NOTHING ELSE. ██
+   ████████████████████████████████████████████████████████████████
+
+   1. SUPABASE_URL / SUPABASE_KEY
+      Required for a group. Get them from supabase.com:
+        · create a free account and a new project
+        · SQL Editor -> New query -> paste the block below -> Run
+        · Settings -> API Keys -> copy the "Publishable key" (sb_publishable_...)
+          Older projects show this as the "anon public" key instead — either works.
+          NEVER use the Secret key here. This file is readable by anyone.
+
+          create table academy_state (
+            id text primary key,
+            data jsonb,
+            updated_at timestamptz default now()
+          );
+          alter table academy_state enable row level security;
+          create policy "academy all" on academy_state
+            for all using (true) with check (true);
+
+      Leave them empty and the app still runs, but only on this one
+      browser — see the amber banner at the top of the page.
+
+   2. EMPLOYEE_CODE — the instructor password. Change it.
+
+   After saving, open the page, log in on the Employee tab and press
+   "Test connection". It will tell you exactly what is wrong if
+   anything is.
+   ================================================================ */
+const SUPABASE_URL   = 'https://paiwgudospzlavfqaked.supabase.co';
+const SUPABASE_KEY   = 'sb_publishable_tUMoKkv9KEouAKvZxAzq3Q_w9sOJ5BF';
+const EMPLOYEE_CODE  = 'SUKHADA-L1-2026';
+
+/* ================================================================
+   STORAGE  (v2 — sharded, collision-safe)
+   ----------------------------------------------------------------
+   v1 kept EVERYTHING in one JSON blob and rewrote the whole thing on
+   every submission. With a class of 45 that meant two people finishing
+   an exercise at the same moment silently overwrote each other.
+
+   v2 gives every participant their own row:
+       p:<key>   ->  the participant record   (written once, at creation)
+       a:<key>   ->  that person's attempts   (written only by them)
+   Nobody ever writes a row that belongs to somebody else, so concurrent
+   submissions cannot collide no matter how many people are practising.
+   ================================================================ */
+const KEY_PREFIX     = 'runbook-academy-v2';
+
+const SUPABASE_TABLE = 'academy_state';
+const useSupabase    = !!(SUPABASE_URL && SUPABASE_KEY);
+
+const P_PREFIX = 'p:';
+const A_PREFIX = 'a:';
+const H_PREFIX = 'h:';   // hackathon attempts, one row per participant
+
+/* Supabase has two key formats in circulation:
+     legacy  'eyJ...'            — a JWT, valid on both headers
+     new     'sb_publishable_...' — NOT a JWT. Sending it as a Bearer token
+                                    makes anything that tries to parse it as
+                                    a JWT reject the request.
+   So the Bearer header is only added for legacy keys. */
+const isLegacyJwtKey = /^eyJ/.test(SUPABASE_KEY || '');
+
+function sbHeaders(extra){
+  const h = { apikey: SUPABASE_KEY, 'Content-Type': 'application/json' };
+  if(isLegacyJwtKey) h.Authorization = `Bearer ${SUPABASE_KEY}`;
+  return Object.assign(h, extra || {});
+}
+
+/* ---- single-row primitives ---- */
+async function rowGet(id){
+  if(useSupabase){
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/${SUPABASE_TABLE}?id=eq.${encodeURIComponent(id)}&select=data`,
+      { headers: sbHeaders() }
+    );
+    if(!res.ok) throw new Error('read failed: '+res.status);
+    const rows = await res.json();
+    return rows[0] ? rows[0].data : null;
+  }
+  const raw = localStorage.getItem(`${KEY_PREFIX}:${id}`);
+  return raw ? JSON.parse(raw) : null;
+}
+
+async function rowPut(id, data){
+  if(useSupabase){
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/${SUPABASE_TABLE}?on_conflict=id`,
+      { method:'POST',
+        headers: sbHeaders({ Prefer:'resolution=merge-duplicates,return=minimal' }),
+        body: JSON.stringify([{ id, data, updated_at:new Date().toISOString() }]) }
+    );
+    if(!res.ok) throw new Error('write failed: '+res.status);
+    return true;
+  }
+  localStorage.setItem(`${KEY_PREFIX}:${id}`, JSON.stringify(data));
+  return true;
+}
+
+async function rowDelete(id){
+  if(useSupabase){
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/${SUPABASE_TABLE}?id=eq.${encodeURIComponent(id)}`,
+      { method:'DELETE', headers: sbHeaders() }
+    );
+    if(!res.ok) throw new Error('delete failed: '+res.status);
+    return true;
+  }
+  localStorage.removeItem(`${KEY_PREFIX}:${id}`);
+  return true;
+}
+
+async function rowList(prefix){
+  if(useSupabase){
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/${SUPABASE_TABLE}?id=like.${encodeURIComponent(prefix + '*')}&select=id,data`,
+      { headers: sbHeaders() }
+    );
+    if(!res.ok) throw new Error('list failed: '+res.status);
+    const rows = await res.json();
+    const out = {};
+    rows.forEach(r => { out[r.id.slice(prefix.length)] = r.data; });
+    return out;
+  }
+  const out = {};
+  const full = `${KEY_PREFIX}:${prefix}`;
+  for(let i=0; i<localStorage.length; i++){
+    const k = localStorage.key(i);
+    if(k && k.startsWith(full)){
+      try{ out[k.slice(full.length)] = JSON.parse(localStorage.getItem(k)); }catch(e){}
+    }
+  }
+  return out;
+}
+
+/* ---- domain API ---- */
+const Store = {
+  async listParticipants(){
+    try{ return await rowList(P_PREFIX); }
+    catch(e){ console.error(e); showToast('Could not load the roster — check your connection'); return {}; }
+  },
+  async getParticipant(key){
+    try{ return await rowGet(P_PREFIX + key); }
+    catch(e){ console.error(e); return null; }
+  },
+  async putParticipant(key, rec){
+    try{ await rowPut(P_PREFIX + key, rec); return true; }
+    catch(e){ console.error(e); return false; }
+  },
+  async removeParticipant(key){
+    try{ await rowDelete(P_PREFIX + key); await rowDelete(A_PREFIX + key); await rowDelete(H_PREFIX + key); return true; }
+    catch(e){ console.error(e); return false; }
+  },
+  async getAttempts(key){
+    try{ const r = await rowGet(A_PREFIX + key); return (r && r.items) ? r.items : []; }
+    catch(e){ console.error(e); return []; }
+  },
+  async listAllAttempts(){
+    try{
+      const rows = await rowList(A_PREFIX);
+      const out = {};
+      Object.keys(rows).forEach(k => { out[k] = (rows[k] && rows[k].items) ? rows[k].items : []; });
+      return out;
+    }catch(e){ console.error(e); return {}; }
+  },
+  /* Append is scoped to one participant's own row, so two different
+     participants can never clobber one another. The re-read + dedupe
+     covers the only remaining case: the same person with two tabs open. */
+  async appendAttempt(key, attempt){
+    try{
+      const existing = await this.getAttempts(key);
+      const seen = new Set(existing.map(a => a.ts + '|' + a.scenarioId));
+      if(!seen.has(attempt.ts + '|' + attempt.scenarioId)) existing.push(attempt);
+      await rowPut(A_PREFIX + key, { items: existing });
+      return true;
+    }catch(e){ console.error(e); return false; }
+  },
+
+  /* ---- hackathon attempts (h:<key>) ----
+     Kept in their own namespace so normal practice statistics are
+     completely unaffected, and so an attempt record carrying the full
+     participant response plus scoring breakdown never bloats p: or a:. */
+  async getHackathonAttempts(key){
+    try{ const r = await rowGet(H_PREFIX + key); return (r && r.attempts) ? r.attempts : []; }
+    catch(e){ console.error(e); return []; }
+  },
+  async listAllHackathonAttempts(){
+    try{
+      const rows = await rowList(H_PREFIX);
+      const out = {};
+      Object.keys(rows).forEach(k => { out[k] = (rows[k] && rows[k].attempts) ? rows[k].attempts : []; });
+      return out;
+    }catch(e){ console.error(e); return {}; }
+  },
+  /* Re-reads before writing so a double submit (two tabs, or a refresh
+     mid-write) cannot create a second attempt row. */
+  async appendHackathonAttempt(key, attempt){
+    try{
+      const existing = await this.getHackathonAttempts(key);
+      if(existing.length > 0) return true;          // one submission per participant
+      existing.push(attempt);
+      await rowPut(H_PREFIX + key, { attempts: existing });
+      return true;
+    }catch(e){ console.error(e); return false; }
+  }
+};
+
+/* ================================================================
+   CONNECTION SELF-TEST
+   Runs a real read + write + delete against the configured project and
+   translates whatever comes back into plain language.
+   ================================================================ */
+async function testConnection(){
+  const out = [];
+  const fail = (msg, fix) => ({ok:false, msg, fix});
+  const pass = (msg) => ({ok:true, msg});
+
+  if(!SUPABASE_URL || !SUPABASE_KEY){
+    return [fail('No Supabase details entered.',
+      'Open index.html in a text editor and fill in SUPABASE_URL and SUPABASE_KEY in the settings block at the top of the <script> section.')];
+  }
+  if(!/^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/.test(SUPABASE_URL.trim())){
+    out.push(fail('The Project URL looks wrong: ' + SUPABASE_URL,
+      'It should look like https://abcdefghijkl.supabase.co — no trailing path, no /rest/v1 on the end.'));
+  }
+  if(/^sb_secret_/.test(SUPABASE_KEY.trim())){
+    return [fail('STOP — that is a SECRET key, and this file is public.',
+      'sb_secret_ keys bypass every security rule and must never go in a web page. Go to Settings -> API Keys, rotate that key immediately, then copy the "Publishable key" instead (it starts sb_publishable_).')];
+  }
+  if(/service_role/.test(SUPABASE_KEY)){
+    return [fail('STOP — that looks like the service_role key.',
+      'It bypasses all security and must never go in a web page. Rotate it, then use the anon / publishable key instead.')];
+  }
+  if(!/^(eyJ|sb_publishable_)/.test(SUPABASE_KEY.trim())){
+    out.push(fail('That does not look like a Supabase key.',
+      'It should start with "sb_publishable_" (new format) or "eyJ" (legacy anon key). Copy it from Settings -> API Keys.'));
+  }
+  if(SUPABASE_KEY.length < 40){
+    out.push(fail('The key looks too short — it may have been truncated.',
+      'Copy the full Publishable key from Settings -> API Keys using the copy button, not by selecting the shortened text on screen.'));
+  }
+  if(out.length) return out;
+
+  const testId = '__conntest__' + Date.now();
+
+  // --- READ ---
+  try{
+    const res = await fetch(
+      `${SUPABASE_URL.replace(/\/$/,'')}/rest/v1/${SUPABASE_TABLE}?select=id&limit=1`,
+      { headers: sbHeaders() });
+    if(res.status === 401 || res.status === 403){
+      return [fail('Rejected the key (HTTP ' + res.status + ').',
+        'Either the anon key is wrong, or row level security is blocking access. Re-run the "create policy" line from the setup SQL.')];
+    }
+    if(res.status === 404){
+      return [fail('Table "' + SUPABASE_TABLE + '" not found (HTTP 404).',
+        'Run the create table SQL from the settings comment in the Supabase SQL Editor.')];
+    }
+    if(!res.ok){
+      return [fail('Read failed with HTTP ' + res.status + '.', 'Check the Supabase dashboard — the project may be paused.')];
+    }
+    out.push(pass('Read from the database — OK'));
+  }catch(e){
+    return [fail('Could not reach the project at all.',
+      'Check the URL is right and the project is not paused. If it is paused, open the Supabase dashboard and press Restore.')];
+  }
+
+  // --- WRITE ---
+  try{
+    await rowPut(testId, {probe:true});
+    out.push(pass('Write to the database — OK'));
+  }catch(e){
+    out.push(fail('Write was refused.',
+      'Reads work but writes do not — the row level security policy is read-only. Re-run the "create policy ... with check (true)" line.'));
+    return out;
+  }
+
+  // --- READ BACK ---
+  try{
+    const back = await rowGet(testId);
+    out.push(back && back.probe ? pass('Read the test row back — OK')
+                                : fail('Wrote a row but could not read it back.', 'Check the RLS select policy.'));
+  }catch(e){
+    out.push(fail('Could not read the test row back.', 'Check the RLS select policy.'));
+  }
+
+  // --- CLEANUP ---
+  try{
+    await rowDelete(testId);
+    out.push(pass('Cleaned up the test row — OK'));
+  }catch(e){
+    out.push(fail('Could not delete the test row.',
+      'Harmless for training use — it just means the Remove button on the roster will not work. Add a delete policy if you want it.'));
+  }
+  return out;
+}
+
+async function runConnectionTest(){
+  const btn = document.getElementById('testConnBtn');
+  const box = document.getElementById('connResult');
+  btn.disabled = true; btn.textContent = 'Testing…';
+  box.style.display = 'block';
+  box.innerHTML = '<div class="load-note">Running read / write / delete against your project…</div>';
+  const results = await testConnection();
+  btn.disabled = false; btn.textContent = 'Test connection';
+  const allOk = results.every(r => r.ok);
+  box.className = 'conn-result ' + (allOk ? 'ok' : 'bad');
+  box.innerHTML = '';
+  const head = el('div','cr-head', allOk
+    ? '✅ Connected. Logins and scores will be shared across every device.'
+    : '❌ Not connected — participants will not be able to log in from their own machines.');
+  box.appendChild(head);
+  results.forEach(r=>{
+    const line = el('div','cr-line ' + (r.ok?'ok':'bad'));
+    line.innerHTML = `<span class="cr-ico">${r.ok?'✓':'✗'}</span><div><div>${escapeHtml(r.msg)}</div>` +
+      (r.fix ? `<div class="cr-fix">${escapeHtml(r.fix)}</div>` : '') + '</div>';
+    box.appendChild(line);
+  });
+}
+
+function genPin(){ return String(Math.floor(1000 + Math.random()*9000)); }
+
+/* PIN uniqueness guard — v1 generated blind, which gave roughly a 1-in-10
+   chance of a duplicate PIN somewhere in a cohort of 45. */
+function genUniquePin(taken){
+  for(let i=0; i<400; i++){
+    const p = genPin();
+    if(!taken.has(p)) return p;
+  }
+  for(let i=0; i<400; i++){
+    const p = String(Math.floor(100000 + Math.random()*900000));
+    if(!taken.has(p)) return p;
+  }
+  return genPin();
+}
+
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(showToast._h);
+  showToast._h = setTimeout(()=>t.classList.remove('show'), 2200);
+}
+
+/* ================================================================
+   SESSION / VIEW SWITCHING
+   ================================================================ */
+let session = null; // {role:'employee'|'participant', name, key}
+
+function el(tag, cls, html){
+  const e = document.createElement(tag);
+  if(cls) e.className = cls;
+  if(html!==undefined) e.innerHTML = html;
+  return e;
+}
+
+function showScreen(which){
+  document.getElementById('loginScreen').style.display = which==='login' ? 'block' : 'none';
+  document.getElementById('employeeScreen').style.display = which==='employee' ? 'block' : 'none';
+  document.getElementById('participantScreen').style.display = which==='participant' ? 'block' : 'none';
+  document.getElementById('hackathonScreen').style.display = which==='hackathon' ? 'block' : 'none';
+}
+
+function renderWhoBox(){
+  const box = document.getElementById('whoBox');
+  box.innerHTML = '';
+  if(!session){ return; }
+  const pill = el('span', `role-pill ${session.role}`, session.role);
+  const name = el('span', '', `<b>${escapeHtml(session.name)}</b>`);
+  const logout = el('button', 'btn small', 'Log out');
+  logout.addEventListener('click', doLogout);
+  box.appendChild(pill);
+  box.appendChild(name);
+  box.appendChild(logout);
+}
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function doLogout(){
+  session = null;
+  hackCurrent = null; hackSlots = []; hackSubmitted = false;
+  activeTrayId = 'tray';
+  renderWhoBox();
+  document.getElementById('participantError').classList.remove('show');
+  document.getElementById('employeeError').classList.remove('show');
+  document.getElementById('pName').value = '';
+  document.getElementById('pPin').value = '';
+  document.getElementById('eName').value = '';
+  document.getElementById('eCode').value = '';
+  showScreen('login');
+}
+
+/* ---- login tabs ---- */
+document.getElementById('tabParticipantBtn').addEventListener('click', ()=>{
+  document.getElementById('tabParticipantBtn').classList.add('active');
+  document.getElementById('tabEmployeeBtn').classList.remove('active');
+  document.getElementById('participantPanel').classList.add('active');
+  document.getElementById('employeePanel').classList.remove('active');
+});
+document.getElementById('tabEmployeeBtn').addEventListener('click', ()=>{
+  document.getElementById('tabEmployeeBtn').classList.add('active');
+  document.getElementById('tabParticipantBtn').classList.remove('active');
+  document.getElementById('employeePanel').classList.add('active');
+  document.getElementById('participantPanel').classList.remove('active');
+});
+
+/* ---- participant login ---- */
+document.getElementById('participantLoginBtn').addEventListener('click', participantLogin);
+document.getElementById('pPin').addEventListener('keydown', e=>{ if(e.key==='Enter') participantLogin(); });
+document.getElementById('pName').addEventListener('keydown', e=>{ if(e.key==='Enter') participantLogin(); });
+
+async function participantLogin(){
+  const nameEl = document.getElementById('pName');
+  const pinEl = document.getElementById('pPin');
+  const errEl = document.getElementById('participantError');
+  errEl.classList.remove('show');
+  const name = nameEl.value.trim();
+  const pin = pinEl.value.trim();
+  if(!name || !pin){
+    errEl.textContent = 'Enter both your name and PIN.';
+    errEl.classList.add('show');
+    return;
+  }
+  const btn = document.getElementById('participantLoginBtn');
+  btn.disabled = true; btn.textContent = 'Checking…';
+  const all = await Store.listParticipants();
+  btn.disabled = false; btn.textContent = 'Log In & Start Practicing';
+
+  // accept either the participant's name or their employee ID
+  const needle = normKey(name);
+  let key = null;
+  Object.keys(all).forEach(k=>{
+    const r = all[k];
+    if(!r) return;
+    if(k === needle || normKey(r.name) === needle || (r.empId && normKey(r.empId) === needle)) key = k;
+  });
+  const rec = key ? all[key] : null;
+
+  if(rec && String(rec.pin) === pin){
+    /* Mode is decided here, once, from the stored assignment plus whether
+       an attempt already exists. Because a page refresh returns to this
+       login screen, the decision is re-evaluated every time — there is no
+       stale session that could be used to slip back into practice mode. */
+    const hackAttempts = await Store.getHackathonAttempts(key);
+    const mode = getParticipantMode(rec, hackAttempts, new Date());
+    session = {role:'participant', name: rec.name, key, mode, participant: rec};
+    renderWhoBox();
+    if(mode === 'hackathon'){
+      await enterHackathon();
+    } else {
+      showScreen('participant');
+      enterParticipant();
+    }
+  } else {
+    errEl.textContent = 'Invalid name or PIN. Ask your instructor for your login.';
+    errEl.classList.add('show');
+  }
+}
+
+function normKey(v){ return String(v||'').trim().toLowerCase().replace(/\s+/g,' '); }
+
+/* ---- employee login ---- */
+document.getElementById('employeeLoginBtn').addEventListener('click', employeeLogin);
+document.getElementById('eCode').addEventListener('keydown', e=>{ if(e.key==='Enter') employeeLogin(); });
+
+function employeeLogin(){
+  const nameEl = document.getElementById('eName');
+  const codeEl = document.getElementById('eCode');
+  const errEl = document.getElementById('employeeError');
+  errEl.classList.remove('show');
+  const name = nameEl.value.trim();
+  const code = codeEl.value.trim();
+  if(code.toUpperCase() !== EMPLOYEE_CODE.toUpperCase()){
+    errEl.textContent = 'Incorrect access code.';
+    errEl.classList.add('show');
+    return;
+  }
+  session = {role:'employee', name: name || 'Employee'};
+  renderWhoBox();
+  showScreen('employee');
+  enterEmployee();
+}
+
+/* ================================================================
+   EMPLOYEE DASHBOARD
+   ================================================================ */
+document.getElementById('createPBtn').addEventListener('click', createParticipant);
+document.getElementById('newPName').addEventListener('keydown', e=>{ if(e.key==='Enter') createParticipant(); });
+document.getElementById('newPId').addEventListener('keydown', e=>{ if(e.key==='Enter') createParticipant(); });
+document.getElementById('testConnBtn').addEventListener('click', runConnectionTest);
+
+/* Makes the storage mode impossible to miss. In local mode the instructor's
+   roster lives only in the instructor's browser, so 45 people cannot share it. */
+function renderStorageBanner(){
+  const b = document.getElementById('modeBanner');
+  if(!b) return;
+  b.style.display = 'flex';
+  if(useSupabase){
+    b.className = 'mode-banner ok';
+    b.innerHTML = `<span class="mb-ico">🟢</span><div><b>Shared mode.</b> Logins and scores are stored in the shared database,
+      so participants can sign in from any device and the instructor dashboard sees everyone.</div>`;
+  } else {
+    b.className = 'mode-banner';
+    b.innerHTML = `<span class="mb-ico">⚠️</span><div><b>Local mode — single device only.</b>
+      Logins and scores are saved in <i>this browser</i> and nowhere else. Participants created here
+      <b>cannot log in from their own machines</b>, and the instructor dashboard will not see their work.
+      To run this for a group, fill in <code>SUPABASE_URL</code> and <code>SUPABASE_KEY</code> near the top of the
+      &lt;script&gt; block — setup instructions are in the comment right above them.</div>`;
+  }
+}
+
+async function enterEmployee(){
+  document.getElementById('credCard').classList.remove('show');
+  document.getElementById('newPName').value = '';
+  await refreshRoster();
+}
+
+async function createParticipant(){
+  const input  = document.getElementById('newPName');
+  const idInput = document.getElementById('newPId');
+  const name   = input.value.trim();
+  const empId  = idInput ? idInput.value.trim() : '';
+  if(!name){ showToast('Enter a participant name first'); return; }
+
+  const btn = document.getElementById('createPBtn');
+  btn.disabled = true; btn.textContent = 'Creating…';
+
+  const all = await Store.listParticipants();
+  // identity key: employee ID when supplied, otherwise the normalised name
+  const key = empId ? 'id-' + normKey(empId) : normKey(name);
+
+  let pin;
+  if(all[key]){
+    pin = all[key].pin;
+    btn.disabled = false; btn.textContent = 'Generate Login';
+    showToast(`${all[key].name} already has a login — showing existing credentials`);
+  } else {
+    // warn on a same-name clash so two trainees never share one record
+    const clash = Object.keys(all).find(k => normKey(all[k].name) === normKey(name));
+    if(clash && !empId){
+      btn.disabled = false; btn.textContent = 'Generate Login';
+      showToast(`Another "${name}" already exists — add an employee ID to keep them separate`);
+      if(idInput) idInput.focus();
+      return;
+    }
+    const taken = new Set(Object.values(all).map(r => String(r.pin)));
+    pin = genUniquePin(taken);
+    const ok = await Store.putParticipant(key, {
+      name, empId: empId || null, pin,
+      createdAt: Date.now(),
+      createdBy: session ? session.name : ''
+    });
+    btn.disabled = false; btn.textContent = 'Generate Login';
+    if(!ok){ showToast('Could not save — try again'); return; }
+  }
+
+  input.value = '';
+  if(idInput) idInput.value = '';
+  document.getElementById('credName').textContent = name + (empId ? ` (${empId})` : '');
+  document.getElementById('credPin').textContent = pin;
+  document.getElementById('credCard').classList.add('show');
+  await refreshRoster();
+}
+
+document.getElementById('copyCredBtn').addEventListener('click', async ()=>{
+  const name = document.getElementById('credName').textContent;
+  const pin = document.getElementById('credPin').textContent;
+  const text = `Name: ${name}\nPIN: ${pin}`;
+  try{
+    await navigator.clipboard.writeText(text);
+    showToast('Copied to clipboard');
+  }catch(e){
+    showToast('Copy failed — copy manually');
+  }
+});
+
+function accuracyClass(pct){
+  if(pct === null) return '';
+  if(pct >= 80) return 'acc-good';
+  if(pct >= 50) return 'acc-mid';
+  return 'acc-low';
+}
+
+async function refreshRoster(){
+  const wrap = document.getElementById('rosterWrap');
+  const statRow = document.getElementById('employeeStatRow');
+  wrap.innerHTML = '<div class="load-note">Loading roster…</div>';
+  const participants = await Store.listParticipants();
+  const attemptsByKey = await Store.listAllAttempts();
+  const hackByKey = await Store.listAllHackathonAttempts();
+  const data = { participants, attempts: attemptsByKey, hack: hackByKey };
+  const nowTs = new Date();
+  const names = Object.keys(data.participants).sort((a,b)=> data.participants[a].name.localeCompare(data.participants[b].name));
+
+  let totalAttempts = 0, totalSolved = 0;
+  names.forEach(k=>{
+    const arr = data.attempts[k] || [];
+    totalAttempts += arr.length;
+    totalSolved += arr.filter(a=>a.allCorrect).length;
+  });
+  statRow.innerHTML = '';
+  statRow.appendChild(el('div','stat-chip', `Participants <b>${names.length}</b>`));
+  statRow.appendChild(el('div','stat-chip', `Total attempts <b>${totalAttempts}</b>`));
+  statRow.appendChild(el('div','stat-chip', `Perfect runs <b>${totalSolved}</b>`));
+  statRow.appendChild(el('div','stat-chip', `Scenarios available <b>${PROBLEMS.length}</b>`));
+  const hackActive = names.filter(k=> getHackathonState(data.participants[k], data.hack[k]||[], nowTs)==='ACTIVE').length;
+  const hackDone   = names.filter(k=> getHackathonState(data.participants[k], data.hack[k]||[], nowTs)==='COMPLETED').length;
+  statRow.appendChild(el('div','stat-chip', `Hackathon active <b>${hackActive}</b>`));
+  statRow.appendChild(el('div','stat-chip', `Hackathon completed <b>${hackDone}</b>`));
+
+  if(names.length === 0){
+    wrap.innerHTML = '<div class="empty-note">No participants yet — create a login above to get started.</div>';
+    return;
+  }
+
+  const table = el('table','roster');
+  table.innerHTML = `<thead><tr>
+    <th>Name</th><th>PIN</th><th>Attempts</th><th>Solved</th><th>Accuracy</th><th>Last attempt</th><th>Hackathon</th><th></th>
+  </tr></thead>`;
+  const tbody = el('tbody');
+  names.forEach(k=>{
+    const p = data.participants[k];
+    const arr = (data.attempts[k] || []).slice().sort((a,b)=>a.ts-b.ts);
+    const attempts = arr.length;
+    const solved = arr.filter(a=>a.allCorrect).length;
+    const acc = attempts ? Math.round(solved/attempts*100) : null;
+    const last = attempts ? new Date(arr[arr.length-1].ts).toLocaleString() : '—';
+    const hArr  = data.hack[k] || [];
+    const hLast = hArr.length ? hArr[hArr.length-1] : null;
+    const hState = getHackathonState(p, hArr, nowTs);
+
+    const row = el('tr','roster-row');
+    row.innerHTML = `
+      <td class="name-cell">${escapeHtml(p.name)}${p.empId ? ` <span style="color:var(--text-faint);font-weight:400;">· ${escapeHtml(p.empId)}</span>` : ''}</td>
+      <td class="pin-cell">${escapeHtml(p.pin)}</td>
+      <td>${attempts}</td>
+      <td>${solved}</td>
+      <td class="${accuracyClass(acc)}">${acc===null ? '—' : acc+'%'}</td>
+      <td>${last}</td>
+      <td class="hack-cell">${hackBadge(hState, hLast ? hLast.percentage : null)}
+        <button class="btn small ghost hack-cfg-btn" data-cfg="${escapeHtml(k)}">${hState==='NOT_ASSIGNED' ? 'Assign' : 'Edit'}</button></td>
+      <td class="row-actions"><button class="btn small danger" data-del="${escapeHtml(k)}">Remove</button></td>
+    `;
+    tbody.appendChild(row);
+
+    const detail = el('tr','detail-row');
+    detail.style.display = 'none';
+    const detailCell = el('td');
+    detailCell.colSpan = 8;
+    const inner = el('div','detail-inner');
+    /* Normal practice attempts and Hackathon results are shown in clearly
+       separated blocks so the two are never conflated. */
+    inner.appendChild(el('div','detail-head','Normal practice'));
+    if(arr.length === 0){
+      inner.appendChild(el('div','empty-note','No practice attempts yet.'));
+    } else {
+      arr.slice().reverse().forEach(a=>{
+        const line = el('div','attempt-line');
+        line.innerHTML = `<span><b>${escapeHtml(a.scenarioTitle)}</b> (${escapeHtml(a.sev)}) — ${new Date(a.ts).toLocaleString()}</span>
+          <span class="${a.allCorrect?'pass':'fail'}">${a.correctCount}/${a.total} correct (${a.accuracy}%)${a.allCorrect ? ' ✓' : ''}</span>`;
+        inner.appendChild(line);
+      });
+    }
+    inner.appendChild(el('div','detail-head','Hackathon'));
+    if(!hLast){
+      const hp = p.hackathon;
+      inner.appendChild(el('div','empty-note', hp && hp.enabled
+        ? `Assigned (${hState.toLowerCase()}) — ${fmtHackDate(hp.fromDate)} to ${fmtHackDate(hp.toDate)}. No submission yet.`
+        : 'Not assigned.'));
+    } else {
+      inner.appendChild(renderHackathonDetail(hLast));
+    }
+    detailCell.appendChild(inner);
+    detail.appendChild(detailCell);
+    tbody.appendChild(detail);
+
+    row.addEventListener('click', (e)=>{
+      if(e.target.closest('button')) return;
+      detail.style.display = detail.style.display === 'none' ? 'table-row' : 'none';
+    });
+  });
+  table.appendChild(tbody);
+  wrap.innerHTML = '';
+  wrap.appendChild(table);
+
+  wrap.querySelectorAll('[data-cfg]').forEach(btn=>{
+    btn.addEventListener('click', (e)=>{
+      e.stopPropagation();                       // do not toggle the detail row
+      const key = btn.getAttribute('data-cfg');
+      openHackathonConfig(key, data.participants[key]);
+    });
+  });
+
+  wrap.querySelectorAll('[data-del]').forEach(btn=>{
+    btn.addEventListener('click', async (e)=>{
+      e.stopPropagation();
+      const key = btn.getAttribute('data-del');
+      const p = data.participants[key];
+      if(!confirm(`Remove ${p.name}'s login and attempt history?`)) return;
+      await Store.removeParticipant(key);
+      showToast(`${p.name} removed`);
+      await refreshRoster();
+    });
+  });
+}
+
+/* ================================================================
+   PARTICIPANT DEMO (runbook assembly game)
+   ================================================================ */
+const RAW_PROBLEMS = [
+
+// ===== STORAGE & CAPACITY (2 scenarios) =====
+
+{id:'disk-util', title:'[P1] Disk Utilization Issue - INC000101', difficulty:'beginner', 
+ sev:'P1', sla:'3h SLA', trigger:'Monitoring Alert',
+ scope:'Production application server disk utilization reached 95%, causing low-space alerts and risk of application interruption.',
+ ticket:'INC000101', client:'Client A', team:'Windows Operations', category:'Storage / Capacity', status:'Resolved',
+ pre:[
+   {label:'Log & Classify', desc:'Alert logged, priority set to P1, SLA clock starts.'},
+   {label:'Initial Assessment', desc:'Identify current disk usage; check for large/stale files; review recent changes.'}
+ ],
+ decision:'Can we free space quickly using approved cleanup, or do we need to extend the volume?',
+ resolve:[
+   {label:'Analyze', desc:'Find large/stale files using disk analysis tools; check log rotation and temp directories.'},
+   {label:'Clean Up Safely', desc:'Clear approved temporary data; move logs to archive if permitted; confirm freed space.'},
+   {label:'Extend If Needed', desc:'Extend virtual disk and OS partition/volume if insufficient cleanup space; update monitoring.'},
+   {label:'Validate', desc:'Confirm disk is back to safe levels (< 85%); monitoring alert cleared; disk usage trending normal.'}
+ ],
+ escalate:[
+   {label:'Storage Assessment', desc:'Contact Storage team for capacity planning if insufficient space available or cleanup not possible.'},
+   {label:'Emergency Expansion', desc:'Request emergency storage expansion if cleanup insufficient and extension not possible.'}
+ ]},
+
+{id:'disk-increase', title:'[P2] Disk Size Increase - INC000111', difficulty:'intermediate',
+ sev:'P2', sla:'2h SLA', trigger:'Change Request',
+ scope:'Increase the data volume by 200 GB because projected growth will exhaust available space.',
+ ticket:'INC000111', client:'Client K', team:'Windows Operations', category:'Storage / Capacity', status:'Resolved',
+ pre:[
+   {label:'Verify CR & Scope', desc:'Confirm change request/approval and the exact new size required.'},
+   {label:'Readiness Checks', desc:'Check backend storage capacity available; confirm current backup exists; verify change window approved.'}
+ ],
+ decision:'Is there enough backend storage capacity for the 200GB increase?',
+ resolve:[
+   {label:'Execute Change', desc:'Extend virtual disk on storage/hypervisor platform to new size.'},
+   {label:'Extend Filesystem', desc:'Extend OS partition/filesystem to recognize new space; run filesystem checks.'},
+   {label:'Post-Change Validation', desc:'Verify new capacity reported correctly by OS; update monitoring thresholds; close CR.'}
+ ],
+ escalate:[
+   {label:'Insufficient Capacity', desc:'Escalate to Storage team if backend capacity insufficient for requested expansion.'},
+   {label:'Tech Limitations', desc:'If filesystem doesn\'t support online expansion, escalate for alternative approaches.'}
+ ]},
+
+// ===== PERFORMANCE (1 scenario) =====
+
+{id:'cpu-util', title:'[P1] CPU Utilization Issue - INC000102', difficulty:'intermediate',
+ sev:'P1', sla:'4h SLA', trigger:'Monitoring Alert',
+ scope:'CPU utilization remains above 90% on the order-processing server during business hours.',
+ ticket:'INC000102', client:'Client B', team:'Windows Operations', category:'Performance', status:'In Progress',
+ pre:[
+   {label:'Log & Classify', desc:'Ticket logged, priority set to P1 (business-critical impact on order processing).'},
+   {label:'Initial Diagnosis', desc:'Identify top CPU-consuming processes; check recent jobs/deployments; review CPU baseline trends.'}
+ ],
+ decision:'Is there a single identifiable process causing the spike, or is load systemic?',
+ resolve:[
+   {label:'Analyze Processes', desc:'Use monitoring/performance tools to identify top CPU consumers; check Task Manager or perfmon.'},
+   {label:'Review Changes', desc:'Check for recent deployments, job executions, scheduled tasks, or configuration changes.'},
+   {label:'Remediate', desc:'Stop/restart offending process (with approval); adjust job scheduling; tune workload if possible.'},
+   {label:'Validate', desc:'Monitor CPU for 15+ minutes post-remediation to confirm stabilization and normal operation.'}
+ ],
+ escalate:[
+   {label:'Capacity Review', desc:'If systemic load increase, escalate to management for capacity planning/resource allocation review.'},
+   {label:'Workload Analysis', desc:'Request L2 analysis if root cause complex or unclear; may require code optimization or workload rebalancing.'}
+ ]},
+
+// ===== IDENTITY & ACCESS (2 scenarios) =====
+
+{id:'pwd-expiry', title:'[P2] User Password Expiry - INC000103', difficulty:'beginner',
+ sev:'P2', sla:'30m SLA', trigger:'User Request',
+ scope:'User cannot sign in because the domain password has expired.',
+ ticket:'INC000103', client:'Client C', team:'Service Desk', category:'Identity & Access', status:'Resolved',
+ pre:[
+   {label:'Verify Identity', desc:'Confirm requester identity per company access verification policy before touching account.'},
+   {label:'Check Account State', desc:'Verify account status in Active Directory; confirm password policy; check account flags.'}
+ ],
+ decision:'Is self-service password reset enabled and available for this user?',
+ resolve:[
+   {label:'Self-Service Path', desc:'Direct user to self-service password reset portal if available; confirm success.'},
+   {label:'If Portal Unavailable', desc:'Unlock account; instruct user to change password at next login attempt.'},
+   {label:'Confirm Access', desc:'Have user confirm successful login post-reset; document in ticket.'}
+ ],
+ escalate:[
+   {label:'Admin Reset', desc:'For restricted accounts or if self-service fails, perform admin password reset via AD/PowerShell.'},
+   {label:'Escalate to IAM', desc:'For service accounts or recurring issues, escalate to Identity & Access Management for review.'}
+ ]},
+
+{id:'user-creation', title:'[P4] User Creation - INC000104', difficulty:'beginner',
+ sev:'P4', sla:'2h SLA', trigger:'HR / Manager Request',
+ scope:'Create a new user account with approved baseline access for a new project associate.',
+ ticket:'INC000104', client:'Client D', team:'Identity Operations', category:'Identity & Access', status:'Pending Approval',
+ pre:[
+   {label:'Verify Request', desc:'Confirm request comes from authorized channel (HR/Manager) with documented approval.'},
+   {label:'Check Details', desc:'Verify access profile/baseline assigned; confirm no duplicate account exists; check retention requirements.'}
+ ],
+ decision:'Are all approvals and account details complete and verified?',
+ resolve:[
+   {label:'Create Account', desc:'Create new user in Active Directory with correct name, email, and baseline groups.'},
+   {label:'Assign Groups', desc:'Place in correct Organizational Unit; assign to all required baseline groups and teams.'},
+   {label:'Configure Access', desc:'Set forced password change at next login; enable/disable features as per policy.'},
+   {label:'Notify User', desc:'Send onboarding instructions and temporary password via approved secure channel.'}
+ ],
+ escalate:[
+   {label:'Return for Completion', desc:'Return ticket to requester for missing approval, details, or access profile clarification.'},
+   {label:'Complex Access', desc:'Escalate unusual/complex access requests to Identity Operations for special handling.'}
+ ]},
+
+// ===== BACKUP & DISASTER RECOVERY (2 scenarios) =====
+
+{id:'backup-snapshot', title:'[P1] Backup / Snapshot Failure - INC000105', difficulty:'advanced',
+ sev:'P1', sla:'3h SLA', trigger:'Monitoring Alert',
+ scope:'Scheduled snapshot failed for a production database virtual machine.',
+ ticket:'INC000105', client:'Client E', team:'Backup Operations', category:'Backup / Snapshot', status:'In Progress',
+ pre:[
+   {label:'Alert Verification', desc:'Confirm snapshot failure in backup monitoring dashboard; check all related logs.'},
+   {label:'Assess Impact', desc:'Determine recoverability status: when was last successful snapshot? What is RPO?'}
+ ],
+ decision:'Is the backup infrastructure healthy, or is there a critical blocking issue?',
+ resolve:[
+   {label:'Review Job Status', desc:'Check snapshot job logs; identify failure reason (space, locks, connectivity, timeout).'},
+   {label:'Clear Blockers', desc:'Remove stale snapshot locks (if safe/approved); free datastore space; resolve connectivity issues.'},
+   {label:'Retry Snapshot', desc:'Rerun the snapshot job manually with monitoring; confirm completion.'},
+   {label:'Validate Restore Point', desc:'Confirm new snapshot appears in backup catalog; test restore to verify usable.'}
+ ],
+ escalate:[
+   {label:'Infrastructure Issue', desc:'If storage/datastore failure causing snapshots to fail, escalate to Storage/Infrastructure team.'},
+   {label:'Policy Review', desc:'If recurring failures, escalate for backup schedule review, policy changes, or infrastructure upgrade.'}
+ ]},
+
+{id:'disaster-recovery', title:'[P1] Disaster Recovery - Server Restore - INC000112', difficulty:'advanced',
+ sev:'P1', sla:'6h SLA', trigger:'Incident',
+ scope:'Restore a production server from the latest approved recovery point after system file corruption.',
+ ticket:'INC000112', client:'Client L', team:'Backup Operations', category:'Disaster Recovery', status:'In Progress',
+ pre:[
+   {label:'Assess Damage', desc:'Confirm extent of file corruption; identify which files/systems affected; assess data impact.'},
+   {label:'Verify Recovery Point', desc:'Identify latest usable backup/snapshot; confirm point-in-time available and data integrity.'}
+ ],
+ decision:'Is the latest recovery point valid, complete, and safe to restore from?',
+ resolve:[
+   {label:'Confirm Scope', desc:'Define restore scope (full server, specific folders, specific timestamp); plan restore location.'},
+   {label:'Execute Restore', desc:'Perform restore to test/staging environment first if possible; monitor restore progress.'},
+   {label:'Validate Recovery', desc:'Confirm server boots; test critical applications; verify data availability and integrity.'},
+   {label:'Reconcile Data', desc:'Compare restored data with live copies; identify any gaps; verify log completeness.'},
+   {label:'Communication', desc:'Notify stakeholders of recovery completion; document any data limitations or losses.'}
+ ],
+ escalate:[
+   {label:'Recovery Point Invalid', desc:'If all recovery points compromised/invalid, escalate to DR Coordinator for options.'},
+   {label:'Data Loss Imminent', desc:'If unrecoverable data loss identified, escalate to management and prepare stakeholder communication.'}
+ ]},
+
+// ===== SERVER AVAILABILITY (1 scenario) =====
+
+{id:'server-down', title:'[P1] Server Down - Host Unreachable - INC000106', difficulty:'intermediate',
+ sev:'P1', sla:'2h SLA', trigger:'Monitoring Alert',
+ scope:'Production web server is unreachable and monitoring reports the host as down.',
+ ticket:'INC000106', client:'Client F', team:'Windows Operations', category:'Server Availability', status:'Resolved',
+ pre:[
+   {label:'Declare & Classify', desc:'Confirmed unreachable — declared P1, SLA clock starts. Customer-facing production service is down.'},
+   {label:'Blast-Radius Assessment', desc:'Identify dependent services and users affected; check whether other hosts on the same cluster or subnet are impacted.'}
+ ],
+ decision:'Does the host respond on the hypervisor or out-of-band console, or is this a platform-level failure?',
+ resolve:[
+   {label:'Validate the Alert', desc:'Confirm the outage independently — ping, traceroute and port checks from more than one source before acting.'},
+   {label:'Check Host & VM State', desc:'Inspect power state and health on the hypervisor or out-of-band console (iLO/iDRAC); check the switch port.'},
+   {label:'Review Recent Changes', desc:'Check for patching, deployments or configuration changes that coincide with the outage window.'},
+   {label:'Restore via Approved Path', desc:'Restart or recover the guest using the approved recovery procedure; do not force a power action without authorisation.'},
+   {label:'Validate & Monitor', desc:'Confirm the application responds end to end, watch for 15+ minutes for recurrence, and update the ticket.'}
+ ],
+ escalate:[
+   {label:'Platform Escalation', desc:'Engage the virtualisation or platform team if the host itself is down or the guest will not start.'},
+   {label:'Major Incident', desc:'Raise a major incident and notify stakeholders if multiple production services are affected or recovery exceeds SLA.'}
+ ]},
+
+// ===== NETWORK (2 scenarios) =====
+
+{id:'ip-issue', title:'[P1] Network / IP - Address Conflict - INC000113', difficulty:'intermediate',
+ sev:'P1', sla:'2h SLA', trigger:'Monitoring Alert / User Request',
+ scope:'Server has an IP address conflict and intermittently loses network connectivity.',
+ ticket:'INC000113', client:'Client M', team:'Network Operations', category:'Network / IP', status:'Resolved',
+ pre:[
+   {label:'Log & Correlate', desc:'Confirm exact symptom: conflict alert, host unreachable, DNS failures, or intermittent connectivity loss.'},
+   {label:'Scope the Fault', desc:'Check current config (static/DHCP); review DHCP leases/reservations; check DNS records and gateway.'}
+ ],
+ decision:'Is this a DHCP/config-side fix (lease conflict, wrong reservation, stale DNS) or deeper network issue?',
+ resolve:[
+   {label:'Identify Conflict', desc:'Confirm duplicate IP address exists; identify which host owns the conflicting IP.'},
+   {label:'Fix Allocation', desc:'Release DHCP lease (if dynamic); assign unique static/DHCP IP; update DNS A records.'},
+   {label:'Update DNS', desc:'Flush stale DNS records from cache; update/verify DNS entries point to correct IP.'},
+   {label:'Test Connectivity', desc:'Retest ping/connectivity; verify routing; confirm monitoring alert clears.'}
+ ],
+ escalate:[
+   {label:'Network Issue', desc:'If not a simple config fix, escalate to Network Operations for deeper investigation.'},
+   {label:'VLAN/Routing', desc:'If VLAN/subnet/routing issue, escalate to Network team for infrastructure changes.'}
+ ]},
+
+{id:'firewall-port', title:'[P1] Network / Port - Firewall Blocking - INC000118', difficulty:'intermediate',
+ sev:'P1', sla:'3h SLA', trigger:'Incident / User Report',
+ scope:'Application server cannot reach the database because the required network port is blocked.',
+ ticket:'INC000118', client:'Client R', team:'Network Security', category:'Network / Port', status:'In Progress',
+ pre:[
+   {label:'Validate Connectivity', desc:'Confirm source, destination, protocol, and port of blocked traffic; verify business need.'},
+   {label:'Gather Evidence', desc:'Collect traceroute output; review firewall logs; confirm port is actually blocked.'}
+ ],
+ decision:'Is this a firewall rule issue requiring security team update?',
+ resolve:[
+   {label:'Verify Requirement', desc:'Confirm the port is necessary for business function; validate from stakeholder.'},
+   {label:'Gather Firewall Evidence', desc:'Collect firewall logs confirming block; identify specific rule rejecting traffic.'},
+   {label:'Obtain Approval', desc:'Get Network Security team approval for rule change; document business justification.'},
+   {label:'Update Firewall', desc:'Have security team add/update firewall rule to allow required traffic.'},
+   {label:'Test End-to-End', desc:'Verify traffic now flows; confirm application connectivity restored; monitor for issues.'}
+ ],
+ escalate:[
+   {label:'Security Policy Review', desc:'If port change conflicts with security policy, escalate to security team for exception review.'},
+   {label:'Approval Blocked', desc:'If approval authority not responding, escalate to management for decision.'}
+ ]},
+
+// ===== HARDWARE (2 scenarios) =====
+
+{id:'hw-host', title:'[P1] Hardware Host Issue - INC000114', difficulty:'advanced',
+ sev:'P1', sla:'5h SLA', trigger:'Monitoring Alert',
+ scope:'Virtualization host reports a hardware fault and two guest servers are at risk.',
+ ticket:'INC000114', client:'Client N', team:'Compute & Hardware', category:'Hardware / Virtualization', status:'Vendor Engaged',
+ pre:[
+   {label:'Acknowledge Alert', desc:'Alert acknowledged in monitoring; priority set to P1; declare critical incident.'},
+   {label:'Redundancy Check', desc:'Identify the failed component type; check redundancy (RAID, PSU, NIC teaming, cluster HA).'}
+ ],
+ decision:'Is the failed component redundant or hot-swappable without downtime?',
+ resolve:[
+   {label:'Redundant Path', desc:'Hot-swap the failed component (PSU, SSD, NIC) with vendor support if needed.'},
+   {label:'Verify Rebuild', desc:'Confirm RAID rebuild completes cleanly; cluster failover succeeds; no data loss.'},
+   {label:'Validate Stability', desc:'Monitor host for 30+ minutes; confirm no performance degradation; VMs running normally.'}
+ ],
+ escalate:[
+   {label:'Non-Redundant', desc:'Schedule maintenance window for non-redundant component replacement.'},
+   {label:'Workload Evacuation', desc:'Migrate critical VMs off affected host before maintenance window begins.'},
+   {label:'Vendor Engagement', desc:'Engage vendor/on-site support for replacement; coordinate logistics and timing.'}
+ ]},
+
+{id:'battery-issue', title:'[P2] Hardware / Power - Battery Issue - INC000117', difficulty:'intermediate',
+ sev:'P2', sla:'4h SLA', trigger:'Monitoring Alert',
+ scope:'UPS battery health is critical for a network rack and runtime is below the accepted threshold.',
+ ticket:'INC000117', client:'Client Q', team:'Data Center Operations', category:'Hardware / Power', status:'Vendor Engaged',
+ pre:[
+   {label:'Acknowledge Alert', desc:'Battery health alert acknowledged in monitoring; priority set to P3.'},
+   {label:'Assess Redundancy', desc:'Identify battery age, warranty status, current health metrics, and runtime remaining.'}
+ ],
+ decision:'Is a replacement battery available and is risk currently non-critical?',
+ resolve:[
+   {label:'Schedule Replacement', desc:'Plan replacement in agreed maintenance window with facilities and vendor.'},
+   {label:'Engage Vendor', desc:'Contact vendor/on-site team; confirm battery availability and installation timing.'},
+   {label:'Communicate Window', desc:'Notify infrastructure users of planned maintenance; confirm no conflicts.'},
+   {label:'Monitor Performance', desc:'Track battery performance and runtime until replacement completes successfully.'}
+ ],
+ escalate:[
+   {label:'Critical Risk', desc:'Re-prioritize as P1 if UPS runtime drops below minimum acceptable threshold for critical systems.'},
+   {label:'Urgent Replacement', desc:'Schedule emergency/immediate replacement if current runtime insufficient for safety.'}
+ ]},
+
+// ===== CONFIGURATION & CHANGE MANAGEMENT (1 scenario) =====
+
+{id:'config-policy', title:'[P3] Configuration / Policy Update - INC000107', difficulty:'intermediate',
+ sev:'P3', sla:'4h SLA', trigger:'Change Request',
+ scope:'Apply an approved security policy update to the server group after a compliance review.',
+ ticket:'INC000107', client:'Client G', team:'Windows Operations', category:'Configuration / Policy', status:'Scheduled',
+ pre:[
+   {label:'Verify Approval', desc:'Confirm change request is authorized, documented, and in approved change window.'},
+   {label:'Scope Verification', desc:'Identify target server group; confirm scope is accurate; create configuration backup.'}
+ ],
+ decision:'Is the policy deployment tool available and the change window confirmed?',
+ resolve:[
+   {label:'Backup Settings', desc:'Back up current configuration from all target servers before any changes.'},
+   {label:'Deploy Policy', desc:'Apply policy through approved tool (GPO, Ansible, Puppet, etc.) to server group.'},
+   {label:'Validate Apps', desc:'Test affected applications for compatibility and functionality post-deployment.'},
+   {label:'Document Change', desc:'Record deployment details, any exceptions from policy, and validation results.'}
+ ],
+ escalate:[
+   {label:'Compatibility Failure', desc:'If application incompatibility found, escalate to application owner for mitigation.'},
+   {label:'Rollback Plan', desc:'Prepare rollback procedure; be ready to restore from backup if issues surface.'}
+ ]},
+
+// ===== PATCHING (1 scenario) =====
+
+{id:'patching', title:'[P3] Patching - Security Updates - INC000108', difficulty:'intermediate',
+ sev:'P3', sla:'6h SLA', trigger:'Scheduled Change',
+ scope:'Install approved monthly security patches on production application servers.',
+ ticket:'INC000108', client:'Client H', team:'Patch Management', category:'Patching', status:'Scheduled',
+ pre:[
+   {label:'Verify CR & Scope', desc:'Confirm patch window/CR is approved; identify target patch group; review patch notes.'},
+   {label:'Readiness Checks', desc:'Verify backup exists and is usable; check free disk space; confirm no pending reboots.'}
+ ],
+ decision:'Did pre-checks pass - space OK, backup taken, no pending actions?',
+ resolve:[
+   {label:'Execute Change', desc:'Deploy patches in batches (test, staging, production); monitor install progress.'},
+   {label:'Coordinate Reboot', desc:'Perform controlled reboot within approved maintenance window; monitor boot process.'},
+   {label:'Validate Services', desc:'Confirm all services return to normal post-reboot; test critical applications.'},
+   {label:'Update Compliance', desc:'Record patch compliance in audit system; close the change request formally.'}
+ ],
+ escalate:[
+   {label:'Pre-Check Failures', desc:'If blockers found during pre-checks, resolve and reschedule patching.'},
+   {label:'Installation Failure', desc:'If patch installation fails, investigate root cause and prepare rollback if needed.'}
+ ]},
+
+// ===== SERVER LIFECYCLE (2 scenarios) =====
+
+{id:'server-build', title:'[P3] Server Lifecycle - Build New Server - INC000109', difficulty:'advanced',
+ sev:'P3', sla:'8h SLA', trigger:'Change Request',
+ scope:'Build a new Windows server using the approved production baseline.',
+ ticket:'INC000109', client:'Client I', team:'Windows Engineering', category:'Server Lifecycle', status:'In Progress',
+ pre:[
+   {label:'Verify CR', desc:'Confirm change request with capacity and business approvals documented.'},
+   {label:'Prepare Specs', desc:'Confirm compute, storage, network requirements; reserve IP addresses; prepare DNS records.'}
+ ],
+ decision:'Are all infrastructure prerequisites ready and baseline image current?',
+ resolve:[
+   {label:'Provision Resources', desc:'Allocate compute/vCPU, storage/disk, network (vLAN, IP address) resources.'},
+   {label:'Deploy Baseline', desc:'Apply approved OS image and baseline configuration; join to domain.'},
+   {label:'Configure Services', desc:'Install monitoring agents; configure backup; apply local/domain policies.'},
+   {label:'Security & Patches', desc:'Apply latest security patches; configure firewall rules per application requirements.'},
+   {label:'Validation', desc:'Run validation suite; confirm services operational; hand over to requesting team.'}
+ ],
+ escalate:[
+   {label:'Resource Unavailable', desc:'If infrastructure capacity unavailable, escalate to Infrastructure team for prioritization.'},
+   {label:'Build Failure', desc:'Troubleshoot deployment issues; escalate for specialist support if unresolvable.'}
+ ]},
+
+{id:'server-decomm', title:'[P4] Server Lifecycle - Decommission - INC000110', difficulty:'intermediate',
+ sev:'P4', sla:'6h SLA', trigger:'Change Request',
+ scope:'Decommission a retired application server after business and data-owner approval.',
+ ticket:'INC000110', client:'Client J', team:'Windows Engineering', category:'Server Lifecycle', status:'Pending Approval',
+ pre:[
+   {label:'Confirm Approvals', desc:'Verify business owner and data owner approvals are documented and complete.'},
+   {label:'Assess Dependencies', desc:'Confirm no active services or dependencies on this server; check for hidden integrations.'}
+ ],
+ decision:'Have all data retention and archival requirements been met and verified?',
+ resolve:[
+   {label:'Archive Data', desc:'Back up and archive required data per compliance/retention policies.'},
+   {label:'Remove Integrations', desc:'Remove from monitoring systems, backup jobs, load balancers, DNS records.'},
+   {label:'Revoke Access', desc:'Disable account in Active Directory; remove from all groups; revoke service credentials.'},
+   {label:'Update Inventory', desc:'Update CMDB/asset inventory; remove from documentation; archive configuration.'},
+   {label:'Physical Decomm', desc:'Power down; remove from racks; dispose of securely per compliance requirements.'}
+ ],
+ escalate:[
+   {label:'Data Concerns', desc:'If data archival requirements unclear, escalate to data owner for clarification.'},
+   {label:'Compliance Review', desc:'For regulated/sensitive systems, ensure compliance team approves decommission procedure.'}
+ ]},
+
+// ===== DATA CENTER (1 scenario) =====
+
+{id:'datacenter-env', title:'[P1] Data Center - Environmental Alert - INC000116', difficulty:'advanced',
+ sev:'P1', sla:'4h SLA', trigger:'Monitoring Alert',
+ scope:'Data-center cooling alert indicates rising temperature in the rack hosting production infrastructure.',
+ ticket:'INC000116', client:'Client P', team:'Data Center Operations', category:'Data Center', status:'In Progress',
+ pre:[
+   {label:'Verify Alert', desc:'Confirm temperature sensors are accurate and not faulty; check multiple sensors.'},
+   {label:'Assess Systems', desc:'Identify all production systems in affected rack; assess thermal sensitivity.'}
+ ],
+ decision:'Is immediate load reduction or workload migration needed to prevent system damage?',
+ resolve:[
+   {label:'Escalate Immediately', desc:'Contact data center facilities team immediately; provide alert details and timestamp.'},
+   {label:'Monitor Temperature', desc:'Continuously monitor rack temperature and all thermal sensors in affected area.'},
+   {label:'Reduce Load', desc:'If temperature continuing to rise, reduce workload or migrate non-critical systems.'},
+   {label:'Prepare Migration', desc:'If critical systems threatened, prepare emergency workload migration to alternative racks.'},
+   {label:'Track Restoration', desc:'Monitor cooling system restoration progress with facilities team; confirm temperature normalization.'}
+ ],
+ escalate:[
+   {label:'Emergency Migration', desc:'If cooling restoration delayed, execute emergency workload migration to preserve service.'},
+   {label:'Critical Impact', desc:'If critical systems threatened, declare incident bridge for continuous communication.'}
+ ]},
+
+// ===== MONITORING & ALERT TRIAGE (1 scenario) =====
+
+{id:'alert', title:'[P4] Alert Triage / Routing - INC000115', difficulty:'beginner',
+ sev:'P4', sla:'1h SLA', trigger:'Monitoring Alert',
+ scope:'Monitoring generated a warning for a non-critical service that recovered automatically.',
+ ticket:'INC000115', client:'Client O', team:'Monitoring Team', category:'Monitoring Alert', status:'Resolved',
+ pre:[
+   {label:'Correlate Alert', desc:'Identify alert type and category; check for known false-positives in alert library.'},
+   {label:'Assess Correlation', desc:'Compare against recent changes; look for related alerts; review system logs.'}
+ ],
+ decision:'Does this alert map cleanly to a known runbook/scenario?',
+ resolve:[
+   {label:'Acknowledge', desc:'Acknowledge alert in monitoring system to clear initial notification.'},
+   {label:'Route to Runbook', desc:'Map to appropriate runbook (Disk, CPU, Network, etc.) based on alert type.'},
+   {label:'Track & Document', desc:'Update ticket with routing information and alert history for future reference.'}
+ ],
+ escalate:[
+   {label:'First-Level Diagnosis', desc:'If alert doesn\'t map to known runbook, perform initial diagnosis and documentation.'},
+   {label:'Escalate to L2', desc:'Hand off to L2/specialist team or system owner if root cause unclear or unresolved.'}
+ ]},
+
+// ===== REMOTE ACCESS (1 scenario) =====
+
+{id:'rdp-issue', title:'[P2] Remote Access - RDP Issue - INC000119', difficulty:'beginner',
+ sev:'P2', sla:'1h SLA', trigger:'User Request',
+ scope:'Approved support engineer cannot connect to a server through RDP.',
+ ticket:'INC000119', client:'Client S', team:'Windows Operations', category:'Remote Access', status:'Resolved',
+ pre:[
+   {label:'Verify Authorization', desc:'Confirm user has approved RDP access to the specific server; check access request.'},
+   {label:'Check Access State', desc:'Verify RDP service is running on target server; check user group memberships.'}
+ ],
+ decision:'Is RDP enabled on the server with only group membership missing?',
+ resolve:[
+   {label:'Verify Identity', desc:'Confirm user identity and validate access approval is current.'},
+   {label:'Check Membership', desc:'Verify user is NOT currently in "Remote Desktop Users" group (local or domain).'},
+   {label:'Add to Group', desc:'Add user to "Remote Desktop Users" group (local or AD forest depending on setup).'},
+   {label:'Refresh Policy', desc:'If needed, refresh group policy on user and target server (gpupdate /force).'},
+   {label:'Test Connection', desc:'Have user retest RDP connection; confirm successful login to remote server.'}
+ ],
+ escalate:[
+   {label:'RDP Disabled', desc:'If RDP service is disabled on server, escalate to server team for enablement.'},
+   {label:'Firewall Blocking', desc:'If firewall is blocking RDP (port 3389), escalate to Network team for rule update.'},
+   {label:'Service Failures', desc:'If connection still fails after group membership fix, troubleshoot RDP service health.'}
+ ]}
+
+];
+
+const PROBLEMS = RAW_PROBLEMS.map(p=>{
+  const withIds = (arr, kind) => arr.map((c,i)=>({...c, id:`${p.id}-${kind}${i}`, kind}));
+  return { ...p, pre: withIds(p.pre,'pre'), resolve: withIds(p.resolve,'resolve'), escalate: withIds(p.escalate,'escalate') };
+});
+const CARD_INDEX = {};
+PROBLEMS.forEach(p=>{ [...p.pre, ...p.resolve, ...p.escalate].forEach(c=>{ CARD_INDEX[c.id] = c; }); });
+const ALL_CARDS = Object.values(CARD_INDEX);
+
+let current = null;
+let slots = [];
+let submitted = false;
+let selectedCardId = null;
+
+/* The tray element differs between practice and hackathon. Everything
+   else about dragging, dropping and tap-to-place is shared. */
+let activeTrayId = 'tray';
+function getTray(){ return document.getElementById(activeTrayId); }
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+const sel = document.getElementById('scenarioSelect');
+PROBLEMS.forEach(p=>{
+  const opt = document.createElement('option');
+  opt.value = p.id;
+  opt.textContent = `${p.sev} · ${p.title}`;
+  sel.appendChild(opt);
+});
+sel.addEventListener('change', ()=>{ if(sel.value) loadProblem(sel.value); });
+document.getElementById('hackSubmitBtn').addEventListener('click', submitHackathonSolution);
+
+function buildCardEl(card, opts){
+  opts = opts||{};
+  const c = el('div', `card kind-${card.kind||''}`);
+  c.dataset.cardId = card.id;
+  c.innerHTML = `<div class="c-title">${escapeHtml(card.label)}</div><div class="c-desc">${escapeHtml(card.desc)}</div>`;
+  if(!opts.readonly){
+    c.draggable = true;
+    c.tabIndex = 0;
+    c.addEventListener('dragstart', onDragStart);
+    c.addEventListener('dragend', onDragEnd);
+    c.addEventListener('click', onCardClick);
+    c.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); onCardClick({currentTarget:c}); } });
+  } else {
+    c.classList.add('readonly');
+  }
+  return c;
+}
+
+function onDragStart(e){
+  if(submitted) { e.preventDefault(); return; }
+  e.dataTransfer.setData('text/plain', e.currentTarget.dataset.cardId);
+  e.dataTransfer.effectAllowed = 'move';
+  e.currentTarget.classList.add('dragging');
+}
+function onDragEnd(e){ e.currentTarget.classList.remove('dragging'); }
+function onCardClick(e){
+  if(submitted) return;
+  const cardEl = e.currentTarget;
+  const id = cardEl.dataset.cardId;
+  if(selectedCardId === id){ deselectCard(); return; }
+  deselectCard();
+  selectedCardId = id;
+  cardEl.classList.add('selected');
+  document.querySelectorAll('.slot').forEach(s=>s.classList.add('selected-target'));
+}
+function deselectCard(){
+  if(selectedCardId){
+    const prev = document.querySelector(`.card[data-card-id="${selectedCardId}"]`);
+    if(prev) prev.classList.remove('selected');
+  }
+  selectedCardId = null;
+  document.querySelectorAll('.slot').forEach(s=>s.classList.remove('selected-target'));
+}
+
+function placeCardInSlot(cardId, slotEl){
+  if(submitted) return;
+  const cardEl = document.querySelector(`.card[data-card-id="${cardId}"]`);
+  if(!cardEl) return;
+  const existing = slotEl.querySelector('.card');
+  if(existing) returnCardToTray(existing);
+  slotEl.innerHTML = '';
+  slotEl.appendChild(cardEl);
+  slotEl.classList.add('filled');
+  slotEl.classList.remove('correct','incorrect');
+  cardEl.classList.remove('dragging','selected');
+}
+function returnCardToTray(cardEl){
+  const tray = getTray();
+  tray.appendChild(cardEl);
+  refreshTrayEmptyState();
+}
+function refreshTrayEmptyState(){
+  const tray = getTray();
+  const empty = tray.querySelector('.tray-empty');
+  if(tray.children.length === (empty?1:0)){
+    if(!empty) tray.appendChild(el('div','tray-empty','All cards placed'));
+  } else if(empty && tray.children.length>1){
+    empty.remove();
+  }
+}
+
+function wireSlotTargets(slotEl){
+  slotEl.addEventListener('dragover', e=>{ if(submitted) return; e.preventDefault(); slotEl.classList.add('hover'); });
+  slotEl.addEventListener('dragleave', ()=>slotEl.classList.remove('hover'));
+  slotEl.addEventListener('drop', e=>{
+    e.preventDefault();
+    slotEl.classList.remove('hover');
+    if(submitted) return;
+    const id = e.dataTransfer.getData('text/plain');
+    if(id) placeCardInSlot(id, slotEl);
+  });
+  slotEl.addEventListener('click', ()=>{
+    if(submitted) return;
+    if(selectedCardId){
+      placeCardInSlot(selectedCardId, slotEl);
+      deselectCard();
+    } else {
+      const occ = slotEl.querySelector('.card');
+      if(occ){
+        returnCardToTray(occ);
+        slotEl.classList.remove('filled','correct','incorrect');
+        slotEl.innerHTML = `<span class="slot-placeholder">${slotEl.dataset.placeholder}</span>`;
+      }
+    }
+  });
+}
+
+function wireTrayTarget(){
+  const tray = getTray();
+  tray.addEventListener('dragover', e=>{ if(!submitted){ e.preventDefault(); tray.classList.add('hover'); } });
+  tray.addEventListener('dragleave', ()=>tray.classList.remove('hover'));
+  tray.addEventListener('drop', e=>{
+    e.preventDefault();
+    tray.classList.remove('hover');
+    if(submitted) return;
+    const id = e.dataTransfer.getData('text/plain');
+    const cardEl = document.querySelector(`.card[data-card-id="${id}"]`);
+    if(cardEl && cardEl.parentElement.classList.contains('slot')){
+      const slotEl = cardEl.parentElement;
+      returnCardToTray(cardEl);
+      slotEl.classList.remove('filled','correct','incorrect');
+      slotEl.innerHTML = `<span class="slot-placeholder">${slotEl.dataset.placeholder}</span>`;
+    }
+  });
+  tray.addEventListener('click', e=>{ if(e.target === tray){ deselectCard(); } });
+}
+
+function fixedNode(label, body, extraClass){
+  const n = el('div', `fixed-node ${extraClass||''}`);
+  n.innerHTML = `<div class="fn-label">${label}</div><div class="fn-body">${escapeHtml(body)}</div>`;
+  return n;
+}
+function arrowDown(){
+  const wrap = el('div','flow-arrow');
+  wrap.innerHTML = `<svg width="16" height="22" viewBox="0 0 16 22"><line x1="8" y1="0" x2="8" y2="14" stroke="#A6B4AC" stroke-width="1.6"/><polygon points="8,22 2,12 14,12" fill="#A6B4AC"/></svg>`;
+  return wrap;
+}
+function makeSlot(key, kind, correctId, placeholder){
+  const s = el('div','slot');
+  s.dataset.slotKey = key;
+  /* Practice mode stamps the expected card onto the element, which is
+     handy for debugging. Hackathon passes null so nothing about the
+     answer key is written into participant-facing HTML. */
+  if(correctId) s.dataset.correct = correctId;
+  s.dataset.kind = kind;
+  s.dataset.placeholder = placeholder;
+  s.innerHTML = `<span class="slot-placeholder">${placeholder}</span>`;
+  wireSlotTargets(s);
+  return s;
+}
+
+/* The second branch is not always an escalation. A ticket sitting at
+   "Vendor Engaged" is a hand-off you hold open; one at "Pending Approval"
+   is a wait state. Labelling it correctly is part of what L1 needs to learn. */
+function branchLabel(status){
+  if(status === 'Vendor Engaged')   return '🤝 Vendor Hand-off Path';
+  if(status === 'Pending Approval') return '⏸ Approval Hold Path';
+  return '↑ Escalate Path';
+}
+
+function loadProblem(id){
+  if(blockedByHackathon()) return;     // console calls and stale UI both land here
+  activeTrayId = 'tray';
+  current = PROBLEMS.find(p=>p.id===id);
+  submitted = false;
+  selectedCardId = null;
+  slots = [];
+  document.getElementById('intro').style.display = 'none';
+  document.getElementById('game').style.display = 'block';
+  document.getElementById('feedback').classList.remove('show','pass','fail');
+  document.getElementById('answerKey').classList.remove('show');
+  document.getElementById('nextBtn').style.display = 'none';
+  document.getElementById('submitBtn').disabled = false;
+
+  document.getElementById('probTitle').textContent = current.title;
+  document.getElementById('probScope').textContent = current.scope;
+  const sevTag = document.getElementById('probSev');
+  sevTag.textContent = current.sev;
+  sevTag.className = 'tag sev' + (current.sev==='P1' ? ' sev-p1' : current.sev==='P2' ? ' sev-p2' : '');
+  document.getElementById('probSla').textContent = current.sla;
+  document.getElementById('probTrig').textContent = current.trigger;
+  const tkt = document.getElementById('probTicket');
+  tkt.textContent = current.ticket ? `${current.ticket} · ${current.client}` : '';
+  tkt.style.display = current.ticket ? '' : 'none';
+  const stt = document.getElementById('probStatus');
+  stt.textContent = current.status ? `Status: ${current.status}` : '';
+  stt.style.display = current.status ? '' : 'none';
+
+  const host = document.getElementById('flowSkeleton');
+  host.innerHTML = '';
+  host.appendChild(fixedNode('Trigger','Event enters the queue.', 'trigger'));
+  host.appendChild(arrowDown());
+
+  current.pre.forEach((c,i)=>{
+    const s = makeSlot(`pre${i}`, 'pre', c.id, `Step ${i+1} — awaiting placement`);
+    slots.push({key:s.dataset.slotKey, correctId:c.id, el:s, kind:'pre'});
+    host.appendChild(s);
+    if(i < current.pre.length-1) host.appendChild(arrowDown());
+  });
+  host.appendChild(arrowDown());
+  host.appendChild(fixedNode('Decision Gate', current.decision, 'decision'));
+
+  const branches = el('div','branches');
+  const rCol = el('div','branch-col');
+  rCol.appendChild(el('div','branch-head resolve','✓ Resolve Path'));
+  current.resolve.forEach((c,i)=>{
+    const s = makeSlot(`resolve${i}`, 'resolve', c.id, `Resolve step ${i+1}`);
+    slots.push({key:s.dataset.slotKey, correctId:c.id, el:s, kind:'resolve'});
+    rCol.appendChild(s);
+  });
+  const eCol = el('div','branch-col escalate-col');
+  eCol.appendChild(el('div','branch-head escalate', branchLabel(current.status)));
+  current.escalate.forEach((c,i)=>{
+    const s = makeSlot(`escalate${i}`, 'escalate', c.id, `Branch step ${i+1} — order not graded`);
+    slots.push({key:s.dataset.slotKey, correctId:c.id, el:s, kind:'escalate'});
+    eCol.appendChild(s);
+  });
+  branches.appendChild(rCol);
+  branches.appendChild(eCol);
+  host.appendChild(branches);
+  host.appendChild(arrowDown());
+  host.appendChild(fixedNode('Close','Update ticket and CMDB, notify the requester, close within SLA.', 'close'));
+
+  buildTray();
+}
+
+function buildTray(){
+  activeTrayId = 'tray';
+  const tray = getTray();
+  tray.innerHTML = '';
+  wireTrayTarget();
+  const correctCards = [...current.pre, ...current.resolve, ...current.escalate];
+  const decoyPool = ALL_CARDS.filter(c=> !c.id.startsWith(current.id+'-'));
+  const decoyCount = Math.min(5, Math.max(3, Math.floor(correctCards.length*0.6)));
+  const decoys = shuffle(decoyPool).slice(0, decoyCount);
+  const pool = shuffle([...correctCards, ...decoys]);
+  pool.forEach(card=>{ tray.appendChild(buildCardEl(card)); });
+}
+
+async function submitSolution(){
+  if(blockedByHackathon()) return;
+  if(submitted) return;
+  submitted = true;
+  deselectCard();
+  document.getElementById('submitBtn').disabled = true;
+  document.querySelectorAll('.card').forEach(c=>{ c.draggable = false; c.classList.add('locked'); });
+
+  /* Pre and Resolve steps are graded strictly on order — sequence is the whole
+     point there. Steps in the escalate / vendor / approval branch are genuinely
+     order-independent in practice, so they are graded as a set: the right cards
+     in the branch, in any order, counts as correct. */
+  const escSlots    = slots.filter(s => s.kind === 'escalate');
+  const escExpected = new Set(escSlots.map(s => s.correctId));
+  const escPlaced   = escSlots.map(s => {
+    const c = s.el.querySelector('.card');
+    return c ? c.dataset.cardId : null;
+  });
+  const escPlacedSet = new Set(escPlaced.filter(Boolean));
+  const escAllPresent = escExpected.size === escPlacedSet.size &&
+                        [...escExpected].every(id => escPlacedSet.has(id));
+
+  let correctCount = 0;
+  slots.forEach(s=>{
+    const placedEl = s.el.querySelector('.card');
+    const placedId = placedEl ? placedEl.dataset.cardId : null;
+    const isRight = (s.kind === 'escalate')
+      ? (escAllPresent && !!placedId && escExpected.has(placedId))
+      : (placedId === s.correctId);
+    s.el.classList.remove('hover');
+    s.el.classList.add(isRight ? 'correct' : 'incorrect');
+    if(isRight) correctCount++;
+  });
+
+  const total = slots.length;
+  const allCorrect = correctCount === total;
+
+  const fb = document.getElementById('feedback');
+  fb.classList.add('show', allCorrect ? 'pass' : 'fail');
+  fb.classList.remove(allCorrect ? 'fail' : 'pass');
+  document.getElementById('fbIcon').textContent = allCorrect ? '✓' : '✕';
+  document.getElementById('fbTitle').textContent = allCorrect
+    ? 'Correct — flow assembled accurately'
+    : `Incorrect — ${correctCount} of ${total} steps placed correctly`;
+  document.getElementById('fbSub').textContent = allCorrect
+    ? 'This matches the enterprise runbook for this problem state. Saved to your dashboard.'
+    : 'Review the highlighted slots above, then compare against the correct flow below. Saved to your dashboard.';
+
+  if(allCorrect){
+    document.getElementById('trophySub').textContent = 'Perfect assembly — saved to your record.';
+    fireConfetti(fb);
+  }
+  if(!allCorrect){
+    renderAnswerKey();
+    document.getElementById('answerKey').classList.add('show');
+  }
+  document.getElementById('nextBtn').style.display = 'inline-block';
+
+  await recordAttempt(current, correctCount, total, allCorrect);
+}
+
+function fireConfetti(container){
+  const colors = ['#FBBF24','#34D399','#14B8A6','#FB7185','#38BDF8','#F472B6'];
+  const count = 26;
+  for(let i=0;i<count;i++){
+    const p = document.createElement('span');
+    p.className = 'confetti-piece';
+    const leftPct = 8 + Math.random()*84;
+    const drift = (Math.random()*80-40).toFixed(0)+'px';
+    const spin = (360 + Math.random()*360).toFixed(0)+'deg';
+    const dur = (0.9 + Math.random()*0.7).toFixed(2)+'s';
+    const delay = (Math.random()*0.25).toFixed(2)+'s';
+    p.style.left = leftPct+'%';
+    p.style.background = colors[i % colors.length];
+    p.style.setProperty('--drift', drift);
+    p.style.setProperty('--spin', spin);
+    p.style.animationDuration = dur;
+    p.style.animationDelay = delay;
+    container.appendChild(p);
+    setTimeout(()=>{ p.remove(); }, 2000);
+  }
+}
+
+function renderAnswerKey(){
+  const body = document.getElementById('answerKeyBody');
+  body.innerHTML = '';
+  body.appendChild(fixedNode('Trigger','Event enters the queue.', 'trigger'));
+  body.appendChild(arrowDown());
+  current.pre.forEach((c,i)=>{
+    body.appendChild(buildCardEl(c, {readonly:true}));
+    if(i < current.pre.length-1) body.appendChild(arrowDown());
+  });
+  body.appendChild(arrowDown());
+  body.appendChild(fixedNode('Decision Gate', current.decision, 'decision'));
+  const branches = el('div','branches');
+  const rCol = el('div','branch-col');
+  rCol.appendChild(el('div','branch-head resolve','✓ Resolve Path'));
+  current.resolve.forEach(c=> rCol.appendChild(buildCardEl(c,{readonly:true})));
+  const eCol = el('div','branch-col escalate-col');
+  eCol.appendChild(el('div','branch-head escalate', branchLabel(current.status)));
+  current.escalate.forEach(c=> eCol.appendChild(buildCardEl(c,{readonly:true})));
+  branches.appendChild(rCol); branches.appendChild(eCol);
+  body.appendChild(branches);
+  body.appendChild(arrowDown());
+  body.appendChild(fixedNode('Close','Update ticket and CMDB, notify the requester, close within SLA.', 'close'));
+}
+
+/* ---- persistence of participant attempts ---- */
+async function recordAttempt(scenario, correctCount, total, allCorrect){
+  if(!session || session.role !== 'participant') return;
+  const ok = await Store.appendAttempt(session.key, {
+    ts: Date.now(),
+    scenarioId: scenario.id,
+    scenarioTitle: scenario.title,
+    ticket: scenario.ticket || null,
+    sev: scenario.sev,
+    correctCount, total,
+    accuracy: Math.round((correctCount/total)*100),
+    allCorrect
+  });
+  if(!ok) showToast('Could not save your score — check your connection');
+  await refreshParticipantStats();
+}
+
+async function refreshParticipantStats(){
+  const statRow = document.getElementById('participantStatRow');
+  const historyWrap = document.getElementById('historyWrap');
+  if(!session) return;
+  const arr = (await Store.getAttempts(session.key)).slice().sort((a,b)=>a.ts-b.ts);
+  const attempts = arr.length;
+  const solved = arr.filter(a=>a.allCorrect).length;
+  const acc = attempts ? Math.round(solved/attempts*100) : null;
+
+  statRow.innerHTML = '';
+  statRow.appendChild(el('div','stat-chip', `Demos attempted <b>${attempts}</b>`));
+  statRow.appendChild(el('div','stat-chip', `Perfect runs <b>${solved}</b> 🏆`));
+  statRow.appendChild(el('div','stat-chip', `Accuracy <b>${acc===null?'—':acc+'%'}</b>`));
+
+  historyWrap.innerHTML = '';
+  if(arr.length === 0){
+    historyWrap.appendChild(el('div','empty-note','No attempts yet — pick a scenario below to get started.'));
+    return;
+  }
+  const list = el('div','history-list');
+  arr.slice().reverse().slice(0,10).forEach(a=>{
+    const item = el('div','history-item');
+    item.innerHTML = `
+      <div class="hi-left">
+        <span class="hi-title">${escapeHtml(a.scenarioTitle)} <span style="color:var(--text-faint);font-weight:400;">(${escapeHtml(a.sev)})</span></span>
+        <span class="hi-time">${new Date(a.ts).toLocaleString()}</span>
+      </div>
+      <span class="hi-score ${a.allCorrect?'pass':'fail'}">${a.correctCount}/${a.total} (${a.accuracy}%)${a.allCorrect?' ✓':''}</span>
+    `;
+    list.appendChild(item);
+  });
+  historyWrap.appendChild(list);
+}
+
+async function enterParticipant(){
+  if(blockedByHackathon()) return;
+  activeTrayId = 'tray';
+  document.getElementById('intro').style.display = 'block';
+  document.getElementById('game').style.display = 'none';
+  document.getElementById('scenarioSelect').value = '';
+  await refreshParticipantStats();
+}
+
+document.getElementById('submitBtn').addEventListener('click', submitSolution);
+document.getElementById('resetBtn').addEventListener('click', ()=>{ if(current) loadProblem(current.id); });
+document.getElementById('nextBtn').addEventListener('click', ()=>{
+  const others = PROBLEMS.filter(p=>p.id !== current.id);
+  const next = others[Math.floor(Math.random()*others.length)];
+  sel.value = next.id;
+  loadProblem(next.id);
+});
+
+
+
+/* ================================================================
+   HACKATHON DATA
+   ----------------------------------------------------------------
+   Ten assessment scenarios, deliberately separate from RAW_PROBLEMS.
+   Every step carries its own `weight`; `importance` is a label for the
+   employee's report, NOT a lookup into a fixed score table. Two
+   scenarios can both mark a step CRITICAL and weight it differently.
+   Weights total 100 per scenario, so the employee reads "72 / 100".
+   ================================================================ */
+const HACK_SCENARIOS = [
+{id:'hack-cpu', title:'Production Application Server — High CPU Utilization',
+ problem:'A business-critical application server has been sitting at 98% CPU for over twenty minutes. Users report the application is responding slowly but it has not gone down. Monitoring is alerting continuously and the service desk is taking calls.',
+ trigger:'Monitoring Alert — sustained CPU threshold breach',
+ decision:'Can the load be brought back inside normal limits on this host, or does the workload need to move?',
+ pre:[
+  {label:'Acknowledge & Classify', desc:'Take ownership of the alert, set priority from impact and urgency, and start the SLA clock.', importance:'MEDIUM', weight:5},
+  {label:'Confirm Scope of Impact', desc:'Establish which application and which users are affected, and whether other hosts in the cluster show the same pattern.', importance:'HIGH', weight:10},
+  {label:'Capture Baseline Metrics', desc:'Record current CPU, memory, run queue and load average before changing anything, so the effect of any action can be measured.', importance:'HIGH', weight:10}],
+ resolve:[
+  {label:'Identify Top Consuming Process', desc:'Use the approved monitoring tooling to isolate the specific process, service or query driving the load.', importance:'CRITICAL', weight:20},
+  {label:'Correlate With Recent Change', desc:'Check the change record and deployment history for anything released into this environment in the last 24 hours.', importance:'HIGH', weight:15},
+  {label:'Apply Approved Remediation', desc:'Restart the offending service, throttle the workload or roll back the change — strictly within the approved runbook.', importance:'CRITICAL', weight:25},
+  {label:'Validate Application Recovery', desc:'Confirm CPU has returned to baseline and the application responds end to end, not just that the metric dropped.', importance:'HIGH', weight:10}],
+ escalate:[
+  {label:'Engage Application Owner', desc:'Hand to the application team when the cause sits inside application code or query design rather than the platform.', importance:'MEDIUM', weight:3},
+  {label:'Raise Major Incident', desc:'Escalate to major incident if degradation is customer-facing or recovery will breach SLA.', importance:'LOW', weight:2}],
+ close:'Update the incident with root cause and actions taken, confirm with the requester, and close within SLA.'},
+
+{id:'hack-disk', title:'Production Server — Disk Capacity Critical',
+ problem:'A production file server has crossed 95% utilisation on its data volume. Writes are still succeeding but the volume is projected to fill within two hours. The application writing to it cannot be stopped during business hours.',
+ trigger:'Monitoring Alert — disk utilisation threshold breach',
+ decision:'Can space be reclaimed safely inside the SLA, or is a storage extension required?',
+ pre:[
+  {label:'Acknowledge & Classify', desc:'Take ownership, confirm priority, and note the projected time to full in the ticket.', importance:'LOW', weight:4},
+  {label:'Identify Affected Volume', desc:'Confirm exactly which mount point or drive letter is filling, and on which host.', importance:'HIGH', weight:12},
+  {label:'Confirm Service Impact', desc:'Establish what will break when the volume fills, and whether the service is already degraded.', importance:'MEDIUM', weight:8}],
+ resolve:[
+  {label:'Analyse Space Consumption', desc:'Break down usage by directory to find what is actually growing, rather than deleting the first large file found.', importance:'CRITICAL', weight:22},
+  {label:'Verify Retention Policy', desc:'Check the agreed retention rules before removing anything — logs and archives may be under a compliance hold.', importance:'MEDIUM', weight:10},
+  {label:'Reclaim Space Safely', desc:'Archive or purge only what policy permits, and record precisely what was removed and from where.', importance:'CRITICAL', weight:24},
+  {label:'Confirm Threshold Cleared', desc:'Verify utilisation is back below the alert threshold and that growth rate is now sustainable.', importance:'HIGH', weight:13}],
+ escalate:[
+  {label:'Request Storage Extension', desc:'Raise a change for additional capacity where reclamation cannot deliver a durable fix.', importance:'MEDIUM', weight:5},
+  {label:'Engage Application Team', desc:'Hand over when uncontrolled growth originates in application logging or temp file handling.', importance:'LOW', weight:2}],
+ close:'Record the reclamation performed and the capacity trend, update the CMDB, and close within SLA.'},
+
+{id:'hack-port', title:'Application Server — Database Port Blocked',
+ problem:'An application server can no longer reach its database on the expected port. The application is returning connection timeouts. The database itself is healthy and serving other clients normally.',
+ trigger:'Service Desk Ticket — application cannot reach database',
+ decision:'Is this a firewall or network path problem, or a listener problem on the database side?',
+ pre:[
+  {label:'Acknowledge & Classify', desc:'Take ownership, set priority from the business impact of the affected application.', importance:'LOW', weight:4},
+  {label:'Confirm Connectivity Failure', desc:'Reproduce the failure independently rather than relying on the reported symptom alone.', importance:'HIGH', weight:14},
+  {label:'Identify Source and Target', desc:'Establish the exact source host, destination host, port and protocol involved.', importance:'HIGH', weight:12}],
+ resolve:[
+  {label:'Test Port Reachability', desc:'Test the specific port from the application server, and from a known-good host, to locate where the path breaks.', importance:'CRITICAL', weight:20},
+  {label:'Review Firewall Rule Base', desc:'Check the rule set and recent rule changes covering this source, destination and port.', importance:'CRITICAL', weight:22},
+  {label:'Raise Approved Rule Change', desc:'Submit the firewall change through the approved process with business justification — never bypass it.', importance:'HIGH', weight:15},
+  {label:'Validate Application Connection', desc:'Confirm the application reconnects and transactions complete, not merely that the port answers.', importance:'MEDIUM', weight:8}],
+ escalate:[
+  {label:'Engage Network Security', desc:'Hand to the security team where the block is intentional or the rule base is outside your authority.', importance:'MEDIUM', weight:4},
+  {label:'Notify Application Owner', desc:'Keep the service owner informed while the rule change is pending approval.', importance:'LOW', weight:1}],
+ close:'Document the rule change reference and the validated connection, then close within SLA.'},
+
+{id:'hack-backup', title:'Production Server — Backup Failure',
+ problem:'The nightly backup job for a production database server has failed three nights running. Nobody noticed until the weekly report. The server is running normally, but there is now no verified recovery point for three days.',
+ trigger:'Backup Report — consecutive job failures',
+ decision:'Can the backup be re-run successfully tonight, or is the failure a platform fault needing vendor engagement?',
+ pre:[
+  {label:'Acknowledge & Classify', desc:'Take ownership and classify on data-protection risk, not on whether the server is currently up.', importance:'LOW', weight:5},
+  {label:'Identify Failed Job and Window', desc:'Establish exactly which job failed, on which nights, and what the last known good restore point is.', importance:'HIGH', weight:13},
+  {label:'Assess Data Protection Risk', desc:'Quantify the recovery gap and notify the service owner that the RPO is currently not being met.', importance:'CRITICAL', weight:18}],
+ resolve:[
+  {label:'Review Backup Job Logs', desc:'Read the job logs for the actual error rather than assuming the usual cause.', importance:'CRITICAL', weight:20},
+  {label:'Verify Target Storage & Credentials', desc:'Check the backup target has capacity and is reachable, and that the service account has not expired.', importance:'HIGH', weight:14},
+  {label:'Re-run Backup Out of Hours', desc:'Trigger a manual run in an approved window so production performance is not affected.', importance:'CRITICAL', weight:20},
+  {label:'Confirm Restore Point Created', desc:'Verify the job completed and the restore point is catalogued — a green job status alone is not proof.', importance:'HIGH', weight:8}],
+ escalate:[
+  {label:'Engage Backup Vendor', desc:'Raise a vendor case with logs attached when the failure is in the backup platform itself.', importance:'MEDIUM', weight:2}],
+ close:'Record the restored protection state and the recovery gap that occurred, then close within SLA.'},
+
+{id:'hack-rdp', title:'Server — RDP Access Failure',
+ problem:'An engineer cannot connect to a production jump server over RDP. The connection is refused. The server responds to ping and its hosted application is serving users normally.',
+ trigger:'Service Desk Ticket — remote access failure',
+ decision:'Is this specific to one user account, or is remote access broken for everybody on this host?',
+ pre:[
+  {label:'Acknowledge & Classify', desc:'Take ownership and set priority based on whether this blocks production support work.', importance:'LOW', weight:5},
+  {label:'Confirm Scope: One User or All', desc:'Establish whether other engineers can connect — this single check determines the entire path that follows.', importance:'CRITICAL', weight:18},
+  {label:'Verify Server Is Reachable', desc:'Confirm the host is up and responding on the network before investigating the RDP service itself.', importance:'HIGH', weight:12}],
+ resolve:[
+  {label:'Check RDP Service and Port', desc:'Verify the remote desktop service is running and the port is listening and not blocked.', importance:'CRITICAL', weight:20},
+  {label:'Review Session Host Limits', desc:'Check for exhausted session limits or orphaned disconnected sessions holding the available slots.', importance:'HIGH', weight:14},
+  {label:'Verify Group Membership', desc:'Confirm the account is still in the permitted remote access group and has not been removed by a policy update.', importance:'HIGH', weight:15},
+  {label:'Restore Access and Confirm', desc:'Apply the fix and have the requester confirm they can connect — do not close on your own test alone.', importance:'MEDIUM', weight:12}],
+ escalate:[
+  {label:'Engage Identity Team', desc:'Hand over where the cause sits in directory group policy rather than on the host.', importance:'LOW', weight:4}],
+ close:'Document the cause and the access restored, update the ticket, and close within SLA.'},
+
+{id:'hack-shutdown', title:'Production Server — Unexpected Shutdown',
+ problem:'A production application server powered off without warning at 14:20. There was no scheduled maintenance. The service it hosts is customer-facing and is currently unavailable.',
+ trigger:'Monitoring Alert — host down, no scheduled change',
+ decision:'Can the host be brought back through the approved recovery path, or is this a hardware or platform failure?',
+ pre:[
+  {label:'Declare Major Incident', desc:'An unplanned customer-facing outage is declared immediately — do not investigate first and declare later.', importance:'CRITICAL', weight:15},
+  {label:'Confirm Blast Radius', desc:'Establish which services and customers are affected, and whether neighbouring hosts are also down.', importance:'CRITICAL', weight:16},
+  {label:'Notify Stakeholders', desc:'Inform the service owner and incident manager with a first assessment and an expected next update time.', importance:'MEDIUM', weight:8}],
+ resolve:[
+  {label:'Check Host and Power State', desc:'Inspect power and health status through the hypervisor or out-of-band console before any restart attempt.', importance:'CRITICAL', weight:20},
+  {label:'Review Event Logs for Cause', desc:'Examine system and hardware logs for the shutdown reason so recovery is not performed blind.', importance:'HIGH', weight:14},
+  {label:'Restore Service via Approved Path', desc:'Bring the host and its services back using the documented recovery procedure, with authorisation for any forced power action.', importance:'CRITICAL', weight:18},
+  {label:'Monitor for Recurrence', desc:'Watch the host and service for a sustained period before standing down the incident.', importance:'MEDIUM', weight:6}],
+ escalate:[
+  {label:'Engage Platform Team', desc:'Escalate when the host will not start or the failure is at hypervisor level.', importance:'LOW', weight:2},
+  {label:'Engage Data Centre Operations', desc:'Involve facilities where power or environmental conditions are implicated.', importance:'LOW', weight:1}],
+ close:'Record root cause, recovery actions and outage duration; raise a problem record if cause is unconfirmed.'},
+
+{id:'hack-ip', title:'IP Address Conflict',
+ problem:'Two hosts on the same production subnet are responding on the same IP address. Users report intermittent connection failures to a business application — sometimes it works, sometimes it does not.',
+ trigger:'Monitoring Alert — duplicate address detected on subnet',
+ decision:'Which host holds the legitimate assignment, and which one must be changed?',
+ pre:[
+  {label:'Acknowledge & Classify', desc:'Take ownership and record the reported intermittent behaviour, which is the signature of this fault.', importance:'LOW', weight:5},
+  {label:'Identify Conflicting Hosts', desc:'Determine both devices claiming the address — acting before both are identified risks taking down the wrong one.', importance:'CRITICAL', weight:20},
+  {label:'Confirm Affected Services', desc:'Establish which applications and users are experiencing the intermittent failures.', importance:'HIGH', weight:12}],
+ resolve:[
+  {label:'Capture MAC Address Evidence', desc:'Record the MAC addresses and switch ports for both hosts as evidence before making any change.', importance:'CRITICAL', weight:20},
+  {label:'Check DHCP Scope and Reservations', desc:'Verify which assignment is authoritative, and whether the address sits inside a dynamic range by mistake.', importance:'HIGH', weight:15},
+  {label:'Reassign the Offending Host', desc:'Change the address on the unauthorised host only, following the approved addressing standard.', importance:'CRITICAL', weight:18},
+  {label:'Verify Conflict Cleared', desc:'Confirm the duplicate alert has cleared and the application is now consistently reachable.', importance:'MEDIUM', weight:7}],
+ escalate:[
+  {label:'Engage Network Team', desc:'Hand over where DHCP scope design or switch configuration needs correcting.', importance:'LOW', weight:3}],
+ close:'Update the IPAM record and CMDB with the corrected assignment, then close within SLA.'},
+
+{id:'hack-patch', title:'Critical Security Patch Failure',
+ problem:'A critical security patch has failed to install on eleven production servers during the approved maintenance window. The vulnerability it addresses is actively being exploited in the wild. The next approved window is in seven days.',
+ trigger:'Patch Compliance Report — failed deployment',
+ decision:'Can the patch be re-applied within an emergency window, or must a compensating control be put in place?',
+ pre:[
+  {label:'Acknowledge & Classify', desc:'Take ownership and classify on security exposure rather than on service availability.', importance:'LOW', weight:4},
+  {label:'Identify Failed Patch and Servers', desc:'List the exact patch reference and every affected host, so nothing is left unremediated.', importance:'HIGH', weight:13},
+  {label:'Assess Security Exposure', desc:'Establish how exposed these servers are and inform the security team that the risk is currently live.', importance:'CRITICAL', weight:18}],
+ resolve:[
+  {label:'Review Patch Installation Logs', desc:'Read the installation logs to find the genuine failure reason before attempting a re-run.', importance:'CRITICAL', weight:20},
+  {label:'Verify Prerequisites and Disk Space', desc:'Confirm required prerequisite updates and sufficient free space — the most common causes of this failure.', importance:'HIGH', weight:13},
+  {label:'Re-apply in Approved Window', desc:'Redeploy under an emergency change with rollback prepared and the service owner informed.', importance:'CRITICAL', weight:20},
+  {label:'Validate Compliance State', desc:'Confirm each host now reports compliant, and record the evidence for audit.', importance:'HIGH', weight:9}],
+ escalate:[
+  {label:'Engage Security Team', desc:'Escalate for a compensating control where the patch cannot be applied inside the exposure window.', importance:'MEDIUM', weight:3}],
+ close:'Record compliance evidence for all hosts and close the change and the incident within SLA.'},
+
+{id:'hack-hw', title:'Server Hardware Alert',
+ problem:'A production database server is reporting a predictive failure on a disk in its RAID array. The array is still healthy and the service is unaffected, but a second failure would take the system down.',
+ trigger:'Hardware Alert — predictive disk failure',
+ decision:'Is redundancy still intact, and can replacement wait for a planned window?',
+ pre:[
+  {label:'Acknowledge & Classify', desc:'Take ownership and record that the alert is predictive rather than an active failure.', importance:'LOW', weight:5},
+  {label:'Identify Failing Component', desc:'Determine the exact slot, serial number and array membership of the failing disk.', importance:'CRITICAL', weight:18},
+  {label:'Assess Redundancy Status', desc:'Confirm whether the array can survive another failure — this determines whether replacement is urgent or routine.', importance:'CRITICAL', weight:17}],
+ resolve:[
+  {label:'Collect Vendor Diagnostic Log', desc:'Generate the vendor support bundle while the system is still healthy and the evidence is available.', importance:'HIGH', weight:15},
+  {label:'Verify Warranty and Support Contract', desc:'Confirm entitlement and response SLA before raising the case, so expectations are set correctly.', importance:'MEDIUM', weight:10},
+  {label:'Raise Vendor Case with Evidence', desc:'Open the case attaching serial numbers and diagnostics to avoid a round trip for information.', importance:'CRITICAL', weight:20},
+  {label:'Schedule Replacement Window', desc:'Agree a window with the service owner and confirm a verified backup exists before the work.', importance:'HIGH', weight:10}],
+ escalate:[
+  {label:'Hold for Vendor Engagement', desc:'Keep the ticket open in vendor-engaged state; do not close pending the physical replacement.', importance:'MEDIUM', weight:4},
+  {label:'Notify Service Owner', desc:'Inform the owner of the degraded redundancy and the agreed replacement plan.', importance:'LOW', weight:1}],
+ close:'Hold the ticket in vendor-engaged state until the disk is replaced and the array rebuild is verified.'},
+
+{id:'hack-avail', title:'Production Service Availability Incident',
+ problem:'A customer-facing web service is returning errors for roughly 40% of requests. The servers are up, CPU and memory are normal, and monitoring shows the infrastructure as healthy. Customers are calling.',
+ trigger:'Multiple Customer Reports — intermittent service errors',
+ decision:'Which tier is failing — web, application or database — and can it be recovered in place?',
+ pre:[
+  {label:'Declare and Classify Severity', desc:'Classify on customer impact, not on infrastructure metrics — the hosts being green does not mean the service is healthy.', importance:'CRITICAL', weight:14},
+  {label:'Confirm User-Facing Impact', desc:'Establish the actual error rate and which customer journeys are failing.', importance:'CRITICAL', weight:16},
+  {label:'Open Incident Bridge', desc:'Bring application, database and platform representatives onto a single bridge early.', importance:'MEDIUM', weight:8}],
+ resolve:[
+  {label:'Validate Monitoring Independently', desc:'Reproduce the failure yourself rather than trusting a dashboard that already shows everything as green.', importance:'HIGH', weight:13},
+  {label:'Isolate the Failing Tier', desc:'Work the request path end to end to find which tier is actually returning the errors.', importance:'CRITICAL', weight:22},
+  {label:'Apply Approved Recovery Action', desc:'Restart, fail over or remove the failing node from the pool using the documented procedure.', importance:'CRITICAL', weight:18},
+  {label:'Confirm End-to-End Recovery', desc:'Verify the error rate has returned to normal from the customer perspective before standing down.', importance:'HIGH', weight:7}],
+ escalate:[
+  {label:'Engage Application Owner', desc:'Hand over where the fault sits inside application logic rather than the platform.', importance:'LOW', weight:1},
+  {label:'Escalate to Incident Manager', desc:'Escalate where impact is sustained or communications need coordinating.', importance:'LOW', weight:1}],
+ close:'Record the customer impact window, root cause and recovery actions; raise a problem record for permanent fix.'}
+];
+
+/* Stamp IDs the same way PROBLEMS does, but into a SEPARATE index so
+   Hackathon steps never appear as distractors in normal practice and
+   normal steps never appear in a Hackathon tray. */
+const HACK_PROBLEMS = HACK_SCENARIOS.map(p=>{
+  const withIds = (arr, kind) => arr.map((c,i)=>({...c, id:`${p.id}-${kind}${i}`, kind, index:i}));
+  return {...p, pre:withIds(p.pre,'pre'), resolve:withIds(p.resolve,'resolve'), escalate:withIds(p.escalate,'escalate')};
+});
+const HACK_CARD_INDEX = {};
+HACK_PROBLEMS.forEach(p=>{ [...p.pre,...p.resolve,...p.escalate].forEach(c=>{ HACK_CARD_INDEX[c.id]=c; }); });
+const HACK_ALL_CARDS = Object.values(HACK_CARD_INDEX);
+function hackSteps(scenario){ return [...scenario.pre, ...scenario.resolve, ...scenario.escalate]; }
+function findHackScenario(id){ return HACK_PROBLEMS.find(s=>s.id===id) || null; }
+
+
+/* ================================================================
+   HACKATHON ACCESS CONTROL
+   ----------------------------------------------------------------
+   Date semantics: the employee picks date-only values. A From date is
+   stored as local midnight and a To date as local end-of-day, both
+   WITHOUT a timezone suffix, e.g. '2026-09-16T00:00:00'. new Date() on
+   such a string parses it in the browser's local zone, so a window
+   that reads 16-Sep to 20-Sep behaves exactly as an instructor expects
+   in their own timezone. No UTC conversion happens anywhere.
+   ================================================================ */
+function hackFromStamp(dateStr){ return dateStr ? dateStr + 'T00:00:00' : null; }
+function hackToStamp(dateStr){ return dateStr ? dateStr + 'T23:59:59' : null; }
+function hackDatePart(stamp){ return stamp ? String(stamp).slice(0,10) : ''; }
+
+function fmtHackDate(stamp){
+  if(!stamp) return '—';
+  const d = new Date(stamp);
+  if(isNaN(d)) return '—';
+  const m = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return `${String(d.getDate()).padStart(2,'0')}-${m[d.getMonth()]}-${d.getFullYear()}`;
+}
+
+/* Derived, never stored. The only persisted facts are enabled, the two
+   dates, the scenario, and whether an attempt exists. */
+function getHackathonState(rec, attempts, now){
+  const h = rec && rec.hackathon;
+  /* A submission that already happened stays COMPLETED even if the employee
+     later disables or removes the assignment — the result must not vanish
+     from the dashboard. COMPLETED is not ACTIVE, so normal practice is
+     restored for the participant either way. */
+  if(attempts && attempts.length > 0) return 'COMPLETED';
+  if(!h || !h.enabled || !h.fromDate || !h.toDate || !h.scenarioId) return 'NOT_ASSIGNED';
+  const t = (now || new Date()).getTime();
+  const from = new Date(h.fromDate).getTime();
+  const to   = new Date(h.toDate).getTime();
+  if(isNaN(from) || isNaN(to)) return 'NOT_ASSIGNED';
+  if(t < from) return 'SCHEDULED';
+  if(t > to)   return 'EXPIRED';
+  return 'ACTIVE';
+}
+
+function isHackathonActive(rec, attempts, now){
+  return getHackathonState(rec, attempts, now) === 'ACTIVE';
+}
+
+/* Single source of truth for which experience a participant gets.
+   Called at login, and again by every guard. */
+function getParticipantMode(rec, attempts, now){
+  return isHackathonActive(rec, attempts, now) ? 'hackathon' : 'practice';
+}
+
+/* Guard used by loadProblem / submitSolution / enterParticipant.
+   This is why the restriction is not just a hidden dropdown: even if
+   someone calls loadProblem('disk-util') straight from the console,
+   it returns before building anything. */
+function blockedByHackathon(){
+  if(session && session.role === 'participant' && session.mode === 'hackathon'){
+    showToast('Normal practice is locked while your Hackathon is active');
+    showScreen('hackathon');
+    return true;
+  }
+  return false;
+}
+
+/* ================================================================
+   HACKATHON SCORING
+   ----------------------------------------------------------------
+   Pure function. No DOM access, no globals — it takes the authoritative
+   scenario config plus what the participant placed, and returns the
+   result. The browser never supplies a score; it supplies placements
+   only, and the score is recomputed here from HACK_SCENARIOS.
+
+   Order rules:
+     pre       order-sensitive
+     resolve   order-sensitive
+     escalate  presence only, order ignored
+
+   Four outcomes per expected step:
+     CORRECT    right step in the right place        -> full weight
+     MISPLACED  right step, placed somewhere wrong   -> 40% of weight
+     MISSING    step never placed at all             -> 0
+     INCORRECT  a distractor was placed in a slot    -> 0, listed separately
+   ================================================================ */
+const ORDER_PARTIAL_CREDIT = 0.4;
+
+function calculateHackathonScore(scenario, response){
+  const placedBy = {};                    // cardId -> {kind, index}
+  (response || []).forEach(r=>{
+    if(r && r.placedCardId) placedBy[r.placedCardId] = {kind:r.kind, index:r.index};
+  });
+
+  const expected = hackSteps(scenario);
+  const expectedIds = new Set(expected.map(s=>s.id));
+  const breakdown = [];
+  let earned = 0, maximum = 0;
+
+  expected.forEach(step=>{
+    maximum += step.weight;
+    const at = placedBy[step.id];
+    let result, points;
+
+    if(!at){
+      result = 'MISSING'; points = 0;
+    } else if(step.kind === 'escalate'){
+      // presence in the escalate branch is enough; position inside it is not graded
+      if(at.kind === 'escalate'){ result = 'CORRECT'; points = step.weight; }
+      else { result = 'MISPLACED'; points = Math.round(step.weight * ORDER_PARTIAL_CREDIT); }
+    } else {
+      if(at.kind === step.kind && at.index === step.index){ result = 'CORRECT'; points = step.weight; }
+      else { result = 'MISPLACED'; points = Math.round(step.weight * ORDER_PARTIAL_CREDIT); }
+    }
+
+    earned += points;
+    breakdown.push({
+      label: step.label, section: step.kind, importance: step.importance,
+      weight: step.weight, result, points
+    });
+  });
+
+  // distractors the participant placed — zero points, reported for the employee
+  const distractors = [];
+  (response || []).forEach(r=>{
+    if(r && r.placedCardId && !expectedIds.has(r.placedCardId)){
+      const card = HACK_CARD_INDEX[r.placedCardId];
+      distractors.push({
+        label: card ? card.label : r.placedCardId, section: r.kind,
+        importance: '—', weight: 0, result: 'INCORRECT', points: 0
+      });
+    }
+  });
+
+  const percentage = maximum > 0 ? Math.round((earned / maximum) * 100) : 0;
+  return {earned, maximum, percentage, breakdown, distractors};
+}
+
+/* ================================================================
+   HACKATHON PARTICIPANT EXPERIENCE
+   ----------------------------------------------------------------
+   Reuses the existing card, slot, drag/drop and tray machinery.
+   One deliberate difference: makeSlot() is called WITHOUT a correctId,
+   so no data-correct attribute is written into the DOM. The expected
+   answer lives only in hackSlots[] in memory.
+   ================================================================ */
+let hackCurrent = null;
+let hackSlots = [];
+let hackSubmitted = false;
+
+async function enterHackathon(){
+  showScreen('hackathon');
+  activeTrayId = 'hackTray';
+  hackSubmitted = false;
+  submitted = false;
+  selectedCardId = null;
+
+  const rec = session.participant || {};
+  const h = rec.hackathon || {};
+  document.getElementById('hackWho').textContent = session.name;
+  document.getElementById('hackWindow').textContent =
+    `${fmtHackDate(h.fromDate)} to ${fmtHackDate(h.toDate)}`;
+
+  const attempts = await Store.getHackathonAttempts(session.key);
+  if(attempts.length > 0){
+    renderHackathonDone(attempts[attempts.length-1]);
+    return;
+  }
+
+  hackCurrent = findHackScenario(h.scenarioId);
+  if(!hackCurrent){
+    document.getElementById('hackBoard').style.display = 'none';
+    document.getElementById('hackDone').style.display = 'block';
+    document.getElementById('hackDoneTitle').textContent = 'Hackathon not available';
+    document.getElementById('hackDoneMsg').textContent =
+      'Your Hackathon has not been fully configured yet. Please contact your training administrator.';
+    return;
+  }
+  buildHackathonBoard();
+}
+
+function buildHackathonBoard(){
+  document.getElementById('hackDone').style.display = 'none';
+  document.getElementById('hackBoard').style.display = 'block';
+  document.getElementById('hackSubmitBtn').disabled = false;
+  document.getElementById('hackResult').classList.remove('show');
+
+  document.getElementById('hackTitle').textContent = hackCurrent.title;
+  document.getElementById('hackProblem').textContent = hackCurrent.problem;
+  document.getElementById('hackTrigger').textContent = hackCurrent.trigger;
+
+  hackSlots = [];
+  const host = document.getElementById('hackFlow');
+  host.innerHTML = '';
+  host.appendChild(fixedNode('Trigger', hackCurrent.trigger, 'trigger'));
+  host.appendChild(arrowDown());
+
+  hackCurrent.pre.forEach((c,i)=>{
+    const s = makeSlot(`hpre${i}`, 'pre', null, `Pre-check ${i+1}`);
+    hackSlots.push({kind:'pre', index:i, correctId:c.id, el:s});
+    host.appendChild(s);
+    if(i < hackCurrent.pre.length-1) host.appendChild(arrowDown());
+  });
+  host.appendChild(arrowDown());
+  host.appendChild(fixedNode('Decision Gate', hackCurrent.decision, 'decision'));
+
+  const branches = el('div','branches');
+  const rCol = el('div','branch-col');
+  rCol.appendChild(el('div','branch-head resolve','✓ Resolve Path'));
+  hackCurrent.resolve.forEach((c,i)=>{
+    const s = makeSlot(`hres${i}`, 'resolve', null, `Resolve step ${i+1}`);
+    hackSlots.push({kind:'resolve', index:i, correctId:c.id, el:s});
+    rCol.appendChild(s);
+  });
+  const eCol = el('div','branch-col escalate-col');
+  eCol.appendChild(el('div','branch-head escalate','↑ Escalate Path'));
+  hackCurrent.escalate.forEach((c,i)=>{
+    const s = makeSlot(`hesc${i}`, 'escalate', null, `Branch step ${i+1} — order not graded`);
+    hackSlots.push({kind:'escalate', index:i, correctId:c.id, el:s});
+    eCol.appendChild(s);
+  });
+  branches.appendChild(rCol); branches.appendChild(eCol);
+  host.appendChild(branches);
+  host.appendChild(arrowDown());
+  host.appendChild(fixedNode('Close', hackCurrent.close, 'close'));
+
+  // tray: correct cards plus distractors drawn ONLY from other Hackathon scenarios
+  const tray = document.getElementById('hackTray');
+  tray.innerHTML = '';
+  wireTrayTarget();
+  const correctCards = hackSteps(hackCurrent);
+  const decoyPool = HACK_ALL_CARDS.filter(c=> !c.id.startsWith(hackCurrent.id+'-'));
+  const decoys = shuffle(decoyPool).slice(0, Math.min(6, Math.max(4, Math.floor(correctCards.length*0.5))));
+  shuffle([...correctCards, ...decoys]).forEach(card=> tray.appendChild(buildCardEl(card)));
+}
+
+/* Separate submission path. Deliberately does NOT call renderAnswerKey(),
+   does not mark slots correct/incorrect, and does not reveal the score. */
+async function submitHackathonSolution(){
+  if(hackSubmitted) return;
+
+  const filled = hackSlots.filter(s=>s.el.querySelector('.card')).length;
+  if(filled < hackSlots.length){
+    if(!confirm(`You have filled ${filled} of ${hackSlots.length} steps. You get one submission only — submit anyway?`)) return;
+  } else {
+    if(!confirm('Submit your Hackathon solution? You get one submission only.')) return;
+  }
+
+  hackSubmitted = true;
+  submitted = true;
+  deselectCard();
+  document.getElementById('hackSubmitBtn').disabled = true;
+  document.querySelectorAll('#hackTray .card, #hackFlow .card').forEach(c=>{
+    c.draggable = false; c.classList.add('locked');
+  });
+
+  const response = hackSlots.map(s=>{
+    const c = s.el.querySelector('.card');
+    return {kind:s.kind, index:s.index, placedCardId: c ? c.dataset.cardId : null};
+  });
+
+  // score is computed here from the authoritative config, never sent from the UI
+  const score = calculateHackathonScore(hackCurrent, response);
+
+  const prior = await Store.getHackathonAttempts(session.key);
+  const attempt = {
+    ts: Date.now(),
+    submittedAt: new Date().toISOString(),
+    scenarioId: hackCurrent.id,
+    scenarioTitle: hackCurrent.title,
+    attemptNo: prior.length + 1,
+    completed: true,
+    response,
+    earned: score.earned,
+    maximum: score.maximum,
+    percentage: score.percentage,
+    breakdown: score.breakdown,
+    distractors: score.distractors
+  };
+
+  const ok = await Store.appendHackathonAttempt(session.key, attempt);
+  if(!ok){
+    hackSubmitted = false; submitted = false;
+    document.getElementById('hackSubmitBtn').disabled = false;
+    document.querySelectorAll('#hackTray .card, #hackFlow .card').forEach(c=>{
+      c.draggable = true; c.classList.remove('locked');
+    });
+    showToast('Could not record your submission — check your connection and try again');
+    return;
+  }
+  renderHackathonDone(attempt);
+}
+
+/* Participant-facing result. Neutral by design: no score, no breakdown,
+   no indication of which steps were right. */
+function renderHackathonDone(attempt){
+  document.getElementById('hackBoard').style.display = 'none';
+  const done = document.getElementById('hackDone');
+  done.style.display = 'block';
+  document.getElementById('hackDoneTitle').textContent = 'Submission recorded';
+  document.getElementById('hackDoneMsg').textContent =
+    'Your Hackathon submission has been recorded successfully. Your results will be reviewed by your training administrator.';
+  document.getElementById('hackDoneMeta').textContent =
+    `${attempt.scenarioTitle} · submitted ${new Date(attempt.ts).toLocaleString()}`;
+}
+
+
+/* ================================================================
+   HACKATHON EMPLOYEE ADMIN
+   ----------------------------------------------------------------
+   Configuration lives inside the existing Participant Roster, not in a
+   separate admin area. One extra column, one modal.
+   ================================================================ */
+let hackCfgKey = null;
+
+function hackBadge(state, pct){
+  const map = {
+    NOT_ASSIGNED: ['hb-none','Not assigned'],
+    SCHEDULED:    ['hb-sched','Scheduled'],
+    ACTIVE:       ['hb-active','Active'],
+    COMPLETED:    ['hb-done', pct==null ? 'Completed' : `Completed · ${pct}%`],
+    EXPIRED:      ['hb-exp','Expired']
+  };
+  const [cls,label] = map[state] || map.NOT_ASSIGNED;
+  return `<span class="hack-badge ${cls}">${label}</span>`;
+}
+
+function openHackathonConfig(key, rec){
+  hackCfgKey = key;
+  const h = (rec && rec.hackathon) || {};
+  document.getElementById('hackCfgWho').textContent =
+    rec.name + (rec.empId ? ` · ${rec.empId}` : '');
+  document.getElementById('hackCfgEnabled').checked = !!h.enabled;
+  document.getElementById('hackCfgFrom').value = hackDatePart(h.fromDate);
+  document.getElementById('hackCfgTo').value   = hackDatePart(h.toDate);
+
+  const sel = document.getElementById('hackCfgScenario');
+  sel.innerHTML = '<option value="">— Select a Hackathon scenario —</option>';
+  HACK_PROBLEMS.forEach(s=>{
+    const o = document.createElement('option');
+    o.value = s.id; o.textContent = s.title;
+    sel.appendChild(o);
+  });
+  sel.value = h.scenarioId || '';
+
+  document.getElementById('hackCfgErr').classList.remove('show');
+  document.getElementById('hackCfgRemove').style.display = h.enabled ? 'inline-block' : 'none';
+  document.getElementById('hackCfgModal').classList.add('show');
+}
+
+function closeHackathonConfig(){
+  document.getElementById('hackCfgModal').classList.remove('show');
+  hackCfgKey = null;
+}
+
+async function saveHackathonConfig(){
+  if(!hackCfgKey) return;
+  const err = document.getElementById('hackCfgErr');
+  const enabled = document.getElementById('hackCfgEnabled').checked;
+  const from = document.getElementById('hackCfgFrom').value;
+  const to   = document.getElementById('hackCfgTo').value;
+  const scenarioId = document.getElementById('hackCfgScenario').value;
+
+  const fail = m => { err.textContent = m; err.classList.add('show'); };
+
+  if(enabled){
+    if(!from || !to)    return fail('Set both a From date and a To date.');
+    if(!scenarioId)     return fail('Choose which Hackathon scenario this participant gets.');
+    if(new Date(hackFromStamp(from)) > new Date(hackToStamp(to)))
+      return fail('The From date must be on or before the To date.');
+  }
+
+  const btn = document.getElementById('hackCfgSave');
+  btn.disabled = true; btn.textContent = 'Saving…';
+
+  const rec = await Store.getParticipant(hackCfgKey);
+  if(!rec){
+    btn.disabled = false; btn.textContent = 'Save';
+    return fail('That participant no longer exists — refresh the roster.');
+  }
+
+  rec.hackathon = enabled ? {
+    enabled: true,
+    fromDate: hackFromStamp(from),
+    toDate:   hackToStamp(to),
+    scenarioId,
+    assignedBy: session ? session.name : '',
+    assignedAt: Date.now()
+  } : null;
+
+  const ok = await Store.putParticipant(hackCfgKey, rec);
+  btn.disabled = false; btn.textContent = 'Save';
+  if(!ok) return fail('Could not save — check your connection and try again.');
+
+  showToast(enabled ? `Hackathon assigned to ${rec.name}` : `Hackathon removed for ${rec.name}`);
+  closeHackathonConfig();
+  await refreshRoster();
+}
+
+async function removeHackathonConfig(){
+  document.getElementById('hackCfgEnabled').checked = false;
+  await saveHackathonConfig();
+}
+
+/* Employee-only detailed breakdown. This is the ONLY place weights,
+   expected positions and step-level results are ever rendered. */
+function renderHackathonDetail(attempt){
+  const wrap = el('div','hack-detail');
+  const pct = attempt.percentage;
+  wrap.innerHTML = `
+    <div class="hd-head">
+      <b>${escapeHtml(attempt.scenarioTitle)}</b>
+      <span class="hd-score ${pct>=70?'pass':pct>=40?'mid':'fail'}">${attempt.earned} / ${attempt.maximum} · ${pct}%</span>
+    </div>
+    <div class="hd-meta">Attempt ${attempt.attemptNo} · submitted ${new Date(attempt.ts).toLocaleString()}</div>`;
+
+  const table = el('table','hack-table');
+  table.innerHTML = `<thead><tr>
+    <th>Step</th><th>Section</th><th>Importance</th><th>Weight</th><th>Result</th><th>Points</th>
+  </tr></thead>`;
+  const tb = el('tbody');
+  const rows = [...attempt.breakdown, ...(attempt.distractors || [])];
+  rows.forEach(r=>{
+    const cls = r.result === 'CORRECT' ? 'r-ok'
+              : r.result === 'MISPLACED' ? 'r-mid'
+              : 'r-bad';
+    const tr = el('tr');
+    tr.innerHTML = `
+      <td>${escapeHtml(r.label)}</td>
+      <td class="hd-sec">${escapeHtml(r.section || '—')}</td>
+      <td><span class="imp imp-${String(r.importance).toLowerCase()}">${escapeHtml(r.importance)}</span></td>
+      <td>${r.weight}</td>
+      <td class="${cls}">${escapeHtml(r.result)}</td>
+      <td class="${cls}">${r.points}</td>`;
+    tb.appendChild(tr);
+  });
+  table.appendChild(tb);
+  wrap.appendChild(table);
+  wrap.appendChild(el('div','hd-foot',
+    `Correct = full weight · Misplaced = ${Math.round(ORDER_PARTIAL_CREDIT*100)}% (right step, wrong position) · Missing / Incorrect = 0. ` +
+    `Pre-checks and Resolve are order-sensitive; the Escalate branch is graded on presence only.`));
+  return wrap;
+}
+
+
+/* ---- hackathon config modal wiring ---- */
+document.getElementById('hackCfgClose').addEventListener('click', closeHackathonConfig);
+document.getElementById('hackCfgSave').addEventListener('click', saveHackathonConfig);
+document.getElementById('hackCfgRemove').addEventListener('click', removeHackathonConfig);
+document.getElementById('hackCfgModal').addEventListener('click', e=>{
+  if(e.target.id === 'hackCfgModal') closeHackathonConfig();
+});
+document.addEventListener('keydown', e=>{
+  if(e.key === 'Escape' && document.getElementById('hackCfgModal').classList.contains('show')){
+    closeHackathonConfig();
+  }
+});
+
+
+/* ================================================================
+   INIT
+   ================================================================ */
+/* v1 seeded a hardcoded "Test User" / PIN 1234 account that let anyone in
+   without an instructor. Removed — every login is now instructor-issued. */
+showScreen('login');
+renderStorageBanner();
+</script>
+</body>
+</html>
