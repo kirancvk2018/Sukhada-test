@@ -218,3 +218,38 @@ Participant receives only "recorded"
 5. Optionally issue a short-lived submission token at login so a participant cannot submit outside their window.
 
 `calculateHackathonScore` was written as a pure function with this move in mind — it takes config plus response and returns a result, with no DOM or global access. Steps 1, 3 and 4 are the substantive work; the participant UI barely changes.
+
+---
+
+## Hackathon Scoring — Interactive Demo (added)
+
+`index.html` only. No new files. `reference-runbooks.html` is unchanged; it is included in the package because both dashboards link to it.
+
+**Where:**
+- **Instructor:** Employee dashboard → **Hackathon Scoring — Interactive Demo** → **▶ Open Scoring Demo**. You can show any of the 10 Hackathon scenarios (default `hack-cpu`), plus the participant demo so you can preview what participants see.
+- **Participant:** a **🎯 How is my Hackathon scored?** button on the practice screen and on the Hackathon screen. Opening it during an active Hackathon keeps every card the participant has already placed. **← Back** returns them to where they came from.
+
+**Participant demo-only scenario.** Participants are locked to `SD_DEMO_SCENARIO` (*Application Server — Memory Exhaustion*, 9 steps, weights total 100). It is **not** in `HACK_SCENARIOS` or `HACK_PROBLEMS`, so it can't be assigned, isn't in the assignment dropdown, and its cards never appear in a live Hackathon tray. Its four distractor cards are also demo-only. `renderHackathonScoringDemo()` forces this scenario for any participant, even if called from the console with a real scenario ID. Tests confirm that no Hackathon step name, scenario title or card ID is ever put into the page for a participant. On that scenario, Demo B gives: Correct 20, Misplaced 8, Missing 0, Incorrect 0, and 64/100 for the realistic mixed attempt.
+
+**No second scoring engine.** `calculateDemoScore(scenario, placements)` turns the demo's placements into the same `{kind, index, placedCardId}` response that `submitHackathonSolution()` builds, then calls `calculateHackathonScore()`. Every point, badge, count and total on screen comes from that call. The "× 40%" labels read `ORDER_PARTIAL_CREDIT`. The demo only works out the multiplier to *write out* the calculation, and it logs a console warning if that ever disagrees with the engine. Scenario data comes from `HACK_PROBLEMS`; nothing is copied.
+
+| Part | What it shows |
+|---|---|
+| Header | Title, message, ▶ PLAY DEMO / ↻ REPLAY / RESET, the four result rules, scenario + presenter-pace pickers (default `hack-cpu`) |
+| Demo A — Relevance sets the weight | Each expected step: highlight → relevance (its own `desc` plus its rank by weight) → card moves from *Available Process Steps* into its slot → `w × 100% = w` → running score. Weight bars compare every step (e.g. 25 vs 2). Three distractors stay in the tray and end up marked "would score 0". Also has Pause/Resume and Next step ▸ |
+| "Why is this step worth N points?" | Click any card or bar. Shows the step's importance, weight, share of the total, rank, where it belongs, and how the same importance maps to different weights across scenarios |
+| Demo B — Placement | The same step in four cases, each starting from an empty workflow: **Correct** (20 × 100% = 20), **Misplaced** (20 × 40% = 8), **Missing** (20 × 0% = 0), **Incorrect/Distractor** (0, and the displaced step becomes Missing). Two more cases: the escalate steps swapped (still full credit, because only presence is graded) and a realistic mixed attempt (66/100 on `hack-cpu`). Live breakdown table, score and Correct/Misplaced/Missing/Incorrect counts |
+| How Hackathon Scoring Works | The 8-point model, the goal statement, and a comparison of order-sensitive vs presence-only sections |
+
+**Accessibility:** results never rely on colour alone. Each has an icon, a text label and a border style (Missing is dashed). Cards and bars can be reached and opened from the keyboard. The step panels use `aria-live`. `prefers-reduced-motion` turns off the moving cards and the count-up.
+
+**Tested:** 105 automated checks in headless Chromium against a mocked Supabase, with no console errors:
+- Demo A: play, pause, next step, replay and reset, ending at 100/100.
+- Demo B: all six cases.
+- All 10 scenarios play through both demos.
+- 2,000 random placements give identical results from `calculateDemoScore` and `calculateHackathonScore`.
+- No horizontal scroll at 1440, 1024 or 390 px.
+- Regression checks: employee login, participant creation, live Hackathon submission (swapping the first two pre-checks scores 91/100, as in §4), practice submission, and roster status. No `data-correct` attribute appears on the participant's Hackathon screen.
+- Participant access from practice and from the Hackathon screen: always locked to the demo-only scenario, nothing from a real Hackathon scenario on the page, and board state kept on return.
+
+**Existing issue noticed, not changed:** "Acknowledge & Classify" is a step in 8 of the 10 Hackathon scenarios, so a live Hackathon tray can show two identical-looking cards. If the participant picks the one from another scenario, it scores INCORRECT and the real step scores MISSING. The demo leaves out distractors whose label matches a real step. The live tray does not.

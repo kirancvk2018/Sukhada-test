@@ -119,6 +119,220 @@
   .imp---{background:transparent; color:var(--text-faint);}
   .hd-foot{margin-top:10px; font-size:11px; line-height:1.5; color:var(--text-faint);}
 
+  /* ---- hackathon scoring — interactive demo (employee / instructor) ---- */
+  .sd-entry{display:flex; align-items:center; justify-content:space-between; gap:18px; flex-wrap:wrap;}
+  .sd-entry p{margin:0; font-size:12.5px; color:var(--text-dim); line-height:1.55; max-width:680px;}
+  .sd-topline{display:flex; justify-content:space-between; align-items:flex-end; gap:14px; flex-wrap:wrap; margin-bottom:18px;}
+  .sd-pickers{display:flex; gap:12px; flex-wrap:wrap; min-width:0; max-width:100%;}
+  .sd-pick{display:flex; flex-direction:column; gap:5px; min-width:0; max-width:100%;}
+  .sd-pick span{font-family:var(--mono); font-size:9.5px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:var(--text-faint);}
+  .sd-pick select{background:var(--panel-alt); border:1px solid var(--border); border-radius:7px; padding:8px 10px;
+    font-family:var(--sans); font-size:13px; color:var(--text); max-width:100%; min-width:0;}
+  .sd-pick select:focus{outline:2px solid var(--accent); outline-offset:1px;}
+  .sd-eyebrow{font-family:var(--mono); font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--cyan); margin-bottom:6px;}
+  .sd-h2{margin:0 0 10px; font-family:var(--mono); font-size:clamp(22px,3vw,30px); font-weight:800; color:var(--text); line-height:1.2;}
+  .sd-lede{margin:0 0 18px; font-size:clamp(14px,1.5vw,16.5px); line-height:1.6; color:var(--text-dim); max-width:860px;}
+  .sd-hero-actions{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:20px;}
+  .btn.sd-big{font-size:14px; padding:13px 24px; letter-spacing:.03em;}
+  .sd-rules{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px;}
+  .sd-rule{border:1px solid var(--border); border-radius:10px; padding:13px 14px; background:var(--panel);}
+  .sd-rule .sd-rule-x{font-family:var(--mono); font-size:26px; font-weight:800; color:var(--text); margin:8px 0 3px; line-height:1;}
+  .sd-rule p{margin:0; font-size:12px; line-height:1.45; color:var(--text-dim);}
+  .sd-projector-note{margin:16px 0 0; font-size:11.5px; line-height:1.5; color:var(--text-faint);}
+  .sd-projector-note.pt{font-size:12.5px; padding:11px 14px; border-radius:8px; border:1px solid var(--sky); background:var(--sky-dim); color:#075985;}
+  .sd-projector-note.pt b{color:#0C4A6E;}
+
+  .sd-res{display:inline-flex; align-items:center; gap:5px; font-family:var(--mono); font-size:10.5px; font-weight:800; letter-spacing:.06em;
+    text-transform:uppercase; padding:3px 9px; border-radius:20px; border:1.5px solid; white-space:nowrap; line-height:1.4;}
+  .sd-res.big{font-size:15px; padding:6px 14px;}
+  .sd-res-ok{color:#047857; background:var(--green-dim); border-color:var(--green);}
+  .sd-res-mid{color:#92400E; background:var(--amber-dim); border-color:var(--amber);}
+  .sd-res-miss{color:var(--text-dim); background:var(--panel-raise); border-color:var(--text-faint); border-style:dashed;}
+  .sd-res-bad{color:#B91C1C; background:var(--red-dim); border-color:var(--red);}
+
+  .sd-demo-head{display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap; margin-bottom:18px;}
+  .sd-demo-head .section-title{margin-bottom:6px;}
+  .sd-h3{margin:0 0 5px; font-family:var(--mono); font-size:clamp(17px,2vw,21px); font-weight:800; color:var(--text);}
+  .sd-sub{margin:0; font-size:13px; line-height:1.55; color:var(--text-dim); max-width:640px;}
+  .sd-ctrls{display:flex; gap:8px; flex-wrap:wrap; align-items:flex-end;}
+  .sd-ctrls .btn{min-height:40px;}
+
+  .sd-a-grid{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.25fr) 300px; gap:18px; align-items:start;}
+  .sd-col{min-width:0;}
+  .sd-tray{display:flex; flex-direction:column; gap:8px;}
+  .sd-card{cursor:pointer; padding:9px 12px;}
+  .sd-card:focus-visible{outline:3px solid var(--accent); outline-offset:2px;}
+  .sd-card .c-title{font-size:13px;}
+  .sd-card-meta{display:flex; align-items:center; gap:7px; margin-top:5px; flex-wrap:wrap;}
+  .sd-w{font-family:var(--mono); font-size:11px; font-weight:800; color:var(--text);}
+  .sd-other{font-size:10.5px; font-weight:600; color:var(--text-faint); font-style:italic;}
+  .sd-card.sd-distractor{border-left-color:var(--text-faint); background:var(--panel);}
+  .sd-card.sd-hl{outline:3px solid var(--amber); outline-offset:2px; box-shadow:0 0 0 7px rgba(217,119,6,.14); transform:scale(1.02);}
+  .sd-card.sd-flying{box-shadow:0 16px 36px -12px rgba(15,42,34,.4); pointer-events:none;}
+  .sd-placed-note{font-family:var(--mono); font-size:10.5px; font-weight:700; color:var(--accent2); border:1px dashed var(--accent);
+    border-radius:7px; padding:8px 11px; background:var(--accent-dim);}
+  .sd-unused{margin-top:5px;}
+
+  .sd-flow{display:flex; flex-direction:column; gap:14px;}
+  .sd-sec{border:1px solid var(--border-soft); border-radius:10px; padding:10px; background:var(--panel);}
+  .sd-sec-head{display:flex; justify-content:space-between; gap:8px; flex-wrap:wrap; font-family:var(--mono); font-size:10.5px; font-weight:800;
+    letter-spacing:.07em; text-transform:uppercase; margin:0 2px 8px;}
+  .sd-sec-pre .sd-sec-head{color:var(--sky);} .sd-sec-resolve .sd-sec-head{color:var(--accent2);} .sd-sec-escalate .sd-sec-head{color:var(--red);}
+  .sd-sec-rule{color:var(--text-dim); font-weight:700;}
+  .sd-slots{display:flex; flex-direction:column; gap:7px;}
+  .sd-slot{display:grid; grid-template-columns:38px minmax(0,1fr) auto; align-items:center; gap:9px; min-height:52px; padding:5px 8px 5px 5px;
+    border:2px dashed var(--border); border-radius:8px; background:var(--panel-alt); transition:border-color .2s, background .2s, box-shadow .2s;}
+  .sd-pos{font-family:var(--mono); font-size:12px; font-weight:800; text-align:center; border-radius:6px; padding:6px 0; background:var(--panel-raise); color:var(--text-dim);}
+  .sd-slot[data-kind="pre"] .sd-pos{color:var(--sky); background:var(--sky-dim);}
+  .sd-slot[data-kind="resolve"] .sd-pos{color:var(--accent2); background:var(--accent-dim);}
+  .sd-slot[data-kind="escalate"] .sd-pos{color:var(--red); background:var(--red-dim);}
+  .sd-ph{font-family:var(--mono); font-size:10.5px; color:var(--text-faint);}
+  .sd-slot-body .card{margin:0;}
+  .sd-slot-pts{font-family:var(--mono); font-size:15px; font-weight:800; color:var(--accent2); min-width:0; text-align:right;}
+  .sd-slot-pts .sd-res{font-size:9.5px; padding:2px 7px;}
+  .sd-slot-pts-wrap{display:flex; flex-direction:column; align-items:flex-end; gap:4px;}
+  .sd-slot.sd-target{border-color:var(--amber); background:var(--amber-dim);}
+  .sd-slot.filled{border-style:solid; border-color:var(--border-soft); background:var(--panel);}
+  .sd-slot.r-ok{border-color:var(--green); background:var(--green-dim);}
+  .sd-slot.r-mid{border-color:var(--amber); background:var(--amber-dim);}
+  .sd-slot.r-bad{border-color:var(--red); background:var(--red-dim);}
+  .sd-slot.r-miss{border-color:var(--text-faint); border-style:dashed; background:repeating-linear-gradient(135deg, var(--panel-alt) 0 8px, var(--panel-raise) 8px 16px);}
+  .sd-expect{font-size:11.5px; color:var(--text-dim); line-height:1.4;}
+  .sd-expect b{color:var(--text);}
+  .sd-pop{animation:sdPop .35s ease-out both;}
+  @keyframes sdPop{from{opacity:0; transform:scale(.96);} to{opacity:1; transform:none;}}
+
+  .sd-scorebox{position:sticky; top:76px; border:1px solid var(--border); border-radius:12px; padding:16px; background:var(--panel);
+    box-shadow:0 20px 50px -30px rgba(16,150,105,.3);}
+  .sd-score-label{font-family:var(--mono); font-size:10.5px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--text-faint);}
+  .sd-score{font-family:var(--mono); font-weight:800; font-size:clamp(40px,5vw,56px); line-height:1.05; color:var(--text); margin:4px 0 8px; font-variant-numeric:tabular-nums;}
+  .sd-score small{font-size:.42em; color:var(--text-faint); font-weight:700;}
+  .sd-meter{height:10px; border-radius:6px; background:var(--panel-raise); overflow:hidden; border:1px solid var(--border-soft);}
+  .sd-meter > div{height:100%; width:0; background:linear-gradient(90deg,var(--accent),var(--teal)); transition:width .6s ease;}
+  .sd-stage{margin-top:14px; border-top:1px solid var(--border-soft); padding-top:12px; min-height:120px;}
+  .sd-pips{display:flex; gap:4px; margin-bottom:11px;}
+  .sd-pip{flex:1; font-family:var(--mono); font-size:8.5px; font-weight:800; letter-spacing:.04em; text-transform:uppercase; text-align:center;
+    padding:5px 0 4px; border-radius:4px; background:var(--panel-raise); color:var(--text-faint); border-bottom:3px solid transparent;}
+  .sd-pip.done{color:var(--accent2); background:var(--accent-dim);}
+  .sd-pip.on{color:#92400E; background:var(--amber-dim); border-bottom-color:var(--amber);}
+  .sd-st-k{font-family:var(--mono); font-size:9.5px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:var(--text-faint); margin-top:9px;}
+  .sd-st-step{font-family:var(--mono); font-size:15.5px; font-weight:800; color:var(--text); line-height:1.3; margin-top:2px;}
+  .sd-st-row{display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-top:7px;}
+  .sd-st-row .imp{font-size:10px; padding:3px 8px;}
+  .sd-wchip{font-family:var(--mono); font-size:12px; font-weight:800; padding:3px 9px; border-radius:5px; background:var(--text); color:#fff;}
+  .sd-st-why{font-size:12.5px; line-height:1.5; color:var(--text-dim); margin-top:4px;}
+  .sd-math{font-family:var(--mono); font-size:clamp(18px,2vw,22px); font-weight:800; color:var(--text); margin-top:4px; font-variant-numeric:tabular-nums;}
+  .sd-math-sub{font-family:var(--mono); font-size:11px; color:var(--text-faint); margin-top:2px;}
+  .sd-plus{display:inline-block; margin-top:9px; font-family:var(--mono); font-size:clamp(20px,2.4vw,26px); font-weight:800; padding:4px 13px; border-radius:8px;
+    color:#047857; background:var(--green-dim); border:2px solid var(--green); animation:sdPop .35s ease-out both;}
+  .sd-plus.mid{color:#92400E; background:var(--amber-dim); border-color:var(--amber);}
+  .sd-plus.zero{color:var(--text-dim); background:var(--panel-raise); border-color:var(--text-faint); border-style:dashed;}
+  .sd-plus.bad{color:#B91C1C; background:var(--red-dim); border-color:var(--red);}
+  .sd-idle{font-size:12.5px; line-height:1.55; color:var(--text-dim);}
+  .sd-idle b{color:var(--text);}
+
+  .sd-a-lower{display:grid; grid-template-columns:minmax(0,1.35fr) minmax(0,1fr); gap:18px; margin-top:22px; align-items:start;}
+  .sd-bars{display:flex; flex-direction:column; gap:6px;}
+  .sd-bar{display:grid; grid-template-columns:minmax(120px,210px) minmax(0,1fr) 36px; gap:10px; align-items:center; cursor:pointer;
+    padding:3px 6px; border-radius:6px; border:1px solid transparent; background:none; font:inherit; text-align:left; color:inherit; width:100%;}
+  .sd-bar:hover{background:var(--panel-raise);}
+  .sd-bar:focus-visible{outline:3px solid var(--accent); outline-offset:1px;}
+  .sd-bar.on{border-color:var(--amber); background:var(--amber-dim);}
+  .sd-bar-l{font-size:12px; font-weight:600; color:var(--text); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .sd-bar-t{height:16px; border-radius:4px; background:var(--panel-raise); overflow:hidden;}
+  .sd-bar-f{height:100%; border-radius:4px; background:var(--text-faint); opacity:.45; transition:opacity .3s, background .3s;}
+  .sd-bar.placed .sd-bar-f{opacity:1; background:linear-gradient(90deg,var(--accent),var(--teal));}
+  .sd-bar.on .sd-bar-f{opacity:1; background:var(--amber);}
+  .sd-bar-v{font-family:var(--mono); font-size:13px; font-weight:800; text-align:right; color:var(--text);}
+  .sd-bars-note{margin-top:11px; font-size:12.5px; line-height:1.55; color:var(--text-dim); padding:11px 13px; border-radius:8px; background:var(--panel-alt); border:1px solid var(--border-soft);}
+  .sd-bars-note b{color:var(--text);}
+  .sd-why{border:1px solid var(--border); border-left:4px solid var(--violet); border-radius:10px; padding:15px 16px; background:var(--panel);}
+  .sd-why-q{font-family:var(--mono); font-size:10.5px; font-weight:800; letter-spacing:.07em; text-transform:uppercase; color:var(--violet);}
+  .sd-why h4{margin:6px 0 8px; font-family:var(--mono); font-size:16px; font-weight:800; color:var(--text);}
+  .sd-why p{margin:8px 0 0; font-size:12.5px; line-height:1.55; color:var(--text-dim);}
+  .sd-why p b{color:var(--text);}
+  .sd-why .sd-hint{font-size:11px; color:var(--text-faint);}
+  .sd-table-wrap{margin-top:22px; overflow-x:auto; min-width:0; max-width:100%;}
+  .sd-table{font-size:12.5px;}
+  .sd-table td, .sd-table th{white-space:nowrap;}
+  .sd-table td:first-child{white-space:normal; min-width:170px;}
+  .sd-table td.sd-num{text-align:right; font-family:var(--mono); font-weight:700; color:var(--text);}
+  .sd-table th.sd-num{text-align:right;}
+  .sd-table td.sd-calc{font-family:var(--mono); font-size:11.5px; color:var(--text-dim);}
+  .sd-table tr.sd-focus-row td{background:var(--amber-dim);}
+  .sd-table tr.sd-dim td{opacity:.5;}
+  .sd-table tfoot td{font-weight:800; color:var(--text); border-top:2px solid var(--border); border-bottom:none;}
+
+  .sd-cases{display:flex; gap:7px; flex-wrap:wrap; margin-bottom:16px;}
+  .sd-case-btn{font-family:var(--mono); font-size:11.5px; font-weight:700; padding:8px 12px; border-radius:8px; border:1px solid var(--border);
+    background:var(--panel); color:var(--text-dim); cursor:pointer;}
+  .sd-case-btn:hover{border-color:var(--text-faint); color:var(--text);}
+  .sd-case-btn:focus-visible{outline:3px solid var(--accent); outline-offset:1px;}
+  .sd-case-btn.on{background:var(--text); color:#fff; border-color:var(--text);}
+  .sd-case-btn.seen:not(.on){border-color:var(--accent); color:var(--accent2);}
+  .sd-b-grid{display:grid; grid-template-columns:minmax(0,1.3fr) minmax(0,1fr); gap:18px; align-items:start;}
+  .sd-inplay{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:8px;}
+  .sd-verdict{position:sticky; top:76px; border:1px solid var(--border); border-radius:12px; padding:18px; background:var(--panel); min-height:220px;
+    box-shadow:0 20px 50px -30px rgba(16,150,105,.3);}
+  .sd-v-case{font-family:var(--mono); font-size:10.5px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--cyan);}
+  .sd-v-title{margin:4px 0 12px; font-family:var(--mono); font-size:clamp(18px,2vw,22px); font-weight:800; color:var(--text);}
+  .sd-v-item{border-top:1px solid var(--border-soft); padding-top:12px; margin-top:12px;}
+  .sd-v-item:first-of-type{border-top:none; padding-top:0; margin-top:0;}
+  .sd-v-step{font-size:13.5px; font-weight:700; color:var(--text); margin:8px 0 2px;}
+  .sd-v-meta{font-size:11.5px; color:var(--text-faint);}
+  .sd-v-explain{margin:14px 0 0; font-size:13px; line-height:1.6; color:var(--text-dim); padding:11px 13px; border-radius:8px; background:var(--panel-alt); border:1px solid var(--border-soft);}
+  .sd-v-explain b{color:var(--text);}
+  .sd-v-compact{display:grid; grid-template-columns:auto minmax(0,1fr) auto; gap:6px 10px; align-items:center; font-size:12.5px;}
+  .sd-v-compact .sd-vc-l{font-weight:600; color:var(--text); line-height:1.3;}
+  .sd-v-compact .sd-vc-l small{display:block; font-family:var(--mono); font-size:11px; font-weight:600; color:var(--text-faint);}
+  .sd-v-compact .sd-vc-p{font-family:var(--mono); font-size:15px; font-weight:800; color:var(--text); text-align:right;}
+  .sd-v-score{margin-top:14px; display:flex; justify-content:space-between; align-items:baseline; gap:10px; border-top:1px solid var(--border-soft); padding-top:12px;
+    font-family:var(--mono); font-size:11px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--text-faint);}
+  .sd-v-score b{font-size:24px; color:var(--text); letter-spacing:0;}
+  #sdDemoA .sd-a-grid, #sdCases{scroll-margin-top:84px;}
+  .sd-v-full{font-size:12px; font-weight:700; color:var(--accent2); margin-top:6px;}
+  .sd-b-summary{display:grid; grid-template-columns:minmax(0,1fr) 260px; gap:18px; margin-top:22px; align-items:start;}
+  .sd-b-summary .sd-table-wrap{margin-top:0;}
+  .sd-counts{display:grid; grid-template-columns:1fr 1fr; gap:7px; margin-top:14px;}
+  .sd-count{display:flex; justify-content:space-between; align-items:center; gap:6px; font-size:12px; padding:6px 8px; border-radius:7px; background:var(--panel-alt); border:1px solid var(--border-soft);}
+  .sd-count b{font-family:var(--mono); font-size:16px; color:var(--text);}
+  .sd-pct{font-family:var(--mono); font-size:12px; font-weight:700; color:var(--text-dim);}
+
+  .sd-model-grid{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:22px; align-items:start;}
+  .sd-steps{margin:0; padding:0; list-style:none; counter-reset:sd; display:flex; flex-direction:column; gap:7px;}
+  .sd-steps li{counter-increment:sd; display:grid; grid-template-columns:28px 1fr; gap:10px; align-items:start; font-size:13.5px; line-height:1.5; color:var(--text);}
+  .sd-steps li::before{content:counter(sd); font-family:var(--mono); font-size:12px; font-weight:800; width:26px; height:26px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center; background:var(--accent-dim); color:var(--accent2);}
+  .sd-goal{padding:16px 18px; border-radius:11px; border:2px solid var(--accent); background:var(--accent-dim); color:#065F46; font-size:15px; line-height:1.55;}
+  .sd-order{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px;}
+  .sd-order-tile{border:1px solid var(--border); border-radius:10px; padding:13px 14px; background:var(--panel);}
+  .sd-order-tile h5{margin:0 0 3px; font-family:var(--mono); font-size:12.5px; font-weight:800; color:var(--text);}
+  .sd-order-tile .sd-order-k{font-family:var(--mono); font-size:10px; font-weight:800; letter-spacing:.07em; text-transform:uppercase;}
+  .sd-order-tile.seq .sd-order-k{color:var(--accent2);} .sd-order-tile.pres .sd-order-k{color:var(--red);}
+  .sd-order-tile p{margin:7px 0 0; font-size:12px; line-height:1.5; color:var(--text-dim);}
+
+  @media (max-width:1100px){
+    .sd-a-grid{grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);}
+    .sd-a-grid .sd-scorebox{grid-column:1 / -1; order:-1; position:static; display:grid; grid-template-columns:200px minmax(0,1fr); grid-template-rows:auto auto auto 1fr; column-gap:22px; align-items:start;}
+    .sd-a-grid .sd-scorebox .sd-score-label, .sd-a-grid .sd-scorebox .sd-score, .sd-a-grid .sd-scorebox .sd-meter{grid-column:1;}
+    .sd-a-grid .sd-scorebox .sd-stage{grid-column:2; grid-row:1 / span 4; margin-top:0; border-top:none; padding-top:0; border-left:1px solid var(--border-soft); padding-left:20px; min-height:0;}
+    .sd-rules{grid-template-columns:repeat(2,minmax(0,1fr));}
+  }
+  @media (max-width:860px){
+    .sd-a-lower, .sd-b-grid, .sd-b-summary, .sd-model-grid{grid-template-columns:1fr;}
+    .sd-verdict{position:static;}
+  }
+  @media (max-width:720px){
+    .sd-a-grid{grid-template-columns:1fr;}
+    .sd-a-grid .sd-scorebox{display:block;}
+    .sd-a-grid .sd-scorebox .sd-stage{border-left:none; padding-left:0; margin-top:14px; border-top:1px solid var(--border-soft); padding-top:12px;}
+    .sd-order{grid-template-columns:1fr;}
+    .sd-bar{grid-template-columns:minmax(0,1fr) 36px;}
+    .sd-bar-t{grid-column:1 / -1; grid-row:2;}
+  }
+  @media (max-width:480px){ .sd-rules{grid-template-columns:1fr;} .sd-pickers, .sd-pick, .sd-pick select, .sd-ctrls .sd-pick{width:100%;} }
+  @media (prefers-reduced-motion:reduce){ .sd-pop, .sd-plus{animation:none;} .sd-meter > div, .sd-bar-f{transition:none;} }
+
   .modal-back{position:fixed; inset:0; background:rgba(15,42,34,.45); z-index:120; display:none;
     align-items:flex-start; justify-content:center; padding:44px 18px; overflow-y:auto;}
   .modal-back.show{display:flex;}
@@ -481,6 +695,16 @@
       </div>
 
       <div class="card-panel" style="margin-bottom:22px;">
+        <div class="section-title">Hackathon Scoring — Interactive Demo</div>
+        <div class="sd-entry">
+          <p>Use this to brief participants before a Hackathon. It shows why steps carry different weights, and how
+            <b>Correct</b>, <b>Misplaced</b>, <b>Missing</b> and <b>Incorrect</b> placements are scored. Every number
+            comes from the same scoring function used for real submissions.</p>
+          <button class="btn primary" id="openScoringDemoBtn">▶ Open Scoring Demo</button>
+        </div>
+      </div>
+
+      <div class="card-panel" style="margin-bottom:22px;">
         <div class="section-title">Connection</div>
         <p style="font-size:12.5px; color:var(--text-dim); line-height:1.55; margin:0 0 12px;">
           Check this before every session. It confirms participants will be able to log in from their own devices.
@@ -507,6 +731,7 @@
         </div>
         <p class="hack-warn">This is an assessment. You get <b>one submission</b>, and the correct flow is not shown
           afterwards. Take your time and place every step before you submit.</p>
+        <button class="btn small" id="hackScoringDemoBtn" style="margin-top:12px;">🎯 How is my Hackathon scored?</button>
       </div>
 
       <div id="hackBoard" style="display:none;">
@@ -544,6 +769,134 @@
       </div>
     </div>
 
+    <!-- ============ HACKATHON SCORING DEMO (instructor: any scenario · participant: demo-only scenario) ============ -->
+    <div id="scoringDemoScreen" style="display:none;">
+      <div class="card-panel sd-hero">
+        <div class="sd-topline">
+          <button class="btn small" id="sdBackBtn">← Back to dashboard</button>
+          <div class="sd-pickers">
+            <label class="sd-pick"><span>Scenario</span><select id="sdScenario"></select></label>
+            <label class="sd-pick"><span>Presenter pace</span>
+              <select id="sdPace">
+                <option value="slow">Slow</option>
+                <option value="standard" selected>Standard</option>
+                <option value="fast">Fast</option>
+              </select>
+            </label>
+          </div>
+        </div>
+        <div class="sd-eyebrow">Hackathon Scoring — Interactive Demo</div>
+        <h2 class="sd-h2">See How Your Hackathon Score Is Calculated</h2>
+        <p class="sd-lede">Every process step does not have the same value.<br>
+          The more relevant a step is to solving the problem, the greater its contribution to the final score.</p>
+        <div class="sd-hero-actions">
+          <button class="btn primary sd-big" id="sdHeroPlay">▶ PLAY DEMO</button>
+          <button class="btn sd-big" id="sdHeroReplay">↻ REPLAY</button>
+          <button class="btn sd-big" id="sdHeroReset">RESET</button>
+        </div>
+        <div class="sd-rules" id="sdRules"></div>
+        <p class="sd-projector-note" id="sdAudienceNote"></p>
+      </div>
+
+      <!-- Demo A -->
+      <div class="card-panel" id="sdDemoA">
+        <div class="sd-demo-head">
+          <div>
+            <div class="section-title">Demo A · Relevance sets the weight</div>
+            <h3 class="sd-h3" id="sdATitle"></h3>
+            <p class="sd-sub" id="sdAProblem"></p>
+          </div>
+          <div class="sd-ctrls">
+            <button class="btn primary" id="sdAPlay">▶ PLAY DEMO</button>
+            <button class="btn" id="sdANext">Next step ▸</button>
+            <button class="btn" id="sdAReplay">↻ REPLAY</button>
+            <button class="btn" id="sdAReset">RESET</button>
+          </div>
+        </div>
+        <div class="sd-a-grid">
+          <div class="sd-col">
+            <div class="panel-title">Available process steps</div>
+            <div class="sd-tray" id="sdATray"></div>
+          </div>
+          <div class="sd-col">
+            <div class="panel-title">Expected workflow</div>
+            <div class="sd-flow" id="sdAFlow"></div>
+          </div>
+          <aside class="sd-scorebox" aria-label="Demo A score">
+            <div class="sd-score-label">Current score</div>
+            <div class="sd-score"><span id="sdAScore">0</span><small> / <span id="sdAMax">100</span></small></div>
+            <div class="sd-meter"><div id="sdAMeter"></div></div>
+            <div class="sd-stage" id="sdAStage" aria-live="polite"></div>
+          </aside>
+        </div>
+        <div class="sd-a-lower">
+          <div>
+            <div class="panel-title">Weight comparison — not every step contributes equally</div>
+            <div class="sd-bars" id="sdBars"></div>
+            <div class="sd-bars-note" id="sdBarsNote"></div>
+          </div>
+          <div class="sd-why" id="sdWhy" aria-live="polite"></div>
+        </div>
+        <div class="sd-table-wrap">
+          <div class="panel-title">Live score breakdown</div>
+          <div id="sdATable"></div>
+        </div>
+      </div>
+
+      <!-- Demo B -->
+      <div class="card-panel" id="sdDemoB">
+        <div class="sd-demo-head">
+          <div>
+            <div class="section-title">Demo B · Placement</div>
+            <h3 class="sd-h3">What Happens When You Place a Step Incorrectly?</h3>
+            <p class="sd-sub">The same step, four outcomes. Cases 1–4 each start from an empty workflow, so only the
+              highlighted step changes the score.</p>
+          </div>
+          <div class="sd-ctrls">
+            <label class="sd-pick"><span>Step to demonstrate</span><select id="sdFocus"></select></label>
+            <button class="btn primary" id="sdBPlay">▶ PLAY SCORING EXAMPLES</button>
+            <button class="btn" id="sdBReplay">↻ REPLAY</button>
+            <button class="btn" id="sdBReset">RESET</button>
+          </div>
+        </div>
+        <div class="sd-cases" id="sdCases" aria-label="Scoring cases"></div>
+        <div class="sd-b-grid">
+          <div class="sd-col">
+            <div class="panel-title">Cards in play</div>
+            <div class="sd-inplay" id="sdBInPlay"></div>
+            <div class="panel-title" style="margin-top:18px;">Expected workflow</div>
+            <div class="sd-flow" id="sdBFlow"></div>
+          </div>
+          <div class="sd-verdict" id="sdVerdict" aria-live="polite"></div>
+        </div>
+        <div class="sd-b-summary">
+          <div class="sd-table-wrap">
+            <div class="panel-title">Live score breakdown</div>
+            <div id="sdBTable"></div>
+          </div>
+          <aside class="sd-scorebox" aria-label="Demo B score">
+            <div class="sd-score-label">Current score</div>
+            <div class="sd-score"><span id="sdBScore">0</span><small> / <span id="sdBMax">100</span></small></div>
+            <div class="sd-meter"><div id="sdBMeter"></div></div>
+            <div class="sd-counts" id="sdBCounts"></div>
+          </aside>
+        </div>
+      </div>
+
+      <!-- Scoring model -->
+      <div class="card-panel">
+        <div class="section-title">How Hackathon Scoring Works</div>
+        <div class="sd-model-grid">
+          <ol class="sd-steps" id="sdModelSteps"></ol>
+          <div>
+            <div class="sd-goal"><b>The goal is not to select the maximum number of steps. The goal is to construct the
+              most relevant workflow in the correct sequence.</b></div>
+            <div class="sd-order" id="sdOrder"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- ============ PARTICIPANT SCREEN ============ -->
     <div id="participantScreen" style="display:none;">
       <div class="card-panel" style="margin-bottom:22px;">
@@ -551,6 +904,7 @@
         <div class="stat-row" id="participantStatRow"></div>
         <div id="historyWrap"></div>
         <a href="reference-runbooks.html" target="_blank" rel="noopener" class="btn" style="display:inline-block; text-decoration:none; margin-top:16px;">📖 View Reference Runbooks</a>
+        <button class="btn" id="pScoringDemoBtn" style="margin-top:16px; margin-left:6px;">🎯 How is my Hackathon scored?</button>
       </div>
 
       <div class="select-wrap" style="margin-bottom:18px;">
@@ -1056,6 +1410,8 @@ function showScreen(which){
   document.getElementById('employeeScreen').style.display = which==='employee' ? 'block' : 'none';
   document.getElementById('participantScreen').style.display = which==='participant' ? 'block' : 'none';
   document.getElementById('hackathonScreen').style.display = which==='hackathon' ? 'block' : 'none';
+  document.getElementById('scoringDemoScreen').style.display = which==='scoringdemo' ? 'block' : 'none';
+  if(which !== 'scoringdemo' && typeof stopScoringDemo === 'function') stopScoringDemo();
 }
 
 function renderWhoBox(){
@@ -2919,6 +3275,859 @@ document.addEventListener('keydown', e=>{
   if(e.key === 'Escape' && document.getElementById('hackCfgModal').classList.contains('show')){
     closeHackathonConfig();
   }
+});
+
+
+/* ================================================================
+   HACKATHON SCORING — INTERACTIVE DEMO   (instructor + participant)
+   ----------------------------------------------------------------
+   A teaching view for the Hackathon briefing. It contains NO scoring
+   logic of its own. Every point on screen is produced by
+   calculateHackathonScore() and ORDER_PARTIAL_CREDIT above, fed with
+   exactly the response shape submitHackathonSolution() builds
+   ({kind, index, placedCardId} per slot). If the real scoring changes,
+   the demo changes with it.
+
+   Scenario data comes from HACK_PROBLEMS (ids, kind, index, importance,
+   weight) — nothing is copied or re-declared here.
+
+   Instructors open it from the employee dashboard and can show any
+   Hackathon scenario. Participants open it with "How is my Hackathon
+   scored?" and are locked to SD_DEMO_SCENARIO, a demo-only scenario that
+   is not in HACK_PROBLEMS — so no real Hackathon scenario's steps,
+   weights or order are ever rendered for a participant.
+   ================================================================ */
+const SD_DEFAULT_SCENARIO = 'hack-cpu';
+
+/* DEMO-ONLY SCENARIO — what participants see.
+   Deliberately NOT part of HACK_SCENARIOS / HACK_PROBLEMS, so it can never be
+   assigned as a Hackathon, never appears in the assignment dropdown, and its
+   cards never enter a live Hackathon tray. Same shape and same rules as a real
+   Hackathon scenario (weights total 100), and it is scored by the same
+   calculateHackathonScore(). Its distractors are demo-only too, so a
+   participant watching the demo sees nothing from a real Hackathon scenario. */
+const SD_DEMO_ONLY_ID = 'demo-mem';
+const SD_DEMO_SCENARIO_RAW = {
+ id:SD_DEMO_ONLY_ID, demoOnly:true,
+ title:'Application Server — Memory Exhaustion (practice example)',
+ problem:'An internal reporting application server is using 96% of its memory and has started paging heavily. Report generation is slow and two scheduled jobs have timed out. The server is still up.',
+ trigger:'Monitoring Alert — memory utilisation threshold breach',
+ decision:'Can memory be recovered safely on this host, or does the application need a fix or more capacity?',
+ pre:[
+  {label:'Log & Prioritise the Alert', desc:'Take ownership, set priority from business impact, and start the SLA clock.', importance:'MEDIUM', weight:6},
+  {label:'Confirm Affected Service', desc:'Establish which application, jobs and users are affected, and whether other hosts show the same pattern.', importance:'HIGH', weight:12},
+  {label:'Record Memory Baseline', desc:'Capture memory, swap and paging figures before changing anything, so the effect of any fix can be proven.', importance:'HIGH', weight:9}],
+ resolve:[
+  {label:'Identify Memory-Consuming Process', desc:'Use approved tooling to find which process or service is holding the memory, and whether it keeps growing.', importance:'CRITICAL', weight:20},
+  {label:'Check for Recent Deployment', desc:'Look at the change record for releases or configuration changes in the last 24 hours.', importance:'HIGH', weight:13},
+  {label:'Recycle Service Within Runbook', desc:'Restart or recycle the offending service only as the approved runbook allows, after notifying the service owner.', importance:'CRITICAL', weight:25},
+  {label:'Confirm Jobs and Reports Recover', desc:'Verify memory stays at normal levels and the timed-out jobs complete — not just that the number dropped.', importance:'HIGH', weight:10}],
+ escalate:[
+  {label:'Hand Over to Application Support', desc:'Escalate when memory keeps climbing after a recycle, which points to a leak in the application code.', importance:'MEDIUM', weight:3},
+  {label:'Request Capacity Review', desc:'Raise a capacity review where the normal workload genuinely needs more memory.', importance:'LOW', weight:2}],
+ close:'Record the cause, the action taken and the recovery evidence, then close within SLA.'
+};
+const SD_DEMO_SCENARIO = (()=>{   // stamped exactly the way HACK_PROBLEMS stamps ids
+  const p = SD_DEMO_SCENARIO_RAW;
+  const withIds = (arr, kind) => arr.map((c,i)=>({...c, id:`${p.id}-${kind}${i}`, kind, index:i}));
+  return {...p, pre:withIds(p.pre,'pre'), resolve:withIds(p.resolve,'resolve'), escalate:withIds(p.escalate,'escalate')};
+})();
+const SD_DEMO_DISTRACTORS = [
+  {label:'Reset User Password',        desc:'Unlock the account and issue a temporary password.',          kind:'resolve'},
+  {label:'Replace Failed Power Supply', desc:'Swap the failed PSU under the hardware support contract.',     kind:'resolve'},
+  {label:'Update DNS Record',           desc:'Change the host record in the approved DNS zone.',            kind:'pre'},
+  {label:'Renew SSL Certificate',       desc:'Request and install a renewed certificate before expiry.',    kind:'escalate'}
+].map((c,i)=>({...c, id:`demo-x-${i}`, index:i, importance:'—', weight:0}));
+const SD_DEMO_CARD_INDEX = {};
+[...hackSteps(SD_DEMO_SCENARIO), ...SD_DEMO_DISTRACTORS].forEach(c=>{ SD_DEMO_CARD_INDEX[c.id] = c; });
+
+function sdFindScenario(id){
+  if(id === SD_DEMO_ONLY_ID) return SD_DEMO_SCENARIO;
+  return findHackScenario(id);
+}
+function sdCard(id){ return SD_DEMO_CARD_INDEX[id] || HACK_CARD_INDEX[id] || null; }
+const SD_PACES = {slow:1.6, standard:1, fast:0.55};
+const SD_MS = {highlight:1300, explain:2400, move:900, calc:1500, score:1000, gap:450,
+               caseIntro:900, caseFly:850, caseHold:3600};
+const SD_KINDS = ['pre','resolve','escalate'];
+const SD_KIND = {
+  pre:      {short:'P', label:'Pre-check',     head:'Pre-checks',    rule:'Order matters'},
+  resolve:  {short:'R', label:'Resolve step',  head:'Resolve path',  rule:'Order matters'},
+  escalate: {short:'E', label:'Escalate step', head:'Escalate path', rule:'Presence only — order not graded'}
+};
+const SD_RESULT = {
+  CORRECT:   {cls:'ok',   icon:'✓', label:'Correct'},
+  MISPLACED: {cls:'mid',  icon:'⇄', label:'Misplaced'},
+  MISSING:   {cls:'miss', icon:'∅', label:'Missing'},
+  INCORRECT: {cls:'bad',  icon:'✕', label:'Incorrect'}
+};
+const SD_CANCEL = {sdCancel:true};
+const SD_REDUCED_MOTION = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const sd = {
+  scenario:null, pace:1, built:false,
+  audience:'instructor', returnTo:'employee', instructorScenario:null,
+  token:{a:0, b:0}, paused:{a:false, b:false}, running:{a:false, b:false}, stepOnce:false,
+  a:{placed:[], current:null},
+  b:{focusId:null, cases:[], caseIdx:-1, seen:new Set()}
+};
+
+function sdEl(id){ return document.getElementById(id); }
+
+/* ---------- the ONLY route to a score: the real engine ---------- */
+/* placements: [{kind, index, cardId}] — converted to the exact response
+   array submitHackathonSolution() sends, one entry per slot. */
+function calculateDemoScore(scenario, placements){
+  const response = hackSteps(scenario).map(slot=>{
+    const p = (placements || []).find(x=> x.kind === slot.kind && x.index === slot.index);
+    return {kind:slot.kind, index:slot.index, placedCardId: p ? p.cardId : null};
+  });
+  const score = calculateHackathonScore(scenario, response);
+  // display-only: name demo-only distractors (the engine looks labels up in HACK_CARD_INDEX)
+  (score.distractors || []).forEach(d=>{ const c = SD_DEMO_CARD_INDEX[d.label]; if(c) d.label = c.label; });
+  return score;
+}
+
+/* Display-only: the multiplier each result represents, so the maths can
+   be written out. Points themselves always come from the engine. */
+function sdMultiplier(result){
+  if(result === 'CORRECT')   return 1;
+  if(result === 'MISPLACED') return ORDER_PARTIAL_CREDIT;
+  return 0;
+}
+function sdPct(m){ return Math.round(m*100) + '%'; }
+function sdNum(n){ return Number.isInteger(n) ? String(n) : n.toFixed(1); }
+function sdMath(row){
+  if(row.result === 'INCORRECT') return {main:'Not in this workflow → 0', sub:'A distractor carries no weight'};
+  const m = sdMultiplier(row.result), raw = row.weight * m;
+  const rounded = Math.abs(raw - row.points) > 1e-9;
+  if(Math.abs(Math.round(raw) - row.points) > 1e-9) console.warn('Scoring demo: display multiplier disagrees with engine', row);
+  return {
+    main: `${row.weight} × ${sdPct(m)} = ${sdNum(raw)}${rounded ? ' → ' + row.points : ''}`,
+    sub:  `${row.weight} × ${m.toFixed(2)} = ${sdNum(raw)}${rounded ? ' (rounded to ' + row.points + ')' : ''}`
+  };
+}
+function sdBadge(result, big){
+  const r = SD_RESULT[result];
+  return `<span class="sd-res sd-res-${r.cls}${big ? ' big' : ''}"><span aria-hidden="true">${r.icon}</span>${r.label}</span>`;
+}
+function sdImp(imp){ return `<span class="imp imp-${String(imp).toLowerCase()}">${escapeHtml(imp)}</span>`; }
+function sdPlusClass(row){
+  return row.result === 'CORRECT' ? '' : row.result === 'MISPLACED' ? 'mid' : row.result === 'INCORRECT' ? 'bad' : 'zero';
+}
+
+/* Engine breakdown rows are in hackSteps() order; attach the step id. */
+function sdRows(scenario, score){
+  const steps = hackSteps(scenario);
+  return score.breakdown.map((r,i)=> ({...r, id:steps[i].id, index:steps[i].index}));
+}
+function sdResultForCard(scenario, score, cardId){
+  const rows = sdRows(scenario, score);
+  const hit = rows.find(r=> r.id === cardId);
+  if(hit) return hit;
+  const card = sdCard(cardId);
+  return {id:cardId, label: card ? card.label : cardId, section:'—', importance:'—', weight:0, result:'INCORRECT', points:0};
+}
+function sdCounts(score){
+  const c = {CORRECT:0, MISPLACED:0, MISSING:0, INCORRECT:0};
+  score.breakdown.forEach(r=> c[r.result]++);
+  c.INCORRECT += (score.distractors || []).length;
+  return c;
+}
+
+/* ---------- deterministic choices, so Replay shows the same thing ---------- */
+function sdSeed(str){
+  let h = 1779033703 ^ str.length;
+  for(let i=0;i<str.length;i++){ h = Math.imul(h ^ str.charCodeAt(i), 3432918353); h = (h << 13) | (h >>> 19); }
+  return ()=>{ h = Math.imul(h ^ (h >>> 16), 2246822507); h = Math.imul(h ^ (h >>> 13), 3266489909); return ((h ^= h >>> 16) >>> 0) / 4294967296; };
+}
+function sdSeededShuffle(arr, seedStr){
+  const rnd = sdSeed(seedStr), a = [...arr];
+  for(let i=a.length-1;i>0;i--){ const j = Math.floor(rnd()*(i+1)); [a[i],a[j]] = [a[j],a[i]]; }
+  return a;
+}
+/* Distractors from other Hackathon scenarios — the same pool the live
+   Hackathon tray draws from. Labels identical to a real step in this
+   scenario (e.g. "Acknowledge & Classify") are skipped so the room is
+   never shown two cards that look the same. */
+function sdDistractors(scenario, n){
+  const own = new Set(hackSteps(scenario).map(s=> s.label.toLowerCase()));
+  const source = scenario.demoOnly ? SD_DEMO_DISTRACTORS : HACK_ALL_CARDS;
+  const pool = source.filter(c=> !c.id.startsWith(scenario.id + '-') && !own.has(c.label.toLowerCase()));
+  const seen = new Set(), out = [];
+  sdSeededShuffle(pool, scenario.id + ':distractors').forEach(c=>{
+    if(out.length < n && !seen.has(c.label)){ seen.add(c.label); out.push(c); }
+  });
+  return out;
+}
+
+/* ---------- facts used to explain a weight (all derived from data) ---------- */
+function sdWeightFacts(scenario, step){
+  const steps = hackSteps(scenario);
+  const max = steps.reduce((a,s)=> a + s.weight, 0);
+  const higher = steps.filter(s=> s.weight > step.weight).length;
+  const same = steps.filter(s=> s.weight === step.weight).length;
+  const lowest = Math.min(...steps.map(s=> s.weight));
+  let rank;
+  if(higher === 0) rank = same > 1 ? 'joint highest weight in this scenario' : 'the highest weight in this scenario';
+  else if(step.weight === lowest) rank = same > 1 ? 'joint lowest weight in this scenario' : 'the lowest weight in this scenario';
+  else rank = `ranked ${higher + 1} of ${steps.length} by weight`;
+  const sameImpHere = steps.filter(s=> s.importance === step.importance).map(s=> s.weight);
+  const sameImpAll = HACK_ALL_CARDS.filter(c=> c.importance === step.importance).map(c=> c.weight);
+  return {max, share: Math.round(step.weight / max * 100), rank,
+          impHere:[...new Set(sameImpHere)].sort((a,b)=> b-a),
+          impMin:Math.min(...sameImpAll), impMax:Math.max(...sameImpAll)};
+}
+
+/* ---------- timing: cancellable, pausable, paced ---------- */
+function sdSleep(ms, ctx){
+  return new Promise((resolve, reject)=>{
+    let left = ms * sd.pace;
+    const tick = ()=>{
+      if(sd.token[ctx.demo] !== ctx.token) return reject(SD_CANCEL);
+      if(!sd.paused[ctx.demo]) left -= 50;
+      if(left <= 0) return resolve();
+      setTimeout(tick, 50);
+    };
+    setTimeout(tick, 50);
+  });
+}
+function sdCountTo(node, to){
+  const from = Number(node.textContent) || 0;
+  if(SD_REDUCED_MOTION || from === to){ node.textContent = to; return; }
+  const t0 = performance.now(), dur = 550;
+  const step = now=>{
+    const k = Math.min(1, (now - t0) / dur);
+    node.textContent = Math.round(from + (to - from) * (1 - Math.pow(1 - k, 3)));
+    if(k < 1) requestAnimationFrame(step); else node.textContent = to;
+  };
+  requestAnimationFrame(step);
+}
+/* Visibly moves a card from its source to a destination element. */
+async function sdFly(srcEl, destEl, ms, ctx){
+  if(!srcEl || !destEl) return;
+  const r = destEl.getBoundingClientRect();
+  if(r.top < 70 || r.bottom > window.innerHeight){
+    destEl.scrollIntoView({block:'center', behavior: SD_REDUCED_MOTION ? 'auto' : 'smooth'});
+    await sdSleep(380, ctx);
+  }
+  if(SD_REDUCED_MOTION) return;
+  const a = srcEl.getBoundingClientRect(), b = destEl.getBoundingClientRect();
+  const ghost = srcEl.cloneNode(true);
+  ghost.classList.remove('sd-hl');
+  ghost.classList.add('sd-flying');
+  ghost.removeAttribute('id');
+  Object.assign(ghost.style, {position:'fixed', left:a.left+'px', top:a.top+'px', width:a.width+'px', margin:'0', zIndex:'150'});
+  document.body.appendChild(ghost);
+  try{
+    await ghost.animate([
+      {transform:'translate(0,0) scale(1.03)', width:a.width+'px'},
+      {transform:`translate(${b.left - a.left}px, ${b.top - a.top}px) scale(1)`, width:b.width+'px'}
+    ], {duration: ms * sd.pace, easing:'cubic-bezier(.45,.05,.25,1)', fill:'forwards'}).finished;
+  }catch(e){ /* animation interrupted */ }
+  ghost.remove();
+}
+
+/* ---------- shared renderers ---------- */
+function sdCardEl(scenario, card){
+  const own = card.id.startsWith(scenario.id + '-');
+  const c = el('div', `card readonly sd-card kind-${card.kind}${own ? '' : ' sd-distractor'}`);
+  c.dataset.stepId = card.id;
+  c.tabIndex = 0;
+  c.setAttribute('role', 'button');
+  c.setAttribute('aria-label', own
+    ? `${card.label}. ${card.importance}, weight ${card.weight}. Show why.`
+    : `${card.label}. Not part of this workflow. Show why.`);
+  c.innerHTML = `<div class="c-title">${escapeHtml(card.label)}</div>
+    <div class="sd-card-meta">${own
+      ? `${sdImp(card.importance)}<span class="sd-w">${card.weight} pts</span>`
+      : `<span class="sd-other">Not in this workflow · 0 pts</span>`}</div>`;
+  return c;
+}
+
+function sdRenderWorkflow(host, scenario, prefix){
+  host.innerHTML = '';
+  SD_KINDS.forEach(kind=>{
+    if(!scenario[kind].length) return;
+    const sec = el('div', `sd-sec sd-sec-${kind}`);
+    sec.innerHTML = `<div class="sd-sec-head"><span>${SD_KIND[kind].head}</span>
+      <span class="sd-sec-rule">${kind === 'escalate' ? '◇' : '⇣'} ${SD_KIND[kind].rule}</span></div>`;
+    const slots = el('div', 'sd-slots');
+    scenario[kind].forEach((st, i)=>{
+      const slot = el('div', 'sd-slot');
+      slot.id = `${prefix}-${kind}-${i}`;
+      slot.dataset.kind = kind;
+      slot.innerHTML = `<span class="sd-pos" aria-label="${SD_KIND[kind].label} position ${i+1}">${SD_KIND[kind].short}${i+1}</span>
+        <div class="sd-slot-body"><span class="sd-ph">${SD_KIND[kind].label} ${i+1}</span></div>
+        <div class="sd-slot-pts"></div>`;
+      slots.appendChild(slot);
+    });
+    sec.appendChild(slots);
+    host.appendChild(sec);
+  });
+}
+function sdSlot(prefix, kind, index){ return sdEl(`${prefix}-${kind}-${index}`); }
+function sdPutCard(slot, scenario, card, pop){
+  const body = slot.querySelector('.sd-slot-body');
+  body.innerHTML = '';
+  const c = sdCardEl(scenario, card);
+  if(pop) c.classList.add('sd-pop');
+  body.appendChild(c);
+  slot.classList.remove('sd-target');
+  slot.classList.add('filled');
+}
+function sdMarkSlot(slot, row){
+  slot.classList.remove('r-ok','r-mid','r-bad','r-miss');
+  if(!row){ slot.querySelector('.sd-slot-pts').innerHTML = ''; return; }
+  slot.classList.add('r-' + SD_RESULT[row.result].cls);
+  slot.querySelector('.sd-slot-pts').innerHTML =
+    `<div class="sd-slot-pts-wrap">${sdBadge(row.result)}<span>+${row.points}</span></div>`;
+}
+
+function sdRenderTable(host, scenario, score, opts){
+  opts = opts || {};
+  const hl = new Set(opts.highlight || []);
+  const rows = [...sdRows(scenario, score),
+    ...(score.distractors || []).map(d=> ({...d, id:null, distractor:true}))];
+  const tr = rows.map(r=>{
+    const m = sdMath(r);
+    const focus = (r.id && hl.has(r.id)) || (r.distractor && opts.highlightDistractors);
+    const cls = focus ? 'sd-focus-row' : (opts.dimOthers ? 'sd-dim' : '');
+    return `<tr class="${cls}">
+      <td>${escapeHtml(r.label)}${r.distractor ? ' <span class="sd-other">(distractor)</span>' : ''}</td>
+      <td class="hd-sec">${escapeHtml(r.section || '—')}</td>
+      <td>${r.importance === '—' ? '—' : sdImp(r.importance)}</td>
+      <td class="sd-num">${r.weight}</td>
+      <td>${sdBadge(r.result)}</td>
+      <td class="sd-calc">${escapeHtml(m.main)}</td>
+      <td class="sd-num">${r.points}</td></tr>`;
+  }).join('');
+  host.innerHTML = `<table class="hack-table sd-table">
+    <thead><tr><th>Step</th><th>Section</th><th>Importance</th><th class="sd-num">Weight</th><th>Result</th><th>Calculation</th><th class="sd-num">Points</th></tr></thead>
+    <tbody>${tr}</tbody>
+    <tfoot><tr><td colspan="6">Total — sum of step points</td><td class="sd-num">${score.earned} / ${score.maximum}</td></tr></tfoot>
+  </table>`;
+}
+
+function sdShowWhy(cardId){
+  const S = sd.scenario, host = sdEl('sdWhy');
+  const step = hackSteps(S).find(s=> s.id === cardId);
+  if(!step){
+    const card = sdCard(cardId);
+    if(!card) return;
+    host.innerHTML = `<div class="sd-why-q">Why is this card worth 0 points?</div>
+      <h4>${escapeHtml(card.label)}</h4>
+      ${sdBadge('INCORRECT')}
+      <p>This step belongs to a different problem. In <b>${escapeHtml(S.title)}</b> it is not part of the expected
+        workflow, so the scorer gives it <b>0 points</b> wherever it is placed.</p>
+      <p>Each slot holds one card, so a distractor also takes the place of a real step that would have scored.</p>`;
+    return;
+  }
+  const f = sdWeightFacts(S, step);
+  const orderRule = step.kind === 'escalate'
+    ? `It sits in the <b>Escalate path</b>, which is graded on presence: anywhere in that branch earns the full ${step.weight}.`
+    : `It sits in the <b>${SD_KIND[step.kind].head}</b>, where order is graded: position ${SD_KIND[step.kind].short}${step.index+1} earns ${step.weight}; any other position earns ${Math.round(step.weight*ORDER_PARTIAL_CREDIT)} (${sdPct(ORDER_PARTIAL_CREDIT)}).`;
+  host.innerHTML = `<div class="sd-why-q">Why is this step worth ${step.weight} points?</div>
+    <h4>${escapeHtml(step.label)}</h4>
+    <div class="sd-st-row">${sdImp(step.importance)}<span class="sd-wchip">Weight ${step.weight}</span></div>
+    <p><b>What it does:</b> ${escapeHtml(step.desc)}</p>
+    <p>It carries <b>${step.weight} of the ${f.max} available points (${f.share}%)</b> — ${f.rank}. Its higher or lower
+      relevance to solving this problem is what that weight reflects.</p>
+    <p>${orderRule}</p>
+    <p class="sd-hint">Importance describes relevance; the weight is what the scorer adds. ${escapeHtml(step.importance)}
+      steps in this scenario weigh ${f.impHere.join(', ')}; across all Hackathon scenarios they range from ${f.impMin} to ${f.impMax}.</p>`;
+}
+
+/* ---------- screen entry / exit ---------- */
+/* Two audiences, one demo:
+     instructor  — any Hackathon scenario (default hack-cpu) plus the demo-only one
+     participant — locked to the demo-only scenario; no real Hackathon scenario,
+                   title, step or weight is ever put into the page */
+function openScoringDemo(){
+  if(!session || (session.role !== 'employee' && session.role !== 'participant')) return;
+  const instructor = session.role === 'employee';
+  sd.audience = instructor ? 'instructor' : 'participant';
+  sd.returnTo = instructor ? 'employee' : (session.mode === 'hackathon' ? 'hackathon' : 'participant');
+  showScreen('scoringdemo');
+  if(!sd.built){ sdRenderStatic(); sd.built = true; }
+  sdConfigureAudience();
+  renderHackathonScoringDemo(instructor ? sdEl('sdScenario').value : SD_DEMO_ONLY_ID);
+  window.scrollTo(0, 0);
+}
+
+function sdConfigureAudience(){
+  const instructor = sd.audience === 'instructor';
+  const sel = sdEl('sdScenario');
+  sel.innerHTML = '';
+  if(instructor){
+    const add = (id, text)=>{ const o = document.createElement('option'); o.value = id; o.textContent = text; sel.appendChild(o); };
+    HACK_PROBLEMS.forEach(s=> add(s.id, s.title));
+    add(SD_DEMO_ONLY_ID, 'Participant demo — ' + SD_DEMO_SCENARIO.title.replace(' (practice example)', '') + ' (safe to show)');
+    const want = sd.instructorScenario || SD_DEFAULT_SCENARIO;
+    sel.value = sdFindScenario(want) ? want : HACK_PROBLEMS[0].id;
+  }
+  sel.closest('.sd-pick').style.display = instructor ? '' : 'none';
+
+  const note = sdEl('sdAudienceNote');
+  note.classList.toggle('pt', !instructor);
+  note.innerHTML = instructor
+    ? `Instructor view. Projecting this screen shows the full expected workflow and weights for the selected scenario —
+       don't then assign that same scenario as a live Hackathon to this audience. The last option in the scenario list is
+       the demo participants see when they press “How is my Hackathon scored?” — it is not a Hackathon scenario.`
+    : `<b>This is a practice example, not your Hackathon problem.</b> It uses a made-up scenario that is never assigned as a
+       Hackathon. Your own problem has its own steps and weights — but it is scored by exactly the same rules shown here.`;
+
+  sdEl('sdBackBtn').textContent = sd.returnTo === 'employee' ? '← Back to dashboard'
+    : sd.returnTo === 'hackathon' ? '← Back to my Hackathon' : '← Back to practice';
+}
+function stopScoringDemo(){
+  sd.token.a++; sd.token.b++;
+  sd.running.a = sd.running.b = false;
+  sd.paused.a = sd.paused.b = false;
+  sd.stepOnce = false;
+  document.querySelectorAll('.sd-flying').forEach(n=> n.remove());
+  if(sd.built) sdSyncControls();
+}
+
+/* Static teaching panels — rendered from the live constants. */
+function sdRenderStatic(){
+  const mis = sdPct(ORDER_PARTIAL_CREDIT);
+  sdEl('sdRules').innerHTML = [
+    ['CORRECT',   '100%', 'Right step, right position — the full weight.'],
+    ['MISPLACED', mis,    `Right step, wrong position — ${mis} of its weight.`],
+    ['MISSING',   '0%',   'Expected step not placed — nothing.'],
+    ['INCORRECT', '0',    'A step from another problem — nothing.']
+  ].map(([r,x,t])=> `<div class="sd-rule">${sdBadge(r)}<div class="sd-rule-x">${r==='INCORRECT' ? '0 pts' : '× ' + x}</div><p>${t}</p></div>`).join('');
+
+  sdEl('sdModelSteps').innerHTML = [
+    'The problem has an expected enterprise workflow.',
+    'Each expected step has a relevance-based weight.',
+    'The step weights add up to the available score.',
+    'Correct placement receives the full step weight.',
+    `A correct step in the wrong position receives ${mis} of its weight.`,
+    'Missing steps receive 0.',
+    'Incorrect / distractor steps receive 0.',
+    'The final score is the sum of the individual step scores.'
+  ].map(t=> `<li>${t}</li>`).join('');
+
+  sdEl('sdOrder').innerHTML = `
+    <div class="sd-order-tile seq"><div class="sd-order-k">Order matters</div><h5>Pre-checks &amp; Resolve path</h5>
+      <p>Each position expects one specific step. The right step in the right position earns its full weight;
+        the right step in a different position earns ${mis}.</p></div>
+    <div class="sd-order-tile pres"><div class="sd-order-k">Presence only</div><h5>Escalate path</h5>
+      <p>Order inside the escalate branch is not graded — each expected escalate step placed anywhere in that branch
+        earns its full weight. Placed outside the branch, it earns ${mis}.</p></div>`;
+}
+
+/* ================= renderHackathonScoringDemo ================= */
+function renderHackathonScoringDemo(scenarioId){
+  stopScoringDemo();
+  if(sd.audience !== 'instructor') scenarioId = SD_DEMO_ONLY_ID;          // participants: demo-only, always
+  sd.scenario = sdFindScenario(scenarioId) || sdFindScenario(SD_DEFAULT_SCENARIO) || HACK_PROBLEMS[0];
+  sd.pace = SD_PACES[sdEl('sdPace').value] || 1;
+  sdEl('sdATitle').textContent = sd.scenario.title;
+  sdEl('sdAProblem').textContent = sd.scenario.problem;
+
+  // focus-step picker for Demo B: order-sensitive steps only
+  const S = sd.scenario, fsel = sdEl('sdFocus');
+  fsel.innerHTML = '';
+  [...S.pre, ...S.resolve].forEach(st=>{
+    const o = document.createElement('option');
+    o.value = st.id;
+    o.textContent = `${st.label} (${st.weight} pts)`;
+    fsel.appendChild(o);
+  });
+  const firstCritical = S.resolve.find(s=> s.importance === 'CRITICAL')
+    || [...S.resolve].sort((a,b)=> b.weight - a.weight)[0];
+  fsel.value = firstCritical.id;
+  sd.b.focusId = firstCritical.id;
+
+  resetWeightDemo();
+  resetScoringExamples();
+  const top = [...hackSteps(S)].sort((a,b)=> b.weight - a.weight)[0];
+  sdShowWhy(top.id);
+}
+
+/* ================= DEMO A — weight / relevance ================= */
+function resetWeightDemo(){
+  sd.token.a++; sd.running.a = false; sd.paused.a = false; sd.stepOnce = false;
+  document.querySelectorAll('.sd-flying').forEach(n=> n.remove());
+  const S = sd.scenario;
+  sd.a.placed = []; sd.a.current = null;
+
+  const tray = sdEl('sdATray');
+  tray.innerHTML = '';
+  const cards = sdSeededShuffle([...hackSteps(S), ...sdDistractors(S, 3)], S.id + ':tray');
+  cards.forEach(c=>{ const w = el('div', 'sd-tray-item'); w.appendChild(sdCardEl(S, c)); tray.appendChild(w); });
+
+  sdRenderWorkflow(sdEl('sdAFlow'), S, 'sda');
+  sdEl('sdAScore').textContent = '0';
+  sdUpdateA(false);
+  sdStageA(0);
+  sdSyncControls();
+}
+
+function sdUpdateA(animate){
+  const S = sd.scenario, score = calculateDemoScore(S, sd.a.placed);
+  if(animate) sdCountTo(sdEl('sdAScore'), score.earned); else sdEl('sdAScore').textContent = score.earned;
+  sdEl('sdAMax').textContent = score.maximum;
+  sdEl('sdAMeter').style.width = (score.maximum ? score.earned / score.maximum * 100 : 0) + '%';
+  sdRenderTable(sdEl('sdATable'), S, score, {highlight: sd.a.current ? [sd.a.current] : []});
+  sdRenderBars();
+  return score;
+}
+
+function sdRenderBars(){
+  const S = sd.scenario, steps = [...hackSteps(S)].sort((a,b)=> b.weight - a.weight);
+  const maxW = steps[0].weight, placed = new Set(sd.a.placed.map(p=> p.cardId));
+  sdEl('sdBars').innerHTML = steps.map(s=> `
+    <button type="button" class="sd-bar${placed.has(s.id) ? ' placed' : ''}${sd.a.current === s.id ? ' on' : ''}" data-step-id="${s.id}"
+      aria-label="${escapeHtml(s.label)}, ${s.importance}, ${s.weight} points. Show why.">
+      <span class="sd-bar-l">${escapeHtml(s.label)}</span>
+      <span class="sd-bar-t"><span class="sd-bar-f" style="display:block; width:${s.weight / maxW * 100}%"></span></span>
+      <span class="sd-bar-v">${s.weight}</span>
+    </button>`).join('');
+  const hi = steps[0], lo = steps[steps.length - 1];
+  sdEl('sdBarsNote').innerHTML = `<b>${escapeHtml(hi.label)}</b> is worth <b>${hi.weight}</b> points;
+    <b>${escapeHtml(lo.label)}</b> is worth <b>${lo.weight}</b>. Placing the first one correctly moves the score
+    ${sdNum(Math.round(hi.weight / lo.weight * 10) / 10)}× as much as the second.`;
+}
+
+function sdStageA(stage, step, row, score){
+  const host = sdEl('sdAStage');
+  if(stage === 0){
+    host.innerHTML = `<div class="sd-idle">Press <b>▶ PLAY DEMO</b> to watch each step move from <b>Available Process Steps</b>
+      into its position in the <b>Expected Workflow</b>, and see exactly what it adds to the score.
+      <br><br>Click any card or bar to ask <b>“why is this step worth that?”</b></div>`;
+    return;
+  }
+  if(stage === 'done'){
+    const left = sdEl('sdATray').querySelectorAll('.sd-distractor').length;
+    host.innerHTML = `<div class="sd-st-k">Workflow complete</div>
+      <div class="sd-st-step">${score.earned} / ${score.maximum}</div>
+      <div class="sd-st-why" style="margin-top:8px;">Every expected step is in its correct position. The ${left} card${left === 1 ? '' : 's'}
+        left in the tray belong to other problems: adding them would score <b>0</b> and take a slot a real step needs.</div>`;
+    return;
+  }
+  const names = ['Highlight','Relevance','Move','Calculate','Score'];
+  const pips = names.map((n,i)=> `<span class="sd-pip ${i+1 < stage ? 'done' : i+1 === stage ? 'on' : ''}">${n}</span>`).join('');
+  const f = sdWeightFacts(sd.scenario, step);
+  let body = `<div class="sd-st-k">Step</div><div class="sd-st-step">${escapeHtml(step.label)}</div>
+    <div class="sd-st-row">${sdImp(step.importance)}<span class="sd-wchip">Weight: ${step.weight} points</span></div>`;
+  if(stage >= 2) body += `<div class="sd-st-k">Why this weight</div>
+    <div class="sd-st-why">${escapeHtml(step.desc)} Worth ${step.weight} of ${f.max} points — ${f.rank}.</div>`;
+  if(stage === 3) body += `<div class="sd-st-k">Moving to</div><div class="sd-st-why"><b>${SD_KIND[step.kind].head} · position ${SD_KIND[step.kind].short}${step.index+1}</b></div>`;
+  if(stage >= 4 && row){
+    const m = sdMath(row);
+    body += `<div class="sd-st-k">Calculation</div><div class="sd-math">${m.main}</div><div class="sd-math-sub">${m.sub}</div>
+      <div class="sd-plus ${sdPlusClass(row)}">+${row.points} POINTS</div>`;
+  }
+  if(stage === 5 && score) body += `<div class="sd-st-why" style="margin-top:8px;">Current score: <b>${score.earned} / ${score.maximum}</b></div>`;
+  host.innerHTML = `<div class="sd-pips" aria-hidden="true">${pips}</div>${body}`;
+}
+
+async function sdPlayAStep(step, ctx){
+  const S = sd.scenario;
+  const card = sdEl('sdATray').querySelector(`[data-step-id="${step.id}"]`);
+  sd.a.current = step.id;
+  sdRenderBars();
+
+  // 1 — highlight
+  if(card){
+    card.classList.add('sd-hl');
+    const r = card.getBoundingClientRect();
+    if(r.top < 70 || r.bottom > window.innerHeight) card.scrollIntoView({block:'center', behavior: SD_REDUCED_MOTION ? 'auto' : 'smooth'});
+  }
+  sdStageA(1, step);
+  sdShowWhy(step.id);
+  await sdSleep(SD_MS.highlight, ctx);
+
+  // 2 — relevance
+  sdStageA(2, step);
+  await sdSleep(SD_MS.explain, ctx);
+
+  // 3 — move
+  sdStageA(3, step);
+  const slot = sdSlot('sda', step.kind, step.index);
+  slot.classList.add('sd-target');
+  await sdFly(card, slot.querySelector('.sd-slot-body'), SD_MS.move, ctx);
+  if(card){
+    card.parentElement.innerHTML = `<div class="sd-placed-note">✓ ${escapeHtml(step.label)} → ${SD_KIND[step.kind].short}${step.index+1}</div>`;
+  }
+  sd.a.placed.push({kind:step.kind, index:step.index, cardId:step.id});
+  sdPutCard(slot, S, step, true);
+
+  // 4 — calculate (engine)
+  const score = calculateDemoScore(S, sd.a.placed);
+  const row = sdResultForCard(S, score, step.id);
+  sdMarkSlot(slot, row);
+  sdStageA(4, step, row);
+  await sdSleep(SD_MS.calc, ctx);
+
+  // 5 — update score
+  sdUpdateA(true);
+  sdStageA(5, step, row, score);
+  await sdSleep(SD_MS.score, ctx);
+}
+
+async function playWeightDemo(opts){
+  opts = opts || {};
+  if(sd.running.a){                       // toggle pause / resume
+    sd.paused.a = !sd.paused.a;
+    if(!sd.paused.a) sd.stepOnce = !!opts.stepOnce;
+    sdSyncControls();
+    return;
+  }
+  resetWeightDemo();
+  document.querySelector('#sdDemoA .sd-a-grid').scrollIntoView({block:'start', behavior: SD_REDUCED_MOTION ? 'auto' : 'smooth'});
+  const token = ++sd.token.a, ctx = {demo:'a', token};
+  sd.running.a = true; sd.stepOnce = !!opts.stepOnce;
+  sdSyncControls();
+  try{
+    await sdSleep(450, ctx);
+    for(const step of hackSteps(sd.scenario)){
+      await sdPlayAStep(step, ctx);
+      if(sd.stepOnce){ sd.paused.a = true; sdSyncControls(); }
+      await sdSleep(SD_MS.gap, ctx);
+    }
+    sd.a.current = null;
+    const score = sdUpdateA(false);
+    sdEl('sdATray').querySelectorAll('.sd-distractor').forEach(c=>{
+      if(!c.parentElement.querySelector('.sd-unused'))
+        c.insertAdjacentHTML('afterend', `<div class="sd-unused">${sdBadge('INCORRECT')} <span class="sd-other">not needed — would score 0</span></div>`);
+    });
+    sdStageA('done', null, null, score);
+  }catch(e){ if(e !== SD_CANCEL) throw e; }
+  finally{
+    if(sd.token.a === token){ sd.running.a = false; sd.paused.a = false; sd.stepOnce = false; sdSyncControls(); }
+  }
+}
+function nextWeightStep(){
+  if(sd.running.a){ if(sd.paused.a){ sd.stepOnce = true; sd.paused.a = false; sdSyncControls(); } return; }
+  playWeightDemo({stepOnce:true});
+}
+
+/* ================= DEMO B — correct / misplaced / missing / incorrect ================= */
+function sdBuildCases(){
+  const S = sd.scenario;
+  const focus = hackSteps(S).find(s=> s.id === sd.b.focusId);
+  const same = S[focus.kind];
+  const wrong = focus.index + 1 < same.length
+    ? {kind:focus.kind, index:focus.index + 1}
+    : (focus.index > 0 ? {kind:focus.kind, index:focus.index - 1}
+                       : {kind: focus.kind === 'pre' ? 'resolve' : 'pre', index:0});
+  const decoy = sdDistractors(S, 1)[0];
+  const at = (st, slot)=> ({kind:slot.kind, index:slot.index, cardId:st.id});
+  const own = st=> at(st, st);
+  const wrongLbl = `${SD_KIND[wrong.kind].short}${wrong.index+1}`, rightLbl = `${SD_KIND[focus.kind].short}${focus.index+1}`;
+
+  const cases = [
+    {key:'correct', title:'Correct', fly:[focus.id], place:[own(focus)], subjects:[focus.id],
+     explain:`<b>${escapeHtml(focus.label)}</b> is placed in position <b>${rightLbl}</b> — exactly where it belongs. <b>Full credit awarded.</b>`},
+    {key:'misplaced', title:'Misplaced', fly:[focus.id], place:[at(focus, wrong)], subjects:[focus.id], ghost:focus,
+     explain:`The correct step was identified, but it was placed in the wrong sequence position (<b>${wrongLbl}</b> instead of <b>${rightLbl}</b>), so partial credit is awarded — ${sdPct(ORDER_PARTIAL_CREDIT)} of its weight.`},
+    {key:'missing', title:'Missing', fly:[], place:[], subjects:[focus.id], ghost:focus,
+     explain:'The expected step was not included in the workflow, so no points are awarded.'},
+    {key:'incorrect', title:'Incorrect / Distractor', fly:[decoy.id], place:[{kind:focus.kind, index:focus.index, cardId:decoy.id}], subjects:[decoy.id, focus.id],
+     explain:`An unrelated process step does not improve the score. Participants must select steps that are relevant to the problem.
+       Here <b>${escapeHtml(decoy.label)}</b> also took the slot <b>${escapeHtml(focus.label)}</b> needed — so that step is <b>missing</b> as well.`}
+  ];
+  if(S.escalate.length >= 2){
+    const n = S.escalate.length;
+    cases.push({key:'escalate', title:'Escalate order swapped', fly:[], subjects:S.escalate.map(s=> s.id),
+      place:[...S.pre.map(own), ...S.resolve.map(own), ...S.escalate.map((st,i)=> ({kind:'escalate', index:(i+1)%n, cardId:st.id}))],
+      explain:`Every step is present, but the escalate steps are in a different order (E1 and E2 swapped). The Escalate path is graded on
+        <b>presence only</b>, so both still earn full credit. The same swap in the Pre-checks or Resolve path would make both Misplaced.`});
+  }
+  // a realistic attempt: two pre-checks transposed, a distractor chosen in place of the highest-weight resolve step
+  const topRes = [...S.resolve].sort((a,b)=> b.weight - a.weight)[0];
+  const decoy2 = sdDistractors(S, 2)[1] || decoy;
+  const realistic = [
+    at(S.pre[0], {kind:'pre', index:1}), at(S.pre[1], {kind:'pre', index:0}), ...S.pre.slice(2).map(own),
+    ...S.resolve.map(st=> st.id === topRes.id ? {kind:'resolve', index:st.index, cardId:decoy2.id} : own(st)),
+    ...S.escalate.map(own)
+  ];
+  cases.push({key:'together', title:'Putting it together', fly:[], place:realistic,
+    subjects:[S.pre[0].id, S.pre[1].id, decoy2.id, topRes.id],
+    explain:`A typical first attempt: the first two pre-checks are in each other's positions, and <b>${escapeHtml(decoy2.label)}</b> was chosen
+      instead of <b>${escapeHtml(topRes.label)}</b>. The one wrong pick costs the most — it removes a ${topRes.weight}-point step and adds nothing.`});
+  return {cases, focus, decoy};
+}
+
+function resetScoringExamples(){
+  sd.token.b++; sd.running.b = false; sd.paused.b = false;
+  document.querySelectorAll('.sd-flying').forEach(n=> n.remove());
+  const S = sd.scenario;
+  const built = sdBuildCases();
+  sd.b.cases = built.cases; sd.b.caseIdx = -1; sd.b.seen = new Set();
+
+  sdEl('sdCases').innerHTML = built.cases.map((c,i)=>
+    `<button type="button" class="sd-case-btn" data-case="${i}">${i+1} · ${escapeHtml(c.title)}</button>`).join('');
+
+  const inplay = sdEl('sdBInPlay');
+  inplay.innerHTML = '';
+  [built.focus, built.decoy].forEach(c=> inplay.appendChild(sdCardEl(S, c)));
+
+  sdRenderWorkflow(sdEl('sdBFlow'), S, 'sdb');
+  const empty = calculateDemoScore(S, []);
+  sdEl('sdBScore').textContent = '0';
+  sdUpdateBSummary(empty, [], false);
+  sdEl('sdVerdict').innerHTML = `<div class="sd-v-case">Ready</div>
+    <div class="sd-v-title">Same step, different outcomes</div>
+    <div class="sd-idle">We follow <b>${escapeHtml(built.focus.label)}</b> (${built.focus.importance}, weight ${built.focus.weight})
+      through four cases — correct, misplaced, missing, and replaced by a distractor.
+      <br><br>Press <b>▶ PLAY SCORING EXAMPLES</b>, or pick a case above.</div>`;
+  sdSyncControls();
+}
+
+function sdUpdateBSummary(score, highlight, highlightDistractors, dimOthers){
+  sdCountTo(sdEl('sdBScore'), score.earned);
+  sdEl('sdBMax').textContent = score.maximum;
+  sdEl('sdBMeter').style.width = (score.maximum ? score.earned / score.maximum * 100 : 0) + '%';
+  const c = sdCounts(score);
+  sdEl('sdBCounts').innerHTML = Object.keys(c).map(k=> `<div class="sd-count">${sdBadge(k)}<b>${c[k]}</b></div>`).join('') +
+    `<div class="sd-pct" style="grid-column:1/-1;">${score.percentage}% of available points</div>`;
+  sdRenderTable(sdEl('sdBTable'), sd.scenario, score, {highlight, highlightDistractors, dimOthers});
+}
+
+async function sdRunCase(i, ctx){
+  const S = sd.scenario, c = sd.b.cases[i];
+  sd.b.caseIdx = i; sd.b.seen.add(i);
+  document.querySelectorAll('#sdCases .sd-case-btn').forEach((b,j)=>{
+    b.classList.toggle('on', j === i); b.classList.toggle('seen', sd.b.seen.has(j));
+    b.setAttribute('aria-pressed', j === i ? 'true' : 'false');
+  });
+
+  // reset the workflow
+  sdRenderWorkflow(sdEl('sdBFlow'), S, 'sdb');
+  const empty = calculateDemoScore(S, []);
+  sdUpdateBSummary(empty, [], false, false);
+  sdEl('sdVerdict').innerHTML = `<div class="sd-v-case">Case ${i+1}</div><div class="sd-v-title">${escapeHtml(c.title)}</div>
+    <div class="sd-idle">Resetting the workflow…</div>`;
+  await sdSleep(SD_MS.caseIntro, ctx);
+
+  // place cards — fly the featured ones, drop the rest in
+  for(const p of c.place){
+    const card = sdCard(p.cardId);
+    const slot = sdSlot('sdb', p.kind, p.index);
+    if(c.fly.includes(p.cardId)){
+      const src = sdEl('sdBInPlay').querySelector(`[data-step-id="${p.cardId}"]`);
+      if(src) src.classList.add('sd-hl');
+      slot.classList.add('sd-target');
+      await sdFly(src, slot.querySelector('.sd-slot-body'), SD_MS.caseFly, ctx);
+      if(src) src.classList.remove('sd-hl');
+    }
+    sdPutCard(slot, S, card, true);
+  }
+
+  // score with the real engine and annotate
+  const score = calculateDemoScore(S, c.place);
+  c.place.forEach(p=> sdMarkSlot(sdSlot('sdb', p.kind, p.index), sdResultForCard(S, score, p.cardId)));
+  if(c.ghost){
+    const home = sdSlot('sdb', c.ghost.kind, c.ghost.index);
+    if(home && !home.classList.contains('filled')){
+      home.classList.add('r-miss');
+      home.querySelector('.sd-slot-body').innerHTML =
+        `<div class="sd-expect">Expected here: <b>${escapeHtml(c.ghost.label)}</b></div>`;
+    }
+  }
+
+  const items = c.subjects.map(id=>{
+    const row = sdResultForCard(S, score, id), m = sdMath(row);
+    return `<div class="sd-v-item">${sdBadge(row.result, true)}
+      <div class="sd-v-step">${escapeHtml(row.label)}</div>
+      <div class="sd-v-meta">${row.result === 'INCORRECT' ? 'Not in the expected workflow' : `${row.importance} · weight ${row.weight}`}</div>
+      <div class="sd-math">${escapeHtml(m.main)}</div><div class="sd-math-sub">${escapeHtml(m.sub)}</div>
+      <div class="sd-plus ${sdPlusClass(row)}">${row.result === 'INCORRECT' ? '0 POINTS' : '+' + row.points + ' POINTS'}</div>
+      ${row.result === 'CORRECT' && c.subjects.length === 1 ? '<div class="sd-v-full">Full credit awarded</div>' : ''}
+    </div>`;
+  });
+  const compact = c.subjects.length > 2
+    ? `<div class="sd-v-compact">${c.subjects.map(id=>{
+        const row = sdResultForCard(S, score, id), m = sdMath(row);
+        return `${sdBadge(row.result)}<div class="sd-vc-l">${escapeHtml(row.label)}<small>${escapeHtml(m.main)}</small></div><div class="sd-vc-p">+${row.points}</div>`;
+      }).join('')}</div>`
+    : items.join('');
+  sdEl('sdVerdict').innerHTML = `<div class="sd-v-case">Case ${i+1} of ${sd.b.cases.length}</div>
+    <div class="sd-v-title">${escapeHtml(c.title)}</div>${compact}
+    <p class="sd-v-explain">${c.explain}</p>
+    <div class="sd-v-score"><span>Score for this case</span><b>${score.earned} / ${score.maximum}</b></div>`;
+
+  const isolated = ['correct','misplaced','missing','incorrect'].includes(c.key);
+  sdUpdateBSummary(score, c.subjects, c.key === 'incorrect' || c.key === 'together', isolated);
+  return score;
+}
+
+async function playScoringExamples(){
+  if(sd.running.b){ sd.paused.b = !sd.paused.b; sdSyncControls(); return; }
+  resetScoringExamples();
+  sdEl('sdCases').scrollIntoView({block:'start', behavior: SD_REDUCED_MOTION ? 'auto' : 'smooth'});
+  const token = ++sd.token.b, ctx = {demo:'b', token};
+  sd.running.b = true; sdSyncControls();
+  try{
+    for(let i=0; i<sd.b.cases.length; i++){
+      await sdRunCase(i, ctx);
+      if(i < sd.b.cases.length - 1) await sdSleep(SD_MS.caseHold, ctx);
+    }
+  }catch(e){ if(e !== SD_CANCEL) throw e; }
+  finally{
+    if(sd.token.b === token){ sd.running.b = false; sd.paused.b = false; sdSyncControls(); }
+  }
+}
+async function playSingleCase(i){
+  sd.token.b++; sd.running.b = false; sd.paused.b = false;
+  document.querySelectorAll('.sd-flying').forEach(n=> n.remove());
+  const token = ++sd.token.b, ctx = {demo:'b', token};
+  sdSyncControls();
+  try{ await sdRunCase(i, ctx); }catch(e){ if(e !== SD_CANCEL) throw e; }
+}
+
+/* ---------- global play / replay / reset ---------- */
+function resetScoringDemo(){ resetWeightDemo(); resetScoringExamples(); window.scrollTo({top:0, behavior:'smooth'}); }
+
+function sdSyncControls(){
+  const a = sdEl('sdAPlay'), b = sdEl('sdBPlay'), hero = sdEl('sdHeroPlay');
+  if(!a) return;
+  a.textContent = !sd.running.a ? '▶ PLAY DEMO' : sd.paused.a ? '▶ RESUME' : '❚❚ PAUSE';
+  sdEl('sdANext').disabled = sd.running.a && !sd.paused.a;
+  hero.textContent = a.textContent;
+  b.textContent = !sd.running.b ? '▶ PLAY SCORING EXAMPLES' : sd.paused.b ? '▶ RESUME' : '❚❚ PAUSE';
+}
+
+/* ---------- wiring ---------- */
+sdEl('openScoringDemoBtn').addEventListener('click', openScoringDemo);
+sdEl('sdBackBtn').addEventListener('click', ()=>{ showScreen(sd.returnTo || 'employee'); window.scrollTo(0,0); });
+sdEl('sdScenario').addEventListener('change', e=>{
+  if(sd.audience === 'instructor') sd.instructorScenario = e.target.value;
+  renderHackathonScoringDemo(e.target.value);
+});
+sdEl('pScoringDemoBtn').addEventListener('click', openScoringDemo);
+sdEl('hackScoringDemoBtn').addEventListener('click', openScoringDemo);
+sdEl('sdPace').addEventListener('change', e=>{ sd.pace = SD_PACES[e.target.value] || 1; });
+sdEl('sdFocus').addEventListener('change', e=>{ sd.b.focusId = e.target.value; resetScoringExamples(); });
+sdEl('sdHeroPlay').addEventListener('click', ()=> playWeightDemo());
+sdEl('sdHeroReplay').addEventListener('click', ()=>{ sd.running.a = false; playWeightDemo(); });
+sdEl('sdHeroReset').addEventListener('click', resetScoringDemo);
+sdEl('sdAPlay').addEventListener('click', ()=> playWeightDemo());
+sdEl('sdANext').addEventListener('click', nextWeightStep);
+sdEl('sdAReplay').addEventListener('click', ()=>{ sd.running.a = false; playWeightDemo(); });
+sdEl('sdAReset').addEventListener('click', resetWeightDemo);
+sdEl('sdBPlay').addEventListener('click', playScoringExamples);
+sdEl('sdBReplay').addEventListener('click', ()=>{ sd.running.b = false; playScoringExamples(); });
+sdEl('sdBReset').addEventListener('click', resetScoringExamples);
+sdEl('sdCases').addEventListener('click', e=>{
+  const b = e.target.closest('.sd-case-btn');
+  if(b) playSingleCase(Number(b.dataset.case));
+});
+/* "Why is this step worth N points?" — any card or weight bar */
+sdEl('scoringDemoScreen').addEventListener('click', e=>{
+  const t = e.target.closest('[data-step-id]');
+  if(t) sdShowWhy(t.dataset.stepId);
+});
+sdEl('scoringDemoScreen').addEventListener('keydown', e=>{
+  if(e.key !== 'Enter' && e.key !== ' ') return;
+  const t = e.target.closest('.sd-card[data-step-id]');
+  if(t){ e.preventDefault(); sdShowWhy(t.dataset.stepId); }
 });
 
 
