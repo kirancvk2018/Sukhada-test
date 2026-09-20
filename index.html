@@ -408,6 +408,7 @@
   .field .sub{font-size:11px; color:var(--text-faint); margin-top:5px;}
   .login-error{display:none; font-size:12.5px; color:var(--red); background:var(--red-dim); border:1px solid var(--red); border-radius:7px; padding:9px 12px; margin-bottom:14px;}
   .login-error.show{display:block;}
+  .login-error.info{color:#075985; background:var(--sky-dim); border-color:var(--sky);}
   .login-submit{width:100%;}
 
   /* ---- CARDS / SECTIONS ---- */
@@ -1431,7 +1432,23 @@ function escapeHtml(s){
   return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
+/* ---- Reference Runbooks login gate ----
+   reference-runbooks.html refuses to render unless this browser holds a
+   current pass. The pass is written on a successful login and removed on
+   logout or when this page is reloaded (a reload is already a logout here).
+   It is a front-door check for a static site, not server-side security —
+   see HACKATHON_IMPLEMENTATION.md. */
+const RUNBOOK_GATE_KEY   = 'runbook-academy-gate';
+const RUNBOOK_GATE_HOURS = 8;       // how long a login keeps the runbooks open
+function grantRunbookAccess(role){
+  try{ localStorage.setItem(RUNBOOK_GATE_KEY, JSON.stringify({role, exp: Date.now() + RUNBOOK_GATE_HOURS*3600*1000})); }catch(e){}
+}
+function revokeRunbookAccess(){
+  try{ localStorage.removeItem(RUNBOOK_GATE_KEY); }catch(e){}
+}
+
 function doLogout(){
+  revokeRunbookAccess();
   session = null;
   hackCurrent = null; hackSlots = []; hackSubmitted = false;
   activeTrayId = 'tray';
@@ -1468,7 +1485,7 @@ async function participantLogin(){
   const nameEl = document.getElementById('pName');
   const pinEl = document.getElementById('pPin');
   const errEl = document.getElementById('participantError');
-  errEl.classList.remove('show');
+  errEl.classList.remove('show', 'info');
   const name = nameEl.value.trim();
   const pin = pinEl.value.trim();
   if(!name || !pin){
@@ -1499,6 +1516,8 @@ async function participantLogin(){
     const hackAttempts = await Store.getHackathonAttempts(key);
     const mode = getParticipantMode(rec, hackAttempts, new Date());
     session = {role:'participant', name: rec.name, key, mode, participant: rec};
+    // Runbooks stay closed while a Hackathon is active — the Hackathon screen never linked to them.
+    if(mode === 'hackathon') revokeRunbookAccess(); else grantRunbookAccess('participant');
     renderWhoBox();
     if(mode === 'hackathon'){
       await enterHackathon();
@@ -1531,6 +1550,7 @@ function employeeLogin(){
     return;
   }
   session = {role:'employee', name: name || 'Employee'};
+  grantRunbookAccess('employee');
   renderWhoBox();
   showScreen('employee');
   enterEmployee();
@@ -4138,6 +4158,13 @@ sdEl('scoringDemoScreen').addEventListener('keydown', e=>{
    without an instructor. Removed — every login is now instructor-issued. */
 showScreen('login');
 renderStorageBanner();
+revokeRunbookAccess();
+if(new URLSearchParams(location.search).get('signin') === 'runbooks'){
+  const note = document.getElementById('participantError');
+  note.textContent = 'Please log in to view the Reference Runbooks.';
+  note.classList.add('show', 'info');
+  history.replaceState(null, '', location.pathname);
+}
 </script>
 </body>
 </html>

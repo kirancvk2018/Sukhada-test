@@ -3,7 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
 <title>Sukhada Infosystems | Enterprise Process Flow — L1 Ticket Runbooks</title>
+<!-- Login gate: this page renders only for a browser that has logged in to
+     index.html (practice participants and employees). Anyone else is sent to
+     the login page. Hidden until checked; with scripts off it redirects. -->
+<style id="gateHide">html{visibility:hidden !important;}</style>
+<noscript><meta http-equiv="refresh" content="0;url=index.html?signin=runbooks"></noscript>
+<script>
+(function(){
+  var ok = false;
+  try{
+    var pass = JSON.parse(localStorage.getItem('runbook-academy-gate') || 'null');
+    ok = !!(pass && pass.exp && pass.exp > Date.now() && (pass.role === 'participant' || pass.role === 'employee'));
+  }catch(e){ ok = false; }
+  if(!ok){ location.replace('index.html?signin=runbooks'); return; }
+  document.getElementById('gateHide').remove();
+})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>

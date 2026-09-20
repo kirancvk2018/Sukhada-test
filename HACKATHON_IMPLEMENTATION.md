@@ -253,3 +253,27 @@ Participant receives only "recorded"
 - Participant access from practice and from the Hackathon screen: always locked to the demo-only scenario, nothing from a real Hackathon scenario on the page, and board state kept on return.
 
 **Existing issue noticed, not changed:** "Acknowledge & Classify" is a step in 8 of the 10 Hackathon scenarios, so a live Hackathon tray can show two identical-looking cards. If the participant picks the one from another scenario, it scores INCORRECT and the real step scores MISSING. The demo leaves out distractors whose label matches a real step. The live tray does not.
+
+---
+
+## Reference Runbooks login gate (added)
+
+`reference-runbooks.html` now opens only in a browser that is currently logged in to `index.html`. Anyone else who types the URL is sent to the login page with the message *"Please log in to view the Reference Runbooks."*
+
+| Who | Can open the runbooks? |
+|---|---|
+| Employee, logged in | Yes |
+| Participant in practice mode, logged in | Yes |
+| Participant whose Hackathon is active | **No.** The Hackathon screen never linked to the runbooks, so it stays closed-book |
+| After Log out, or after reloading the app (a reload already logs you out) | No |
+| After `RUNBOOK_GATE_HOURS` (default 8 hours) | No |
+| Scripts turned off | No. The page redirects to the login page |
+
+**How it works:** a successful login writes a short-lived pass (`runbook-academy-gate`) to the browser's `localStorage`. A small script at the top of the reference page keeps the page hidden until it has checked that pass. The page is also marked `noindex` so search engines don't list it.
+
+**What this gate does NOT protect:** GitHub Pages is static hosting and can't check a login before it sends a file. This gate stops people who follow a link, bookmark the page, or share the URL. It does not stop someone who knows how to use browser developer tools. It also doesn't stop anyone reading the file directly in the **public GitHub repository**. For real protection, the file must be served by something that checks a login first:
+
+1. **Make the repository private.** This stops people reading the source on github.com. Note that GitHub Pages from a private repo needs a paid GitHub plan, and even then the published site is still public unless you're on GitHub Enterprise Cloud (which offers "private" Pages).
+2. **Or move hosting to Cloudflare Pages and put Cloudflare Access in front of it.** The free tier covers up to 50 users, with email one-time codes, and the check happens before the file is sent. Keep the same two files; participants would verify their email once before reaching the app.
+
+**Tested:** 11 checks over a local web server: a fresh visitor, employee, practice participant, active-Hackathon participant, logout, app reload, an expired pass, a corrupted pass, and scripts turned off. The full 105-check suite still passes.
