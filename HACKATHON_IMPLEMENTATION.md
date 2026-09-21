@@ -277,3 +277,53 @@ Participant receives only "recorded"
 2. **Or move hosting to Cloudflare Pages and put Cloudflare Access in front of it.** The free tier covers up to 50 users, with email one-time codes, and the check happens before the file is sent. Keep the same two files; participants would verify their email once before reaching the app.
 
 **Tested:** 11 checks over a local web server: a fresh visitor, employee, practice participant, active-Hackathon participant, logout, app reload, an expired pass, a corrupted pass, and scripts turned off. The full 105-check suite still passes.
+
+---
+
+## Hackathon score downloads (added)
+
+The Employee dashboard's **Participant Roster & Scores** panel has two buttons:
+
+- **Summary (Excel CSV)**: one row per participant. Columns: Rank, Participant, Employee ID, Hackathon status, Scenario, Window from and to, Submitted at, Score, Maximum, Percentage, then counts of Correct, Misplaced, Missing and Incorrect, and the number of attempts.
+  - Participants who submitted come first, sorted by score. Tied scores share a rank.
+  - Everyone else follows with their status (Not assigned, Scheduled, Active (not submitted), or Expired (not submitted)).
+- **Detail (Excel CSV)**: one row per step for every submission, plus one row for each distractor placed. Columns: Expected position, Placed at, Step, Importance, Weight, Result, Points, and the calculation (e.g. `20 x 40% = 8`).
+  - A participant's Points add up exactly to their total score.
+
+Both downloads re-read the data from storage when you click, and use the scores saved at submission (the same numbers the roster shows).
+
+Files are named `Hackathon_Summary_YYYY-MM-DD_HHMM.csv` and `Hackathon_Detail_…`. They are saved as UTF-8 with a BOM, so Excel opens them with the correct characters. PINs are never exported. A name that starts with `=`, `+`, `-` or `@` gets a leading `'` so Excel can't run it as a formula.
+
+**Tested:** 18 checks: file names, columns, ranks and ties, participants who didn't submit, names containing commas or formula characters, no PINs, Points adding up to each total, expected vs placed positions, distractor rows, and escalate labels. The full 105-check suite still passes.
+
+---
+
+## Hackathon scenarios: 10 → 20 (added)
+
+The practice **Problem State** list covers all 19 tracker tickets, but only 9 of them had a Hackathon scenario. The ten missing tickets now have one each. They were added after the original ten, so existing scenario IDs, card IDs, weights, assignments and saved results are unchanged.
+
+| New scenario id | Title | Tracker ticket |
+|---|---|---|
+| `hack-pwd` | User Account — Domain Password Expired | INC000103 |
+| `hack-user` | New Joiner — User Account Creation | INC000104 |
+| `hack-policy` | Server Group — Security Policy Deployment | INC000107 |
+| `hack-build` | New Production Server — Build to Baseline | INC000109 |
+| `hack-decomm` | Retired Server — Decommissioning | INC000110 |
+| `hack-diskinc` | Production Volume — Planned Capacity Increase | INC000111 |
+| `hack-restore` | Production Server — Restore After File Corruption | INC000112 |
+| `hack-alert` | Monitoring — Auto-Recovered Service Warning | INC000115 |
+| `hack-dc` | Data Centre — Rack Temperature Rising | INC000116 |
+| `hack-ups` | Network Rack — UPS Battery Critical | INC000117 |
+
+Each new scenario follows the existing format: a problem statement, trigger, decision, 3 order-sensitive pre-checks, 4 order-sensitive resolve steps, and a presence-only escalate branch, with weights that add up to 100. The content is based on the ticket's practice runbook and the Excel resolution notes. No new step name repeats a name used elsewhere in the Hackathon, so the new cards can't look like duplicates in a participant's tray.
+
+The new scenarios appear automatically in the employee assignment dropdown, the instructor Scoring Demo and the score downloads. They also join the pool of distractor cards shown in other scenarios' trays, which is how the original ten already worked. The participant demo scenario is still not assignable.
+
+**Tested:**
+- The original 10 scenarios are identical to before (IDs, card IDs and weights).
+- The assignment dropdown lists all 20 scenarios.
+- A participant assigned *Password Expired* gets that scenario, with no look-alike cards in the tray.
+- Scoring uses the real engine: swapping the first two resolve steps gives 82/100.
+- All 20 scenarios score 100 when every step is correct.
+- The practice list still has 19 problems.
+- The full suites pass: 125 app/demo checks, 18 download checks and 11 runbooks-login checks.

@@ -90,6 +90,9 @@
   .hb-done{background:var(--accent-dim); color:var(--accent2);}
   .hb-exp{background:var(--red-dim); color:var(--red);}
   .hack-cell{white-space:nowrap;}
+  .dl-bar{display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin:-4px 0 14px; padding:10px 12px;
+    border:1px solid var(--border-soft); border-radius:9px; background:var(--panel-alt);}
+  .dl-label{font-family:var(--mono); font-size:10px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:var(--text-faint); margin-right:4px;}
   .hack-cfg-btn{margin-left:7px;}
   .btn.ghost{background:transparent; border:1px solid var(--border); color:var(--text-dim);}
   .btn.ghost:hover{border-color:var(--accent); color:var(--accent2);}
@@ -716,6 +719,11 @@
 
       <div class="card-panel">
         <div class="section-title">Participant Roster &amp; Scores</div>
+        <div class="dl-bar">
+          <span class="dl-label">Download Hackathon scores</span>
+          <button class="btn small" id="dlHackSummaryBtn" title="One row per participant: status, scenario, score, rank">⬇ Summary (Excel CSV)</button>
+          <button class="btn small" id="dlHackDetailBtn" title="One row per step: expected position, where it was placed, result, points">⬇ Detail (Excel CSV)</button>
+        </div>
         <div class="stat-row" id="employeeStatRow"></div>
         <div id="rosterWrap" style="margin-top:14px;"><div class="load-note">Loading roster…</div></div>
       </div>
@@ -2644,7 +2652,8 @@ document.getElementById('nextBtn').addEventListener('click', ()=>{
 /* ================================================================
    HACKATHON DATA
    ----------------------------------------------------------------
-   Ten assessment scenarios, deliberately separate from RAW_PROBLEMS.
+   Twenty assessment scenarios (the original ten plus ten added so every
+   tracker ticket has one), deliberately separate from RAW_PROBLEMS.
    Every step carries its own `weight`; `importance` is a label for the
    employee's report, NOT a lookup into a fixed score table. Two
    scenarios can both mark a step CRITICAL and weight it differently.
@@ -2825,7 +2834,193 @@ const HACK_SCENARIOS = [
  escalate:[
   {label:'Engage Application Owner', desc:'Hand over where the fault sits inside application logic rather than the platform.', importance:'LOW', weight:1},
   {label:'Escalate to Incident Manager', desc:'Escalate where impact is sustained or communications need coordinating.', importance:'LOW', weight:1}],
- close:'Record the customer impact window, root cause and recovery actions; raise a problem record for permanent fix.'}
+ close:'Record the customer impact window, root cause and recovery actions; raise a problem record for permanent fix.'},
+/* ---- Added: the ten tracker tickets that previously had no Hackathon
+   scenario (INC000103, 104, 107, 109, 110, 111, 112, 115, 116, 117), so every
+   practice Problem State now has a Hackathon counterpart. Appended after the
+   original ten so existing ids, assignments and stored results are unchanged.
+   Same rules: 3 pre-checks, 4 resolve steps, escalate branch, weights = 100,
+   and no step label repeats one used elsewhere in the Hackathon. ---- */
+{id:'hack-pwd', title:'User Account — Domain Password Expired',
+ problem:'A finance user cannot sign in to their workstation or email because their domain password expired over the weekend. Month-end close starts in an hour and they cannot work. No other users are affected.',
+ trigger:'Service Desk Call — user blocked after password expiry',
+ decision:'Can the user reset through self-service, or does the account need an administrator reset?',
+ pre:[
+  {label:'Log the Access Request', desc:'Take ownership, record the affected user and set priority from the business impact.', importance:'LOW', weight:4},
+  {label:'Verify Caller Identity', desc:'Confirm who is calling using the approved verification policy before touching the account — this is the control that prevents account takeover.', importance:'CRITICAL', weight:18},
+  {label:'Check Account Status in Directory', desc:'Establish whether the account is expired, locked or disabled, and when the password was last set.', importance:'HIGH', weight:14}],
+ resolve:[
+  {label:'Guide Self-Service Reset', desc:'Where self-service reset is enabled, walk the user through the portal — the preferred and fully audited path.', importance:'CRITICAL', weight:20},
+  {label:'Unlock Account If Locked', desc:'Clear a lockout caused by repeated failed attempts so the new password can be used.', importance:'MEDIUM', weight:10},
+  {label:'Set Temporary Password Securely', desc:'If an admin reset is needed, share a temporary password only through an approved channel and force a change at next sign-in.', importance:'HIGH', weight:14},
+  {label:'Confirm User Can Sign In', desc:'Have the user confirm they can sign in and reach email before closing — not just that the reset was issued.', importance:'HIGH', weight:14}],
+ escalate:[
+  {label:'Refer Restricted Account to IAM', desc:'Hand privileged, service or restricted accounts to Identity & Access Management rather than resetting them at L1.', importance:'MEDIUM', weight:4},
+  {label:'Flag Repeated Lockouts', desc:'Raise a follow-up where the same account keeps locking, which may indicate a stale credential or an attack.', importance:'LOW', weight:2}],
+ close:'Record the reset method and the user confirmation, then close within the 30-minute SLA.'},
+
+{id:'hack-user', title:'New Joiner — User Account Creation',
+ problem:'HR has raised a request to create an account for a project associate joining on Monday. A manager is named, but the access profile field is blank. The joiner needs email, the project share and VPN on day one.',
+ trigger:'Service Request — new user account from HR',
+ decision:'Is the request fully approved with a defined access profile, or must it go back to the requester?',
+ pre:[
+  {label:'Confirm Authorised Requester', desc:'Check the request came through the HR or manager channel with a named approver.', importance:'HIGH', weight:12},
+  {label:'Verify Approved Access Profile', desc:'Confirm exactly which baseline groups and systems are approved — never copy another user\'s access.', importance:'CRITICAL', weight:18},
+  {label:'Check for Existing Account', desc:'Search the directory so a duplicate identity is not created for the same person.', importance:'MEDIUM', weight:8}],
+ resolve:[
+  {label:'Create Directory Account', desc:'Create the user with the correct name, email and organisational unit.', importance:'HIGH', weight:15},
+  {label:'Assign Baseline Groups Only', desc:'Add only the groups in the approved profile — least privilege from day one.', importance:'CRITICAL', weight:20},
+  {label:'Require Password Change at First Logon', desc:'Set the account so the user must choose their own password when they first sign in.', importance:'MEDIUM', weight:9},
+  {label:'Send Credentials via Secure Channel', desc:'Share onboarding instructions and the initial password only through the approved secure channel.', importance:'HIGH', weight:12}],
+ escalate:[
+  {label:'Return Request for Missing Details', desc:'Send the ticket back when approval or the access profile is incomplete — do not guess the access.', importance:'MEDIUM', weight:5},
+  {label:'Refer Elevated Access to Identity Team', desc:'Hand requests for privileged or unusual access to Identity Operations.', importance:'LOW', weight:1}],
+ close:'Record the groups granted against the approval reference and close within SLA.'},
+
+{id:'hack-diskinc', title:'Production Volume — Planned Capacity Increase',
+ problem:'Capacity reporting shows the data volume on a production file server will be exhausted in about three weeks at the current growth rate. A change has been raised to add 200 GB. The server is healthy and there is no outage.',
+ trigger:'Change Request — increase data volume by 200 GB',
+ decision:'Is enough back-end storage available to extend the volume online inside the approved window?',
+ pre:[
+  {label:'Confirm Approved Change and Size', desc:'Verify the change is approved and the exact size and target volume are recorded.', importance:'HIGH', weight:13},
+  {label:'Check Datastore Free Capacity', desc:'Confirm the underlying storage has room for the extension without breaching its own thresholds.', importance:'CRITICAL', weight:18},
+  {label:'Confirm Recent Backup Exists', desc:'Make sure a current backup or snapshot exists before resizing anything.', importance:'HIGH', weight:12}],
+ resolve:[
+  {label:'Extend Virtual Disk', desc:'Increase the virtual disk on the hypervisor or storage platform by the approved amount.', importance:'CRITICAL', weight:18},
+  {label:'Extend OS Volume', desc:'Extend the partition and filesystem inside the operating system to use the new space.', importance:'HIGH', weight:14},
+  {label:'Verify New Capacity in OS', desc:'Confirm the operating system reports the new size and there are no disk errors.', importance:'HIGH', weight:12},
+  {label:'Update Monitoring Thresholds', desc:'Adjust capacity alerts so they reflect the new volume size.', importance:'MEDIUM', weight:7}],
+ escalate:[
+  {label:'Escalate to Storage Team', desc:'Hand over when back-end capacity is insufficient for the requested extension.', importance:'MEDIUM', weight:5},
+  {label:'Reschedule the Change', desc:'Move the change to a new window when an online extension is not possible.', importance:'LOW', weight:1}],
+ close:'Close the change with before-and-after capacity evidence and update the CMDB.'},
+
+{id:'hack-restore', title:'Production Server — Restore After File Corruption',
+ problem:'A production application server failed to start its services after an unplanned reboot. System files are corrupted and the application cannot run. Backups are taken nightly and the business wants the service back today.',
+ trigger:'Major Incident — system file corruption on production server',
+ decision:'Is there a clean, complete recovery point that is safe to restore from?',
+ pre:[
+  {label:'Confirm Corruption Scope', desc:'Establish which files and services are damaged and whether data volumes are also affected.', importance:'HIGH', weight:12},
+  {label:'Identify Last Good Recovery Point', desc:'Find the most recent restore point taken before the corruption and confirm it is complete.', importance:'CRITICAL', weight:20},
+  {label:'Agree Restore Scope with Owner', desc:'Agree full or partial restore, target time and acceptable data loss with the service owner.', importance:'HIGH', weight:12}],
+ resolve:[
+  {label:'Perform Approved Restore', desc:'Run the restore from the agreed recovery point using the documented procedure.', importance:'CRITICAL', weight:20},
+  {label:'Validate Boot and Services', desc:'Confirm the server boots cleanly and the application services start and respond.', importance:'HIGH', weight:13},
+  {label:'Reconcile Data Since Recovery Point', desc:'Identify and recover changes made after the recovery point so no transactions are silently lost.', importance:'HIGH', weight:12},
+  {label:'Monitor Restored Server', desc:'Watch the server and application for a sustained period before standing down.', importance:'MEDIUM', weight:6}],
+ escalate:[
+  {label:'Engage DR Coordinator', desc:'Escalate when no valid recovery point exists or the restore fails.', importance:'MEDIUM', weight:4},
+  {label:'Report Unrecoverable Data Loss', desc:'Inform management and the service owner where some data cannot be recovered.', importance:'LOW', weight:1}],
+ close:'Document the recovery point used, any data gap and the validation evidence; raise a problem record for the cause.'},
+
+{id:'hack-ups', title:'Network Rack — UPS Battery Critical',
+ problem:'The UPS protecting a core network rack reports battery health as critical. Runtime on battery is now 4 minutes against a 15-minute standard. Mains power is normal and nothing is down.',
+ trigger:'Monitoring Alert — UPS battery health critical',
+ decision:'Is runtime still above the safety minimum so replacement can be scheduled, or is this now urgent?',
+ pre:[
+  {label:'Validate UPS Diagnostics', desc:'Confirm the reading on the UPS management interface rather than relying on the alert alone.', importance:'HIGH', weight:13},
+  {label:'Assess Protected Load and Runtime', desc:'Establish what the UPS protects and whether current runtime still covers a safe shutdown or generator start.', importance:'CRITICAL', weight:18},
+  {label:'Check Battery Warranty and Age', desc:'Confirm the battery age and support entitlement before contacting the vendor.', importance:'MEDIUM', weight:7}],
+ resolve:[
+  {label:'Raise Vendor Battery Replacement', desc:'Open the replacement case with the vendor or facilities, attaching the diagnostic evidence.', importance:'CRITICAL', weight:18},
+  {label:'Book Approved Maintenance Window', desc:'Agree the replacement window with facilities and the network owner.', importance:'HIGH', weight:14},
+  {label:'Run Post-Replacement Self-Test', desc:'Run the UPS self-test after replacement and confirm runtime is back above the standard.', importance:'HIGH', weight:13},
+  {label:'Update UPS Asset Record', desc:'Record the new battery, install date and warranty in the asset register.', importance:'MEDIUM', weight:7}],
+ escalate:[
+  {label:'Escalate to Facilities as Urgent', desc:'Treat as urgent when runtime falls below the minimum needed for critical equipment.', importance:'MEDIUM', weight:7},
+  {label:'Inform Network Owner of Risk', desc:'Tell the network service owner about the reduced resilience until the battery is replaced.', importance:'LOW', weight:3}],
+ close:'Hold in vendor-engaged state until the self-test passes, then close with the new runtime recorded.'},
+
+{id:'hack-policy', title:'Server Group — Security Policy Deployment',
+ problem:'Following a compliance review, an approved security policy update must be applied to 40 application servers. Two of those servers host a legacy application with a history of breaking after hardening changes.',
+ trigger:'Change Request — apply approved security policy',
+ decision:'Is the change approved, scoped and backed up so the policy can be deployed in this window?',
+ pre:[
+  {label:'Confirm Change Approval and Window', desc:'Verify the change is authorised and that you are inside the approved window.', importance:'HIGH', weight:12},
+  {label:'Confirm Target Server Scope', desc:'Check the exact list of servers so nothing outside the approved scope is changed.', importance:'HIGH', weight:13},
+  {label:'Back Up Current Configuration', desc:'Capture existing settings on every target server so a rollback is possible.', importance:'CRITICAL', weight:18}],
+ resolve:[
+  {label:'Deploy via Approved Policy Tool', desc:'Apply the policy only through the approved management tool, not by hand on each server.', importance:'CRITICAL', weight:18},
+  {label:'Verify Policy Applied on Every Server', desc:'Confirm each server reports the new policy, and list any that did not apply.', importance:'HIGH', weight:12},
+  {label:'Test Legacy Application Behaviour', desc:'Test the known-sensitive legacy application end to end after the change.', importance:'HIGH', weight:13},
+  {label:'Record Exceptions and Evidence', desc:'Document compliance evidence and any approved exceptions against the change.', importance:'MEDIUM', weight:7}],
+ escalate:[
+  {label:'Roll Back Affected Servers', desc:'Restore the backed-up configuration where the policy breaks an application.', importance:'MEDIUM', weight:5},
+  {label:'Engage Compliance Owner', desc:'Agree a formal exception with the compliance owner where the policy cannot be applied.', importance:'LOW', weight:2}],
+ close:'Attach the compliance evidence and exception list to the change, then close.'},
+
+{id:'hack-build', title:'New Production Server — Build to Baseline',
+ problem:'A project needs a new Windows application server built to the approved production baseline before go-live next week. The change is approved. The application team will install their software once the server is handed over.',
+ trigger:'Change Request — build new production server',
+ decision:'Are compute, storage, network and the baseline image ready for the build?',
+ pre:[
+  {label:'Confirm Approved Build Specification', desc:'Confirm CPU, memory, storage and network requirements against the approved change.', importance:'HIGH', weight:12},
+  {label:'Reserve IP and DNS Records', desc:'Allocate the address and create the DNS entries before the build starts.', importance:'MEDIUM', weight:9},
+  {label:'Verify Baseline Image Is Current', desc:'Check the approved production image is the current version before deploying it.', importance:'HIGH', weight:12}],
+ resolve:[
+  {label:'Provision Compute and Storage', desc:'Allocate the virtual machine, disks and network connections to the approved specification.', importance:'HIGH', weight:13},
+  {label:'Apply Approved OS Baseline', desc:'Deploy the approved image and baseline configuration and join the required domain.', importance:'CRITICAL', weight:18},
+  {label:'Enrol in Monitoring and Backup', desc:'Add the server to monitoring and backup before handover so it is protected from day one.', importance:'CRITICAL', weight:16},
+  {label:'Patch and Run Build Validation', desc:'Apply current patches and run the build validation checklist before handing over.', importance:'HIGH', weight:14}],
+ escalate:[
+  {label:'Escalate Capacity Shortfall', desc:'Hand over to the infrastructure team when compute or storage capacity is not available.', importance:'MEDIUM', weight:4},
+  {label:'Engage Build Engineering', desc:'Escalate build failures that cannot be resolved with the standard procedure.', importance:'LOW', weight:2}],
+ close:'Hand over with the build checklist and validation results, and register the server in the CMDB.'},
+
+{id:'hack-decomm', title:'Retired Server — Decommissioning',
+ problem:'An application has been replaced and its old server is to be retired. The business owner has approved the decommission, but the data owner has not yet confirmed what must be retained. The server still raises monitoring alerts nightly.',
+ trigger:'Change Request — decommission retired server',
+ decision:'Are business and data-owner approvals and retention requirements complete?',
+ pre:[
+  {label:'Confirm Owner Approvals', desc:'Verify both business-owner and data-owner approvals are recorded against the change.', importance:'CRITICAL', weight:16},
+  {label:'Confirm Retention Requirements', desc:'Establish exactly what data must be kept, for how long and where.', importance:'CRITICAL', weight:17},
+  {label:'Check for Remaining Dependencies', desc:'Confirm nothing still connects to or depends on the server before removing it.', importance:'HIGH', weight:12}],
+ resolve:[
+  {label:'Archive Data per Retention Policy', desc:'Archive the required data to the approved location and verify the archive can be read.', importance:'HIGH', weight:14},
+  {label:'Remove Monitoring and Backup Jobs', desc:'Remove the server from monitoring, backup and any load balancer so no false alerts remain.', importance:'HIGH', weight:11},
+  {label:'Revoke Accounts and Service Access', desc:'Disable the computer account and any service credentials tied to the server.', importance:'HIGH', weight:12},
+  {label:'Power Down and Update Inventory', desc:'Power the server off and update the CMDB and asset inventory.', importance:'MEDIUM', weight:11}],
+ escalate:[
+  {label:'Hold for Data Owner Decision', desc:'Pause the decommission until the data owner confirms retention requirements.', importance:'MEDIUM', weight:5},
+  {label:'Refer to Compliance Review', desc:'Involve compliance where the server held regulated or sensitive data.', importance:'LOW', weight:2}],
+ close:'Record the archive location and inventory update against the change, then close.'},
+
+{id:'hack-dc', title:'Data Centre — Rack Temperature Rising',
+ problem:'Environmental monitoring shows temperature climbing in a rack that hosts production database and application servers. Two sensors agree. Servers are still running, but the trend will reach the hardware shutdown threshold within the hour.',
+ trigger:'Environmental Alert — rack temperature rising',
+ decision:'Will cooling be restored before thresholds are reached, or must load be reduced or moved now?',
+ pre:[
+  {label:'Validate Sensor Readings', desc:'Confirm the rise with more than one sensor so action is not taken on a faulty probe.', importance:'HIGH', weight:12},
+  {label:'Escalate to Facilities Immediately', desc:'Engage data-centre facilities straight away with the readings and timestamps — cooling is theirs to fix.', importance:'CRITICAL', weight:18},
+  {label:'Identify Production Systems in Rack', desc:'List every production system in the affected rack and which are most heat-sensitive.', importance:'HIGH', weight:13}],
+ resolve:[
+  {label:'Monitor Temperature Trend', desc:'Track the temperature continuously against the shutdown threshold.', importance:'MEDIUM', weight:9},
+  {label:'Shut Down Non-Critical Workloads', desc:'Reduce heat load by stopping non-critical systems first, with approval.', importance:'HIGH', weight:14},
+  {label:'Migrate Critical Workloads if Needed', desc:'Move critical workloads to another rack or site before the threshold is reached.', importance:'CRITICAL', weight:18},
+  {label:'Confirm Normal Temperature Restored', desc:'Verify temperature is back in range and stable before restoring workloads.', importance:'HIGH', weight:9}],
+ escalate:[
+  {label:'Convene Facilities Incident Bridge', desc:'Open a bridge with facilities and service owners when critical systems are threatened so actions are coordinated.', importance:'MEDIUM', weight:5},
+  {label:'Inform Affected Service Owners', desc:'Keep the owners of affected services informed of risk and actions.', importance:'LOW', weight:2}],
+ close:'Record the temperature timeline, actions taken and facilities reference; raise a problem record for the cooling fault.'},
+
+{id:'hack-alert', title:'Monitoring — Auto-Recovered Service Warning',
+ problem:'Overnight, monitoring raised a warning that a non-critical test service stopped responding. Four minutes later it recovered by itself. No users reported anything. The alert is still open in the queue.',
+ trigger:'Monitoring Alert — service warning, auto-recovered',
+ decision:'Does this alert match a known runbook and is it fully explained, or does it need further diagnosis?',
+ pre:[
+  {label:'Acknowledge the Alert', desc:'Take ownership of the alert in the monitoring tool so it is not worked twice.', importance:'LOW', weight:5},
+  {label:'Confirm Service Has Recovered', desc:'Check the service is actually healthy now rather than trusting the auto-recovery message.', importance:'CRITICAL', weight:18},
+  {label:'Check for Related Alerts and Changes', desc:'Look for other alerts or changes at the same time that could explain the blip.', importance:'HIGH', weight:14}],
+ resolve:[
+  {label:'Review Service Logs for Cause', desc:'Read the logs around the event to find why the service stopped responding.', importance:'CRITICAL', weight:18},
+  {label:'Map Alert to Known Runbook', desc:'Match the alert to the correct runbook so the next occurrence is handled consistently.', importance:'HIGH', weight:13},
+  {label:'Review Alert Threshold', desc:'Check whether the threshold is set sensibly for a non-critical test service.', importance:'MEDIUM', weight:9},
+  {label:'Document Findings and Close', desc:'Record what happened and why, so a repeat can be recognised.', importance:'HIGH', weight:12}],
+ escalate:[
+  {label:'Hand Over to L2 if Unexplained', desc:'Pass to L2 or the system owner when the cause cannot be found.', importance:'MEDIUM', weight:8},
+  {label:'Raise Problem if Recurring', desc:'Raise a problem record when the same alert keeps recurring.', importance:'LOW', weight:3}],
+ close:'Close with the findings recorded; if it recurs, the history supports a problem record.'}
+
 ];
 
 /* Stamp IDs the same way PROBLEMS does, but into a SEPARATE index so
@@ -3282,6 +3477,136 @@ function renderHackathonDetail(attempt){
     `Pre-checks and Resolve are order-sensitive; the Escalate branch is graded on presence only.`));
   return wrap;
 }
+
+
+/* ================================================================
+   HACKATHON SCORE DOWNLOADS (employee only)
+   ----------------------------------------------------------------
+   Two CSV files, UTF-8 with BOM so Excel opens them with the correct
+   characters. Data is re-read from storage at click time, and scores
+   are taken from what was stored at submission (earned / breakdown),
+   exactly as the roster shows them. PINs are never exported.
+     Summary — one row per participant
+     Detail  — one row per expected step + one per distractor placed
+   ================================================================ */
+const HACK_STATUS_LABEL = {NOT_ASSIGNED:'Not assigned', SCHEDULED:'Scheduled', ACTIVE:'Active (not submitted)',
+                           COMPLETED:'Completed', EXPIRED:'Expired (not submitted)'};
+const HACK_SECTION_LABEL = {pre:'Pre-check', resolve:'Resolve', escalate:'Escalate'};
+
+function csvCell(v){
+  if(v === null || v === undefined) return '';
+  let t = String(v);
+  if(/^[=+\-@\t\r]/.test(t)) t = "'" + t;             // stop Excel treating text as a formula
+  return /[",\r\n]/.test(t) ? '"' + t.replace(/"/g, '""') + '"' : t;
+}
+function csvDownload(filename, header, rows){
+  const body = [header, ...rows].map(r=> r.map(csvCell).join(',')).join('\r\n');
+  const blob = new Blob(['\uFEFF' + body + '\r\n'], {type:'text/csv;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=> URL.revokeObjectURL(a.href), 4000);
+}
+function xlDate(ts){
+  if(!ts) return '';
+  const d = new Date(ts); if(isNaN(d)) return '';
+  const z = n=> String(n).padStart(2,'0');
+  return `${d.getFullYear()}-${z(d.getMonth()+1)}-${z(d.getDate())} ${z(d.getHours())}:${z(d.getMinutes())}`;
+}
+function xlDay(stamp){ return stamp ? String(stamp).slice(0,10) : ''; }
+function exportStamp(){ const d = new Date(), z = n=> String(n).padStart(2,'0');
+  return `${d.getFullYear()}-${z(d.getMonth()+1)}-${z(d.getDate())}_${z(d.getHours())}${z(d.getMinutes())}`; }
+function scoreCalc(weight, result, points){
+  if(result === 'INCORRECT') return 'Distractor = 0';
+  const m = result === 'CORRECT' ? 1 : result === 'MISPLACED' ? ORDER_PARTIAL_CREDIT : 0;
+  return `${weight} x ${Math.round(m*100)}% = ${points}`;
+}
+function slotName(kind, index){
+  if(!kind) return '';
+  return kind === 'escalate' ? `Escalate ${index+1}` : `${HACK_SECTION_LABEL[kind] || kind} ${index+1}`;
+}
+
+async function loadHackExportData(){
+  const participants = await Store.listParticipants();
+  const hack = await Store.listAllHackathonAttempts();
+  const now = new Date();
+  const keys = Object.keys(participants).filter(k=> participants[k]);
+  return keys.map(k=>{
+    const p = participants[k], attempts = hack[k] || [];
+    const last = attempts.length ? attempts[attempts.length-1] : null;
+    return {key:k, p, attempts, last, state:getHackathonState(p, attempts, now)};
+  });
+}
+
+async function downloadHackathonSummary(){
+  const btn = document.getElementById('dlHackSummaryBtn');
+  btn.disabled = true;
+  try{
+    const list = await loadHackExportData();
+    if(!list.length){ showToast('No participants to export yet'); return; }
+    // rank completed submissions by percentage (ties share a rank)
+    const done = list.filter(x=> x.last).sort((a,b)=> b.last.percentage - a.last.percentage);
+    const rank = {};
+    done.forEach((x,i)=>{ rank[x.key] = (i > 0 && x.last.percentage === done[i-1].last.percentage) ? rank[done[i-1].key] : i+1; });
+    const ordered = [...done, ...list.filter(x=> !x.last).sort((a,b)=> a.p.name.localeCompare(b.p.name))];
+
+    const header = ['Rank','Participant','Employee ID','Hackathon status','Scenario','Window from','Window to',
+      'Submitted at','Score','Maximum','Percentage','Correct','Misplaced','Missing','Incorrect (distractors)','Attempts'];
+    const rows = ordered.map(x=>{
+      const h = x.p.hackathon || {}, a = x.last;
+      const scen = a ? a.scenarioTitle : (findHackScenario(h.scenarioId) || {}).title || '';
+      const n = r=> a ? a.breakdown.filter(b=> b.result === r).length : '';
+      return [a ? rank[x.key] : '', x.p.name, x.p.empId || '', HACK_STATUS_LABEL[x.state] || x.state, scen,
+        xlDay(h.fromDate), xlDay(h.toDate), a ? xlDate(a.ts) : '',
+        a ? a.earned : '', a ? a.maximum : '', a ? a.percentage + '%' : '',
+        n('CORRECT'), n('MISPLACED'), n('MISSING'), a ? (a.distractors || []).length : '', x.attempts.length];
+    });
+    csvDownload(`Hackathon_Summary_${exportStamp()}.csv`, header, rows);
+    showToast(`Summary downloaded — ${list.length} participant${list.length===1?'':'s'}, ${done.length} submitted`);
+  } finally { btn.disabled = false; }
+}
+
+async function downloadHackathonDetail(){
+  const btn = document.getElementById('dlHackDetailBtn');
+  btn.disabled = true;
+  try{
+    const list = (await loadHackExportData()).filter(x=> x.attempts.length)
+      .sort((a,b)=> a.p.name.localeCompare(b.p.name));
+    if(!list.length){ showToast('No Hackathon submissions to export yet'); return; }
+
+    const header = ['Participant','Employee ID','Scenario','Attempt','Submitted at','Total score','Maximum','Percentage',
+      'Row type','Section','Expected position','Placed at','Step','Importance','Weight','Result','Points','Calculation'];
+    const rows = [];
+    list.forEach(x=>{
+      x.attempts.forEach(a=>{
+        const S = findHackScenario(a.scenarioId);
+        const steps = S ? hackSteps(S) : [];
+        const resp = a.response || [];
+        const where = id=>{ const r = resp.find(q=> q.placedCardId === id); return r ? slotName(r.kind, r.index) : 'Not placed'; };
+        const base = [x.p.name, x.p.empId || '', a.scenarioTitle, a.attemptNo || 1, xlDate(a.ts), a.earned, a.maximum, a.percentage + '%'];
+        a.breakdown.forEach((b,i)=>{
+          const st = steps[i] && steps[i].label === b.label ? steps[i] : null;
+          const expected = st ? (st.kind === 'escalate' ? 'Escalate (any position)' : slotName(st.kind, st.index)) : (HACK_SECTION_LABEL[b.section] || b.section);
+          rows.push([...base, 'Expected step', HACK_SECTION_LABEL[b.section] || b.section, expected,
+            st ? where(st.id) : '', b.label, b.importance, b.weight, b.result, b.points, scoreCalc(b.weight, b.result, b.points)]);
+        });
+        const expectedIds = new Set(steps.map(s=> s.id));
+        const placedDistractors = resp.filter(r=> r.placedCardId && !expectedIds.has(r.placedCardId));
+        (a.distractors || []).forEach((d,i)=>{
+          const r = placedDistractors[i];
+          rows.push([...base, 'Distractor', '', 'Not in workflow', r ? slotName(r.kind, r.index) : '',
+            d.label, '—', 0, 'INCORRECT', 0, scoreCalc(0, 'INCORRECT', 0)]);
+        });
+      });
+    });
+    csvDownload(`Hackathon_Detail_${exportStamp()}.csv`, header, rows);
+    showToast(`Detail downloaded — ${list.length} submission${list.length===1?'':'s'}, ${rows.length} rows`);
+  } finally { btn.disabled = false; }
+}
+
+document.getElementById('dlHackSummaryBtn').addEventListener('click', downloadHackathonSummary);
+document.getElementById('dlHackDetailBtn').addEventListener('click', downloadHackathonDetail);
 
 
 /* ---- hackathon config modal wiring ---- */
